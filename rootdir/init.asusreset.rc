@@ -1,0 +1,4 @@
+on post-fs
+#+++ MikeHsu: for factory reset with rm
+    asus_exec /system/bin/asusrmdir.sh
+#--- MikeHsu: for factory reset with rm

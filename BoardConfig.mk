@@ -17,9 +17,6 @@
 # inherit from asus common
 -include device/asus/common/BoardConfigCommon.mk
 
-# Include path
-TARGET_SPECIFIC_HEADER_PATH := device/asus/pf500kl/include
-
 # Bootloader
 TARGET_BOOTLOADER_BOARD_NAME := MSM8974
 TARGET_NO_BOOTLOADER := true
@@ -56,6 +53,7 @@ BOARD_USES_QCOM_HARDWARE := true
 
 # Audio
 BOARD_USES_ALSA_AUDIO := true
+AUDIO_FEATURE_ENABLED_FM := true
 AUDIO_FEATURE_ENABLED_COMPRESS_CAPTURE := true
 AUDIO_FEATURE_ENABLED_COMPRESS_VOIP := true
 AUDIO_FEATURE_ENABLED_EXTN_FORMATS := true

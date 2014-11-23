@@ -48,9 +48,6 @@ TARGET_KERNEL_CONFIG := pf500kl-perf_defconfig
 BOARD_KERNEL_CMDLINE := console=ttyHSL0,115200,n8 androidboot.hardware=qcom user_debug=31 msm_rtb.filter=0x37 ehci-hcd.park=3 androidboot.selinux=permissive
 TARGET_KERNEL_SOURCE := kernel/asus/msm8974
 
-# Flags
-COMMON_GLOBAL_CFLAGS += -DNEEDS_VECTORIMPL_SYMBOLS
-
 # Enable dex-preoptimization to speed up first boot sequence
 WITH_DEXPREOPT := true
 
@@ -71,7 +68,6 @@ AUDIO_FEATURE_ENABLED_PCM_OFFLOAD := true
 AUDIO_FEATURE_ENABLED_PCM_OFFLOAD_24 := true
 AUDIO_FEATURE_ENABLED_PROXY_DEVICE := true
 AUDIO_FEATURE_DISABLED_DS1_DOLBY_DDP := true
-AUDIO_FEATURE_DISABLED_FM := true
 #BOARD_USES_EXTN_AUDIO_POLICY_MANAGER := true
 #AUDIO_FEATURE_ENABLED_MULTIPLE_TUNNEL := true
 
@@ -90,10 +86,7 @@ BOARD_EGL_CFG := device/asus/pf500kl/configs/egl.cfg
 USE_OPENGL_RENDERER := true
 TARGET_USES_C2D_COMPOSITION := true
 TARGET_USES_ION := true
-OVERRIDE_RS_DRIVER := libRSDriver_adreno.so
-HAVE_ADRENO_SOURCE:= false
-VSYNC_EVENT_PHASE_OFFSET_NS := 7500000
-SF_VSYNC_EVENT_PHASE_OFFSET_NS := 5000000
+NUM_FRAMEBUFFER_SURFACE_BUFFERS := 3
 
 # Shader cache config options
 # Maximum size of the  GLES Shaders that can be cached for reuse.
@@ -119,7 +112,7 @@ WPA_SUPPLICANT_VERSION := VER_0_8_X
 WIFI_DRIVER_FW_PATH_STA := ""
 
 
-# Filesystem
+# Filesystem #Fix to real sizes.
 TARGET_USERIMAGES_USE_EXT4 := true
 BOARD_CACHEIMAGE_FILE_SYSTEM_TYPE := ext4
 BOARD_PERSISTIMAGE_FILE_SYSTEM_TYPE := ext4
@@ -130,8 +123,6 @@ BOARD_PERSISTIMAGE_PARTITION_SIZE  := 33554432
 BOARD_RECOVERYIMAGE_PARTITION_SIZE := 16777216
 BOARD_SYSTEMIMAGE_PARTITION_SIZE   := 1388314624
 BOARD_USERDATAIMAGE_PARTITION_SIZE := 13271448576
-BOARD_USERDATAEXTRAIMAGE_PARTITION_SIZE := 59914792960
-BOARD_USERDATAEXTRAIMAGE_PARTITION_NAME := 64G
 
 # Recovery
 TARGET_RECOVERY_PIXEL_FORMAT := "RGBX_8888"
@@ -144,10 +135,6 @@ RECOVERY_VARIANT := cm
 # No old RPC for prop
 TARGET_NO_RPC := true
 
-# GPS HAL lives here
-TARGET_GPS_HAL_PATH := device/asus/pf500kl/gps
-TARGET_PROVIDES_GPS_LOC_API := true
-
 # Use HW crypto for ODE
 TARGET_HW_DISK_ENCRYPTION := true
 
@@ -159,6 +146,12 @@ USE_MINIKIN := true
 
 # Include an expanded selection of fonts
 EXTENDED_FONT_FOOTPRINT := true
+
+# Time services
+BOARD_USES_QC_TIME_SERVICES := true
+
+# Radio
+BOARD_RIL_CLASS := ../../../device/asus/pf500kl/ril/
 
 # inherit from the proprietary version
 -include vendor/asus/pf500kl/BoardConfigVendor.mk

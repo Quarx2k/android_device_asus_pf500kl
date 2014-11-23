@@ -157,9 +157,6 @@ etc/firmware/cpp_firmware_v1_1_1.fw
 etc/firmware/cpp_firmware_v1_1_6.fw
 etc/firmware/cpp_firmware_v1_2_0.fw
 
-# Audio firmware
-#etc/firmware/audience-es325-fw.bin
-
 # Bluetooth
 bin/btnvtool
 bin/hci_qcomm_init
@@ -190,6 +187,14 @@ vendor/lib/libaudcal.so
 vendor/lib/soundfx/libqcbassboost.so
 vendor/lib/soundfx/libqcreverb.so
 vendor/lib/soundfx/libqcvirt.so
+vendor/lib/libaudcal.so
+etc/Bluetooth_cal.acdb
+etc/General_cal.acdb
+etc/Global_cal.acdb
+etc/Handset_cal.acdb
+etc/Hdmi_cal.acdb
+etc/Headset_cal.acdb
+etc/Speaker_cal.acdb
 
 # Venus (media) firmware
 etc/firmware/venus.b00
@@ -234,7 +239,7 @@ etc/firmware/adsp.mdt
 
 # DRM
 bin/qseecomd
-vendor/lib/libQSEEComAPI.so:
+vendor/lib/libQSEEComAPI.so
 lib/libdrmdecrypt.so
 vendor/lib/libdrmdiag.so
 vendor/lib/libdrmfs.so
@@ -242,27 +247,26 @@ vendor/lib/libdrmtime.so
 vendor/lib/librpmb.so
 vendor/lib/libssd.so
 vendor/lib/libwvdrm_L1.so
-vendor/lib/libwvm.so
-vendor/lib/libWVStreamControlAPI_L1.so
-#vendor/lib/drm/libdrmwvmplugin.so
-#vendor/lib/mediadrm/libwvdrmengine.so
+-vendor/lib/libwvm.so
+-vendor/lib/libWVStreamControlAPI_L1.so
+-vendor/lib/drm/libdrmwvmplugin.so
+-vendor/lib/mediadrm/libwvdrmengine.so
 
 # GPS
--priv-app/com.qualcomm.location/com.qualcomm.location.apk
 #bin/gsiff_daemon
 #bin/quipc_igsn
 #bin/quipc_main
 #etc/permissions/com.qualcomm.location.xml
-#lib/libloc_api_v02.so
-#lib/libloc_ds_api.so
+lib/libloc_api_v02.so
+lib/libloc_ds_api.so
 #vendor/lib/hw/flp.default.so
-#vendor/lib/libgeofence.so
-#vendor/lib/libizat_core.so
-#vendor/lib/liblbs_core.so
-#vendor/lib/liblocationservice.so
-#vendor/lib/libquipc_os_api.so
-#vendor/lib/libquipc_ulp_adapter.so
-#vendor/lib/libulp2.so
+vendor/lib/libgeofence.so
+vendor/lib/libizat_core.so
+vendor/lib/liblbs_core.so
+vendor/lib/liblocationservice.so
+vendor/lib/libquipc_os_api.so
+vendor/lib/libquipc_ulp_adapter.so
+vendor/lib/libulp2.so
 
 # Graphics
 vendor/lib/egl/eglsubAndroid.so
@@ -305,10 +309,10 @@ vendor/lib/libOmxWmaDec.so
 vendor/lib/libSHIMDivxDrm.so
 
 # Postprocessing
-#bin/mm-pp-daemon
-#vendor/lib/libdisp-aba.so
--#vendor/lib/libmm-abl.so
-#vendor/lib/libmm-abl-oem.so
+-bin/mm-pp-daemon
+-vendor/lib/libdisp-aba.so
+-vendor/lib/libmm-abl.so
+-vendor/lib/libmm-abl-oem.so
 
 # Qualcomm framework
 bin/irsc_util
@@ -331,8 +335,6 @@ vendor/lib/libqmi_encdec.so
 vendor/lib/libqmiservices.so
 
 # Radio
--app/qcrilmsgtunnel/qcrilmsgtunnel.apk
--app/shutdownlistener/shutdownlistener.apk
 bin/netmgrd
 bin/qmuxd
 bin/radish
@@ -345,6 +347,8 @@ bin/rmt_storage
 vendor/lib/libnetmgr.so
 vendor/lib/libril-qc-qmi-1.so
 vendor/lib/libril-qcril-hook-oem.so
+vendor/lib/libqc-opt.so
+lib/libril.so
 etc/qxdm/VoLTE_V3_NO_L2.cfg
 etc/qxdm/VoLTE_V3_SRVCC.cfg
 etc/qxdm/WLAN_V1.cfg

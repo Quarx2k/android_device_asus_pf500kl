@@ -54,7 +54,7 @@ PRODUCT_PROPERTY_OVERRIDES += \
     use.voice.path.for.pcm.voip=true \
     audio.offload.multiple.enabled=false \
     audio.offload.gapless.enabled=true \
-    qcom.hw.aac.encoder=true \
+    qcom.hw.aac.encoder=false \
     tunnel.audio.encode=true \
     media.aac_51_output_enabled=true \
     audio.offload.pcm.enable=true \
@@ -76,11 +76,11 @@ PRODUCT_PACKAGES += \
     libxml2
 
 # NFC packages
-PRODUCT_PACKAGES += \
-    NfcNci \
-    Tag \
-    nfc_nci.pn54x.default \
-    com.android.nfc_extras
+#PRODUCT_PACKAGES += \
+#    NfcNci \
+#    Tag \
+#    nfc_nci.pn54x.default \
+#    com.android.nfc_extras
 
 # Graphics
 PRODUCT_PACKAGES += \

@@ -6,6 +6,7 @@ ro.sf.lcd_density=440
 
 # Ril
 rild.libpath=/vendor/lib/libril-qc-qmi-1.so
+ro.vendor.extension_library=/vendor/lib/libqc-opt.so
 rild.libargs=-d /dev/smd0
 persist.rild.nitz_plmn=
 persist.rild.nitz_long_ons_0=
@@ -18,9 +19,13 @@ persist.rild.nitz_short_ons_2=
 persist.rild.nitz_short_ons_3=
 ril.subscription.types=RUIM,RUIM
 telephony.lteOnCdmaDevice=0
-DEVICE_PROVISIONED=1
 persist.radio.dont_use_dsd=true
+persist.radio.eons.enabled=false
+persist.radio.use_se_table_only=1
+persist.radio.audio.ftm_mode=false
 persist.radio.add_power_save=1
+persist.radio.apm_sim_not_pwdn=1
+ro.telephony.call_ring.multiple=false
 ro.use_data_netmgrd=true
 persist.data.netmgrd.qos.enable=false
 ro.data.large_tcp_window_size=true
@@ -30,6 +35,7 @@ persist.asus.qxdmlog.maxfiles=6
 persist.asus.qxdmlog.message=0
 conn.connectivity_change_delay=0
 ro.telephony.ril_class=AsusLteRIL
+DEVICE_PROVISIONED=1
 
 # Sensors
 debug.qualcomm.sns.hal=0
@@ -38,8 +44,6 @@ debug.qualcomm.sns.libsensor1=0
 ro.qc.sensors.smgr_mag_cal_en=false
 ro.qc.sensors.step_detector=true
 ro.qc.sensors.step_counter=true
-
-# qc sdk
 ro.qc.sdk.sensors.gestures=true
 ro.qc.sdk.gestures.camera=false
 ro.qc.sdk.camera.facialproc=false

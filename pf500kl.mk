@@ -259,7 +259,6 @@ PRODUCT_COPY_FILES += \
     device/asus/pf500kl/rootdir/init.qcom.early_boot.sh:root/init.qcom.early_boot.sh \
     device/asus/pf500kl/rootdir/init.qcom.factory.sh:root/init.qcom.factory.sh \
     device/asus/pf500kl/rootdir/init.qcom.rc:root/init.qcom.rc \
-    device/asus/pf500kl/rootdir/init.qcom.ril.sh:root/init.qcom.ril.sh \
     device/asus/pf500kl/rootdir/init.qcom.sensor.sh:root/init.qcom.sensor.sh \
     device/asus/pf500kl/rootdir/init.qcom.sh:root/init.qcom.sh \
     device/asus/pf500kl/rootdir/init.qcom.ssr.sh:root/init.qcom.ssr.sh \

@@ -27,6 +27,10 @@
 #
 #
 
+import init.asus.rc
+import init.asus.debugtool.rc
+import init.asus.thermald.rc
+
 on early-init
     mkdir /firmware 0771 system system
     symlink /data/tombstones /tombstones
@@ -37,6 +41,13 @@ on init
     # session is not exercised through RemoteDisplay in the android framework
     setprop persist.sys.wfd.virtual 0
 
+on early-boot
+    # set wifi link file.
+    setprop wlan.driver.ath 0
+    symlink /system/lib/modules/pronto/pronto_wlan.ko /system/lib/modules/wlan.ko
+    setprop wlan.driver.config /system/etc/firmware/wlan/prima/WCNSS_qcom_cfg.ini
+    exec /system/bin/sh /init.qcom.early_boot.sh ${ro.board.platform}
+    exec /system/bin/sh /init.qcom.syspart_fixup.sh ${ro.board.platform} ${ro.serialno}
 
 on fs
     mount_all fstab.qcom
@@ -74,6 +85,22 @@ on post-fs-data
 on boot
     start imsqmidaemon
     insmod /system/lib/modules/adsprpc.ko
+
+#+++ ASUS BSP Bernard, MYDP     
+    chown root radio /sys/module/slimport/parameters/write_swing_value
+#--- ASUS BSP Bernard, MYDP    
+
+#ASUS_BSP +++ Peter_Lu "Light/Proximity sensor"
+    chown system system /sys/devices/virtual/sensors/psensor/switch
+    chown system system /sys/devices/virtual/sensors/lsensor/switch
+    chown system system /sys/devices/virtual/sensors/lsensor/calvalue
+    chown system system /sys/bus/i2c/devices/6-001c/al3010/power_state
+#ASUS_BSP --- Peter_Lu
+
+# ASUS_BSP +++ Gavin_Chang "ntfs and exfat support"
+    insmod /system/lib/modules/tntfs.ko
+    insmod /system/lib/modules/texfat.ko
+# ASUS_BSP --- Gavin_Chang "ntfs and exfat support"
 
 # Allow usb charging to be disabled persistently
 on property:persist.usb.chgdisabled=1
@@ -278,4 +305,166 @@ service asus_chk_navitel /system/bin/sh /system/etc/checkNavitel.sh
 on property:sys.boot_completed=1
     start asus_chk_navitel
 #ASUS_BSP: check Navitel for RU ---
+
+# ASUS_BSP+++ "dynamic config SSR"
+# config subsystem restart
+on property:persist.sys.modem.restart=*
+    restart restart_cfg
+
+service restart_cfg /system/xbin/restart_cfg.sh
+    class late_start
+    user root
+    group root
+    disabled
+    oneshot
+
+service modem_restart /system/xbin/modem_restart.sh
+    class late_start
+    user root
+    group root
+    disabled
+    oneshot
+
+on property:ril.restart.step=2
+    restart atfwd
+# ASUS_BSP--- "dynamic config SSR"
+
+#ASUS_BSP+++ LandiceFu "[GPS][NA][Spec] Disable XTRA-T/QUIPS/WiperInterface/ISAGNAV"
+#service gpsone_daemon /system/bin/gpsone_daemon
+    #class late_start
+    #user gps
+    #group gps inet net_raw
+    #disabled
+
+#service quipc_igsn /system/bin/quipc_igsn
+    #class late_start
+    #user gps
+    #group inet gps qcom_diag
+    #disabled
+
+#service quipc_main /system/bin/quipc_main
+    #class late_start
+    #user gps
+    #group gps net_admin wifi inet qcom_diag
+    #disabled
+
+#service location_mq /system/bin/location-mq
+    #class late_start
+    #user gps
+    #group gps
+    #disabled
+
+#service xtwifi_inet /system/bin/xtwifi-inet-agent
+    #class late_start
+    #user gps
+    #group inet gps
+    #disabled
+
+#service xtwifi_client /system/bin/xtwifi-client
+    #class late_start
+    #user gps
+    #group net_admin wifi inet gps
+    #disabled
+
+#service lowi-server /system/bin/lowi-server
+    #class late_start
+    #user gps
+    #group gps net_admin wifi inet qcom_diag
+    #disabled
+#ASUS_BSP--- LandiceFu "[GPS][NA][Spec] Disable XTRA-T/QUIPS/WiperInterface/ISAGNAV"
+
+# ASUS_BSP--- Bruno "[Audio] Add persist property for Audio debug"
+service asus_audbg /system/etc/init.asus.audbg.sh
+    user root
+    group root
+    disabled
+    oneshot
+
+on property:persist.asus.audbg=0
+    start asus_audbg
+
+on property:persist.asus.audbg=1
+    start asus_audbg
+
+on property:persist.asus.audbg=2
+    start asus_audbg
+# ASUS_BSP--- Bruno "[Audio] Add persist property for Audio debug"
+
+# ASUS_BSP--- Bruno "[Audio] Add persist property for MaxxAudio"
+service maxx_mode_switch /system/etc/init.asus.maxxaudio.sh
+    user root
+    group root
+    disabled
+    oneshot
+
+on property:sys.config.maxxaudio=0
+    start maxx_mode_switch
+
+on property:sys.config.maxxaudio=1
+    start maxx_mode_switch
+
+on property:sys.config.maxxaudio=2
+    start maxx_mode_switch
+
+on property:sys.config.maxxaudio=3
+    start maxx_mode_switch
+
+on property:sys.config.maxxaudio=4
+    start maxx_mode_switch
+
+on property:sys.config.maxxaudio=5
+    start maxx_mode_switch
+# ASUS_BSP--- Bruno "[Audio] Add persist property for MaxxAudio"
+
+#ASUS BSP+++ Jay "add USB Camera FW Update"
+service UsbCam /system/bin/USB_Camera_Update/fw_update.sh
+    class late_start
+    user root
+    group root
+    disabled
+    oneshot
+#ASUS BSP--- Jay "add USB Camera FW Update"
+
+#ASUS_BSP+++ Allen "Add service to start subsystem_ramdump"
+    service subsys_ramdump /system/bin/subsystem_ramdump 1
+    class late_start
+    user root
+    group root
+    disabled
+#ASUS_BSP--- Allen "Add service to start subsystem_ramdump"
+
+# SSR setting
+# ASUS_BSP+++ "remove qcom ssr config"
+#on property:persist.sys.ssr.restart_level=*
+#    exec /system/bin/sh /init.qcom.ssr.sh ${persist.sys.ssr.restart_level}
+# ASUS_BSP--- "remove qcom ssr config"
+
+# ASUS BSP freddy++ "Initialing script for setprop persist.* was executed for P01 Key debug mode"
+service asus_p01dbg /system/etc/init.asus.p01dbg.sh
+    user root
+    group root
+    disabled
+    oneshot
+	
+on property:persist.asus.p01dbg=0
+    start asus_p01dbg
+	
+on property:persist.asus.p01dbg=1
+    start asus_p01dbg
+	
+on property:persist.asus.p01dbg=2
+   start asus_p01dbg
+# ASUS BSP-- freddy "Initialing script for setprop persist.* was executed for P01 Key debug mode"
+
+# ASUS_BSP+++ sr_Huang "add for pad event changed"                   
+                                                                  
+service onPadEvtChg /system/bin/sh  /etc/onPadEventChanged.sh          
+        class core                                                          
+        user root                                                      
+        oneshot                                                      
+        disabled            
+on property:sys.config.resolution=*
+        start onPadEvtChg                                                                 
+                                                                          
+# ASUS_BSP--- sr_Huang "add for pad event changed" 
 

@@ -1,4 +1,4 @@
-# Copyright (c) 2009-2012, The Linux Foundation. All rights reserved.
+# Copyright (c) 2009-2012,2014 The Linux Foundation. All rights reserved.
 #
 # Redistribution and use in source and binary forms, with or without
 # modification, are permitted provided that the following conditions are met:
@@ -27,37 +27,29 @@
 
 import init.qcom.usb.rc
 import init.target.rc
-import init.asus.rc
-import init.asus.debugtool.rc
-import init.asus.thermald.rc
 
 on early-init
     mount debugfs debugfs /sys/kernel/debug
 
 on init
+    # Set permissions for persist partition
     mkdir /persist 0771 system system
-    mkdir /storage 0751 system sdcard_r
-    mkdir /storage/sdcard1 0700 root root
-    mkdir /mnt/media_rw 0700 media_rw media_rw
-    mkdir /mnt/media_rw/sdcard1 0700 media_rw media_rw
+    # See storage config details at http://source.android.com/tech/storage/
     mkdir /mnt/shell/emulated 0700 shell shell
     mkdir /storage/emulated 0555 root root
+    mkdir /mnt/media_rw/sdcard1 0700 media_rw media_rw
+    mkdir /storage/sdcard1 0700 root root
 
     export EXTERNAL_STORAGE /storage/emulated/legacy
+    export SECONDARY_STORAGE /storage/sdcard1:/storage/usbdisk
     export EMULATED_STORAGE_SOURCE /mnt/shell/emulated
     export EMULATED_STORAGE_TARGET /storage/emulated
-    export SECONDARY_STORAGE /storage/sdcard1:/storage/usbdisk
 
-    # for backwards compatibility
+    # Support legacy paths
     symlink /storage/emulated/legacy /sdcard
     symlink /storage/emulated/legacy /mnt/sdcard
     symlink /storage/emulated/legacy /storage/sdcard0
     symlink /mnt/shell/emulated/0 /storage/emulated/legacy
-    symlink /storage/sdcard1 /extSdCard
-    symlink /storage/sdcard1 /mnt/extSdCard
-    symlink /storage/sdcard1 /external_sd
-    symlink /storage/usbdisk /usbdisk
-    symlink /storage/usbdisk /mnt/usbdisk
 
 on early-boot
     # set RLIMIT_MEMLOCK to 64MB
@@ -65,12 +57,6 @@ on early-boot
     # Allow subsystem (modem etc) debugging
     write /sys/module/subsystem_restart/parameters/enable_debug ${persist.sys.ssr.enable_debug}
     write /sys/kernel/boot_adsp/boot 1
-    # set wifi link file.
-    setprop wlan.driver.ath 0
-    symlink /system/lib/modules/pronto/pronto_wlan.ko /system/lib/modules/wlan.ko
-    setprop wlan.driver.config /system/etc/firmware/wlan/prima/WCNSS_qcom_cfg.ini
-    exec /system/bin/sh /init.qcom.early_boot.sh ${ro.board.platform}
-    exec /system/bin/sh /init.qcom.syspart_fixup.sh ${ro.board.platform} ${ro.serialno}
 
 on boot
     chown bluetooth bluetooth /sys/module/bluetooth_power/parameters/power
@@ -95,17 +81,6 @@ on boot
     chmod 0660 /dev/ttyHS2
     chown bluetooth bluetooth /dev/ttyHS2
 
-#+++ ASUS BSP Bernard, MYDP     
-    chown root radio /sys/module/slimport/parameters/write_swing_value
-#--- ASUS BSP Bernard, MYDP    
-
-#ASUS_BSP +++ Peter_Lu "Light/Proximity sensor"
-    chown system system /sys/devices/virtual/sensors/psensor/switch
-    chown system system /sys/devices/virtual/sensors/lsensor/switch
-    chown system system /sys/devices/virtual/sensors/lsensor/calvalue
-    chown system system /sys/bus/i2c/devices/6-001c/al3010/power_state
-#ASUS_BSP --- Peter_Lu
-
     #Create QMUX deamon socket area
     mkdir /dev/socket/qmux_radio 0770 radio radio
     chmod 2770 /dev/socket/qmux_radio
@@ -115,10 +90,6 @@ on boot
     chmod 2770 /dev/socket/qmux_bluetooth
     mkdir /dev/socket/qmux_gps 0770 gps gps
     chmod 2770 /dev/socket/qmux_gps
-# ASUS_BSP +++ Gavin_Chang "ntfs and exfat support"
-    insmod /system/lib/modules/tntfs.ko
-    insmod /system/lib/modules/texfat.ko
-# ASUS_BSP --- Gavin_Chang "ntfs and exfat support"
 
     setprop wifi.interface wlan0
 
@@ -324,11 +295,6 @@ service qcom-c_main-sh /system/bin/sh /init.class_main.sh
     user root
     oneshot
 
-service ril-qmi /system/bin/sh /init.qcom.ril.sh
-    class main
-    user root
-    oneshot
-
 on property:vold.decrypt=trigger_restart_framework
     start qcom-c_main-sh
     start config_bluetooth
@@ -444,18 +410,11 @@ service netmgrd /system/bin/netmgrd
     class main
     disabled
 
-# ASUS_BSP +++ Jiunhau_Wang [A91][ADSP][NA][SPEC] improve adsp init
 service sensors /system/bin/sensors.qcom
-    class core
+    class late_start
     user root
     group root
     disabled
-
-service qcom-sensor-sh /system/bin/sh /init.qcom.sensor.sh
-    class core
-    user root
-    oneshot
-# ASUS_BSP --- Jiunhau_Wang [A91][ADSP][NA][SPEC] improve adsp init
 
 on property:ro.use_data_netmgrd=false
     # netmgr not supported on specific target
@@ -496,7 +455,7 @@ service p2p_supplicant /system/bin/wpa_supplicant \
     -I/system/etc/wifi/p2p_supplicant_overlay.conf -N \
     -iwlan0 -Dnl80211 -c/data/misc/wifi/wpa_supplicant.conf \
     -I/system/etc/wifi/wpa_supplicant_overlay.conf \
-    -O/data/misc/wifi/sockets -puse_p2p_group_interface=1 \
+    -O/data/misc/wifi/sockets -puse_p2p_group_interface=1 -dd \
     -e/data/misc/wifi/entropy.bin -g@android:wpa_wlan0
 #   we will start as root and wpa_supplicant will switch to user wifi
 #   after setting up the capabilities required for WEXT
@@ -510,7 +469,7 @@ service p2p_supplicant /system/bin/wpa_supplicant \
 service wpa_supplicant /system/bin/wpa_supplicant \
     -iwlan0 -Dnl80211 -c/data/misc/wifi/wpa_supplicant.conf \
     -I/system/etc/wifi/wpa_supplicant_overlay.conf \
-    -O/data/misc/wifi/sockets \
+    -O/data/misc/wifi/sockets -dd \
     -e/data/misc/wifi/entropy.bin -g@android:wpa_wlan0
     #   we will start as root and wpa_supplicant will switch to user wifi
     #   after setting up the capabilities required for WEXT
@@ -541,10 +500,10 @@ service iprenew_p2p /system/bin/dhcpcd -n
     disabled
     oneshot
 
-service ptt_socket_app /system/bin/ptt_socket_app
+service ptt_socket_app /system/bin/ptt_socket_app -d
     class main
-    user system
-    group system
+    user root
+    group root
     oneshot
 
 service dhcpcd_bt-pan /system/bin/dhcpcd -BKLG
@@ -556,29 +515,6 @@ service iprenew_bt-pan /system/bin/dhcpcd -n
     class late_start
     disabled
     oneshot
-
-# ASUS_BSP+++ "dynamic config SSR"
-# config subsystem restart
-on property:persist.sys.modem.restart=*
-    restart restart_cfg
-
-service restart_cfg /system/xbin/restart_cfg.sh
-    class late_start
-    user root
-    group root
-    disabled
-    oneshot
-
-service modem_restart /system/xbin/modem_restart.sh
-    class late_start
-    user root
-    group root
-    disabled
-    oneshot
-
-on property:ril.restart.step=2
-    restart atfwd
-# ASUS_BSP--- "dynamic config SSR"
 
 service dhcpcd_bnep0 /system/bin/dhcpcd -BKLG
     disabled
@@ -599,50 +535,6 @@ service dhcpcd_bnep3 /system/bin/dhcpcd -BKLG
 service dhcpcd_bnep4 /system/bin/dhcpcd -BKLG
     disabled
     oneshot
-
-#ASUS_BSP+++ LandiceFu "[GPS][NA][Spec] Disable XTRA-T/QUIPS/WiperInterface/ISAGNAV"
-#service gpsone_daemon /system/bin/gpsone_daemon
-    #class late_start
-    #user gps
-    #group gps inet net_raw
-    #disabled
-
-#service quipc_igsn /system/bin/quipc_igsn
-    #class late_start
-    #user gps
-    #group inet gps qcom_diag
-    #disabled
-
-#service quipc_main /system/bin/quipc_main
-    #class late_start
-    #user gps
-    #group gps net_admin wifi inet qcom_diag
-    #disabled
-
-#service location_mq /system/bin/location-mq
-    #class late_start
-    #user gps
-    #group gps
-    #disabled
-
-#service xtwifi_inet /system/bin/xtwifi-inet-agent
-    #class late_start
-    #user gps
-    #group inet gps
-    #disabled
-
-#service xtwifi_client /system/bin/xtwifi-client
-    #class late_start
-    #user gps
-    #group net_admin wifi inet gps
-    #disabled
-
-#service lowi-server /system/bin/lowi-server
-    #class late_start
-    #user gps
-    #group gps net_admin wifi inet qcom_diag
-    #disabled
-#ASUS_BSP--- LandiceFu "[GPS][NA][Spec] Disable XTRA-T/QUIPS/WiperInterface/ISAGNAV"
 
 service fm_dl /system/bin/sh /system/etc/init.qcom.fm.sh
     class late_start
@@ -698,7 +590,7 @@ service wifi-crda /system/bin/sh /system/etc/init.crda.sh
 on property:sys.boot_completed=1
     start qcom-post-boot
 
-service hostapd /system/bin/hostapd -dddd /data/hostapd/hostapd.conf
+service hostapd /system/bin/hostapd -dd /data/hostapd/hostapd.conf
     class late_start
     user root
     group root
@@ -753,49 +645,6 @@ service profiler_daemon /system/bin/profiler_daemon
     group root
     disabled
 
-# ASUS_BSP--- Bruno "[Audio] Add persist property for Audio debug"
-service asus_audbg /system/etc/init.asus.audbg.sh
-    user root
-    group root
-    disabled
-    oneshot
-
-on property:persist.asus.audbg=0
-    start asus_audbg
-
-on property:persist.asus.audbg=1
-    start asus_audbg
-
-on property:persist.asus.audbg=2
-    start asus_audbg
-# ASUS_BSP--- Bruno "[Audio] Add persist property for Audio debug"
-
-# ASUS_BSP--- Bruno "[Audio] Add persist property for MaxxAudio"
-service maxx_mode_switch /system/etc/init.asus.maxxaudio.sh
-    user root
-    group root
-    disabled
-    oneshot
-
-on property:sys.config.maxxaudio=0
-    start maxx_mode_switch
-
-on property:sys.config.maxxaudio=1
-    start maxx_mode_switch
-
-on property:sys.config.maxxaudio=2
-    start maxx_mode_switch
-
-on property:sys.config.maxxaudio=3
-    start maxx_mode_switch
-
-on property:sys.config.maxxaudio=4
-    start maxx_mode_switch
-
-on property:sys.config.maxxaudio=5
-    start maxx_mode_switch
-# ASUS_BSP--- Bruno "[Audio] Add persist property for MaxxAudio"
-
 service sdcard /system/bin/sdcard -u 1023 -g 1023 -l /data/media /mnt/shell/emulated
     class late_start
     
@@ -816,33 +665,10 @@ service hcidump /system/bin/sh /system/etc/hcidump.sh
 service charger /charger
     class charger
 
-#ASUS BSP+++ Jay "add USB Camera FW Update"
-service UsbCam /system/bin/USB_Camera_Update/fw_update.sh
-    class late_start
-    user root
-    group root
-    disabled
-    oneshot
-#ASUS BSP--- Jay "add USB Camera FW Update"
-
-#ASUS_BSP+++ Allen "Add service to start subsystem_ramdump"
-    service subsys_ramdump /system/bin/subsystem_ramdump 1
-    class late_start
-    user root
-    group root
-    disabled
-#ASUS_BSP--- Allen "Add service to start subsystem_ramdump"
-
 service ssr_diag /system/bin/ssr_diag
     class late_start
     user system
     group system
-
-# SSR setting
-# ASUS_BSP+++ "remove qcom ssr config"
-#on property:persist.sys.ssr.restart_level=*
-#    exec /system/bin/sh /init.qcom.ssr.sh ${persist.sys.ssr.restart_level}
-# ASUS_BSP--- "remove qcom ssr config"
 
 # Define fastmmi
 service fastmmi /system/bin/mmi
@@ -869,22 +695,6 @@ on property:persist.usb.hvdcp.detect=true
 on property:persist.usb.hvdcp.detect=false
     stop hvdcp
 
-# ASUS BSP freddy++ "Initialing script for setprop persist.* was executed for P01 Key debug mode"
-service asus_p01dbg /system/etc/init.asus.p01dbg.sh
-    user root
-    group root
-    disabled
-    oneshot
-	
-on property:persist.asus.p01dbg=0
-    start asus_p01dbg
-	
-on property:persist.asus.p01dbg=1
-    start asus_p01dbg
-	
-on property:persist.asus.p01dbg=2
-   start asus_p01dbg
-# ASUS BSP-- freddy "Initialing script for setprop persist.* was executed for P01 Key debug mode"
 service charger_monitor /system/bin/charger_monitor
     user system
     group system
@@ -903,18 +713,6 @@ service diag_mdlog_stop /system/bin/diag_mdlog -k
     group system qcom_diag sdcard_rw sdcard_r media_rw
     disabled
     oneshot
-
-# ASUS_BSP+++ sr_Huang "add for pad event changed"                   
-                                                                  
-service onPadEvtChg /system/bin/sh  /etc/onPadEventChanged.sh          
-        class core                                                          
-        user root                                                      
-        oneshot                                                      
-        disabled            
-on property:sys.config.resolution=*
-        start onPadEvtChg                                                                 
-                                                                          
-# ASUS_BSP--- sr_Huang "add for pad event changed" 
 
 service qlogd /system/xbin/qlogd
     class main

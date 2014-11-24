@@ -1,6 +1,3 @@
-on init
-    export PATH /sbin:/vendor/bin:/system/sbin:/system/bin:/system/xbin:/bin
-
 # ASUS_BSP+++ "Porting for factory and tcpdump"
 # tcpdump_warp service to save tcpdump to /sdcard
 service tcpdump-warp /system/xbin/netlog.sh
@@ -18,16 +15,14 @@ service save-hcidump /system/bin/sh /system/etc/init.asus.hcidump.sh
     disabled
     oneshot
 # ASUS_BSP--- ChanceChen "add save-hcidump service"
+
 # ASUS_BSP+++ ChanceChen "stop btsnoop log recorder as hcidump service stop"
 on property:init.svc.save-hcidump=stopped
     setprop debug.bluetooth.btsnoop false
     chmod 775 /data/logcat_log
 # ASUS_BSP--- ChanceChen "stop btsnoop log recorder as hcidump service stop"
 
-on fs
-
 on post-fs
-
 #ASUS_BSP+++ "add for the wlan 5GHz Tx power by the cap"
 service wlanTxCap1 /system/bin/sh /system/etc/init.asus.wlantxcap1.sh
     class late_start
@@ -59,8 +54,6 @@ on post-fs-data
     chmod 0775 /data/asusdata
     chown root shell /data/asusdata
 
-
-
 #ASUS BSP Eric Wu +++ Add for PCBID Test
 service create_pcbid /system/bin/sh /system/bin/create_pcbid.sh
 	class late_start	
@@ -68,7 +61,6 @@ service create_pcbid /system/bin/sh /system/bin/create_pcbid.sh
 	disabled
 on post-fs-data
 #ASUS BSP Eric Wu +++ Add for PCBID Test
-
 
 # ASUS_BSP Gavin_Chang +++ remove gmxt partition
 # mount gmxt
@@ -115,8 +107,8 @@ on post-fs-data
     chmod 0775 /ADF
     chmod 0775 /ADF/boot
     chown system system /ADF
-    
 # --- ASUS_BSP : add for asus boot animation partition
+
 #ASUS_BSP HANS: add for A86 ICON LED +++
     chown system system /sys/devices/f9924000.i2c/i2c-2/2-0001/key_led
     chown system system /sys/devices/f9924000.i2c/i2c-2/2-0001/user_mode
@@ -141,22 +133,21 @@ on post-fs-data
 #ASUS_BSP HANS:add for BMMI ---
 
 #ASUS_BSP Desmond: sis9257 +++
-chown system system /dev/sis_aegis_touch_device
-chmod 0660 /dev/sis_aegis_touch_device
+    chown system system /dev/sis_aegis_touch_device
+    chmod 0660 /dev/sis_aegis_touch_device
 #ASUS_BSP Desmond: sis9257 ---
 
 #ASUS BSP Wei +++
-rm /data/data/hdmi_status
-symlink /sys/devices/virtual/graphics/fb1/connected /data/data/hdmi_status
-chmod 0777 /data/data/hdmi_status
-
-rm /data/data/sdtp2600_fw_ver
-symlink /sys/devices/f9928000.i2c/i2c-6/6-0074/SDTP2600/fw_ver /data/data/sdtp2600_fw_ver
-chmod 0777 /data/data/sdtp2600_fw_ver
-
+    rm /data/data/hdmi_status
+    symlink /sys/devices/virtual/graphics/fb1/connected /data/data/hdmi_status
+    chmod 0777 /data/data/hdmi_status
+	
+    rm /data/data/sdtp2600_fw_ver
+    symlink /sys/devices/f9928000.i2c/i2c-6/6-0074/SDTP2600/fw_ver /data/data/sdtp2600_fw_ver
+    chmod 0777 /data/data/sdtp2600_fw_ver
 #ASUS BSP Wei ---
 
-    #ASUS_BSP Deeo : add for Led test +++
+#ASUS_BSP Deeo : add for Led test +++
     chown system system /sys/class/leds/red/blink
     chmod 0664 /sys/class/leds/red/blink
     chown system system /sys/class/leds/green/blink
@@ -167,7 +158,7 @@ chmod 0777 /data/data/sdtp2600_fw_ver
     chmod 0664 /sys/class/leds/mix/brightness
     chown system system /sys/class/leds/mix/blink
     chmod 0664 /sys/class/leds/mix/blink
-    #ASUS_BSP Deeo : add for Led test ---
+#ASUS_BSP Deeo : add for Led test ---
 
 # ASUS_BSP +++ widevine ATD
     rm /data/data/widevine_install
@@ -455,6 +446,7 @@ service asusevtlog /system/bin/sh /system/etc/init.asus.evtlog.sh
 
 on property:sys.asus.evtlog=1
     start asusevtlog
+
 on property:sys.asus.evtlog=0
     start asusevtlog
 #ASUS_BSP --- Allen1_Huang
@@ -553,7 +545,7 @@ on property:ro.hardware.id=A90_EVB
     symlink /sys/devices/f9968000.i2c/i2c-12/12-0068/iio:device0/accel_6500_status /data/data/gsensor_status
     symlink /sys/devices/f9968000.i2c/i2c-12/12-0068/iio:device0/accel_6500_raw /data/data/gsensor_raw
 
-symlink /sys/devices/f9968000.i2c/i2c-12/12-0068/iio:device0/akm_09911_i2c /data/data/ecompass_phone_i2c
+    symlink /sys/devices/f9968000.i2c/i2c-12/12-0068/iio:device0/akm_09911_i2c /data/data/ecompass_phone_i2c
     symlink /sys/devices/f9968000.i2c/i2c-12/12-0068/iio:device0/akm_09911_raw /data/data/ecompass_raw
     symlink /sys/devices/f9968000.i2c/i2c-12/12-0068/iio:device0/akm_09911_status /data/data/ecompass_status
 # EVB0 : sensor bus = 12

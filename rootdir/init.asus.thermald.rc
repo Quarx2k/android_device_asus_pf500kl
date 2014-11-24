@@ -49,10 +49,12 @@ on property:sys.ultimate.mode.enabled=*
 on property:sys.thermald.disabled=*
         start onFgAppChanged
 # ASUS_BSP--- VictorFu "For Ultimate mode & disable thermald"
+
 # ASUS_BSP+++ VictorFu "For watching foreground app"
 on property:sys.foregroundapp=*
 	start onFgAppChanged
 # ASUS_BSP--- VictorFu "For watching foreground app"
+
 # ASUS_BSP+++ VictorFu "For pad mode"
 on property:sys.config.resolution=*
 	start onFgAppChanged

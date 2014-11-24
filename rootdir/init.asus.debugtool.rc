@@ -72,6 +72,7 @@ on property:persist.asus.startlog=1
     start check-datalog
     start console
     write /sys/module/msm_rtb/parameters/enable 1
+
 on property:persist.asus.startlog=0
     start check-datalog
     stop  console

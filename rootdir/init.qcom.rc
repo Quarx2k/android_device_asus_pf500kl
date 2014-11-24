@@ -25,12 +25,11 @@
 # ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #
 
-#import init.qcom.usb.rc
-import init.asus.usb.rc
-import init.asus.thermald.rc
+import init.qcom.usb.rc
 import init.target.rc
 import init.asus.rc
 import init.asus.debugtool.rc
+import init.asus.thermald.rc
 
 on early-init
     mount debugfs debugfs /sys/kernel/debug

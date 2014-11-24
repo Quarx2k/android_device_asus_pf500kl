@@ -247,19 +247,14 @@ PRODUCT_COPY_FILES += \
 # Rootdir
 PRODUCT_COPY_FILES += \
     device/asus/pf500kl/rootdir/fstab.qcom:root/fstab.qcom \
-    device/asus/pf500kl/rootdir/init.asus.debugtool.rc:root/init.asus.debugtool.rc \
     device/asus/pf500kl/rootdir/init.asus.rc:root/init.asus.rc \
-    device/asus/pf500kl/rootdir/init.asus.thermald.rc:root/init.asus.thermald.rc \
     device/asus/pf500kl/rootdir/init.asus.usb.boot.sh:root/init.asus.usb.boot.sh \
     device/asus/pf500kl/rootdir/init.asus.usb.diag.sh:root/init.asus.usb.diag.sh \
-    device/asus/pf500kl/rootdir/init.asus.usb.rc:root/init.asus.usb.rc \
-    device/asus/pf500kl/rootdir/init.asusreset.rc:root/init.asusreset.rc \
     device/asus/pf500kl/rootdir/init.class_main.sh:root/init.class_main.sh \
     device/asus/pf500kl/rootdir/init.qcom.class_core.sh:root/init.qcom.class_core.sh \
     device/asus/pf500kl/rootdir/init.qcom.early_boot.sh:root/init.qcom.early_boot.sh \
     device/asus/pf500kl/rootdir/init.qcom.factory.sh:root/init.qcom.factory.sh \
     device/asus/pf500kl/rootdir/init.qcom.rc:root/init.qcom.rc \
-    device/asus/pf500kl/rootdir/init.qcom.ril.sh:root/init.qcom.ril.sh \
     device/asus/pf500kl/rootdir/init.qcom.sensor.sh:root/init.qcom.sensor.sh \
     device/asus/pf500kl/rootdir/init.qcom.sh:root/init.qcom.sh \
     device/asus/pf500kl/rootdir/init.qcom.ssr.sh:root/init.qcom.ssr.sh \

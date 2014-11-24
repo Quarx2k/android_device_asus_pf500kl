@@ -27,26 +27,6 @@
 # IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #
 #
-# Update USB serial number from persist storage if present, if not update
-# with value passed from kernel command line, if none of these values are
-# set then use the default value. This order is needed as for devices which
-# do not have unique serial number.
-# User needs to set unique usb serial number to persist.usb.serialno
-#
-serialno=`getprop persist.usb.serialno`
-case "$serialno" in
-    "")
-    serialnum=`getprop ro.serialno`
-    case "$serialnum" in
-        "");; #Do nothing, use default serial number
-        *)
-        echo "$serialnum" > /sys/class/android_usb/android0/iSerial
-    esac
-    ;;
-    *)
-    echo "$serialno" > /sys/class/android_usb/android0/iSerial
-esac
-
 chown -h root.system /sys/devices/platform/msm_hsusb/gadget/wakeup
 chmod -h 220 /sys/devices/platform/msm_hsusb/gadget/wakeup
 
@@ -85,49 +65,49 @@ esac
 #
 baseband=`getprop ro.baseband`
 echo 1  > /sys/class/android_usb/f_mass_storage/lun/nofua
-#usb_config=`getprop persist.sys.usb.config`
-#case "$usb_config" in
-#    "" | "adb") #USB persist config not set, select default configuration
-#      case "$baseband" in
-#          "mdm")
-#               setprop persist.sys.usb.config diag,diag_mdm,serial_hsic,serial_tty,rmnet_hsic,mass_storage,adb
-#          ;;
-#          "sglte")
-#               setprop persist.sys.usb.config diag,diag_qsc,serial_smd,serial_tty,serial_hsuart,rmnet_hsuart,mass_storage,adb
-#          ;;
-#          "dsda" | "sglte2")
-#               setprop persist.sys.usb.config diag,diag_mdm,diag_qsc,serial_hsic,serial_hsuart,rmnet_hsic,rmnet_hsuart,mass_storage,adb
-#          ;;
-#          "dsda2")
-#               setprop persist.sys.usb.config diag,diag_mdm,diag_mdm2,serial_hsic,serial_hsusb,rmnet_hsic,rmnet_hsusb,mass_storage,adb
-#          ;;
-#          *)
-#               setprop persist.sys.usb.config diag,serial_smd,serial_tty,rmnet_bam,mass_storage,adb
-#          ;;
-#      esac
-#    ;;
-#    * ) ;; #USB persist config exists, do nothing
-#esac
+usb_config=`getprop persist.sys.usb.config`
+case "$usb_config" in
+    "" | "adb") #USB persist config not set, select default configuration
+      case "$baseband" in
+          "mdm")
+               setprop persist.sys.usb.config diag,diag_mdm,serial_hsic,serial_tty,rmnet_hsic,mass_storage,adb
+          ;;
+          "sglte")
+               setprop persist.sys.usb.config diag,diag_qsc,serial_smd,serial_tty,serial_hsuart,rmnet_hsuart,mass_storage,adb
+          ;;
+          "dsda" | "sglte2")
+               setprop persist.sys.usb.config diag,diag_mdm,diag_qsc,serial_hsic,serial_hsuart,rmnet_hsic,rmnet_hsuart,mass_storage,adb
+          ;;
+          "dsda2")
+               setprop persist.sys.usb.config diag,diag_mdm,diag_mdm2,serial_hsic,serial_hsusb,rmnet_hsic,rmnet_hsusb,mass_storage,adb
+          ;;
+          *)
+               setprop persist.sys.usb.config diag,serial_smd,serial_tty,rmnet_bam,mass_storage,adb
+          ;;
+      esac
+    ;;
+    * ) ;; #USB persist config exists, do nothing
+esac
 
 #
 # Add support for exposing lun0 as cdrom in mass-storage
 #
-#target=`getprop ro.product.device`
-#cdromname="/system/etc/cdrom_install.iso"
-#cdromenable=`getprop persist.service.cdrom.enable`
-#case "$target" in
-#        "msm8226" | "msm8610")
-#                case "$cdromenable" in
-#                        0)
-#                                echo "" > /sys/class/android_usb/android0/f_mass_storage/lun0/file
-#                                ;;
-#                        1)
-#                                echo "mounting usbcdrom lun"
-#                                echo $cdromname > /sys/class/android_usb/android0/f_mass_storage/lun0/file
-#                                ;;
-#                esac
-#                ;;
-#esac
+target=`getprop ro.product.device`
+cdromname="/system/etc/cdrom_install.iso"
+cdromenable=`getprop persist.service.cdrom.enable`
+case "$target" in
+        "msm8226" | "msm8610")
+                case "$cdromenable" in
+                        0)
+                                echo "" > /sys/class/android_usb/android0/f_mass_storage/lun0/file
+                                ;;
+                        1)
+                                echo "mounting usbcdrom lun"
+                                echo $cdromname > /sys/class/android_usb/android0/f_mass_storage/lun0/file
+                                ;;
+                esac
+                ;;
+esac
 
 #
 # Do target specific things
@@ -194,100 +174,32 @@ case "$baseband" in
     ;;
 esac
 
-ls_ssn=`ls /data/asusdata/SSN`
-case "$ls_ssn" in
-	*SSN*)
-		ssn_value=`cat /data/asusdata/SSN`
-		echo "$ssn_value" > /sys/class/android_usb/android0/iSerial
-	;;
-	* )
-		echo "C4ATAS000000" > /sys/class/android_usb/android0/iSerial
-	;;
-esac
-
-adb_enable=`ls /data/asusdata/adb_enable`
-persist_sysusbconfig=`getprop persist.sys.usb.config`
-persist_sysusbotgmode=`getprop persist.sys.usb.otg.mode`
-case "$adb_enable" in
-	*adb_enable*)
-		case "$persist_sysusbconfig" in
-			"mtp,adb")
-			;;
-			* )
-				setprop persist.sys.usb.config mtp,adb
-			;;
-		esac
-		case "$persist_sysusbotgmode" in
-			"peripheral")
-			;;
-			* )
-				setprop persist.sys.usb.otg.mode peripheral
-			;;
-		esac
-		setprop debug.asus.adbenable 1
-	;;
-esac
-
-CMDLINE=`cat /proc/cmdline`
-case "$CMDLINE" in
-	*ADB=Y*)
-		setprop sys.usb.adbon 1
-	;;
-esac
 
 #
-# Set FUSE status to USB Driver
+# Add changes to support diag with rndis
 #
-case "$CMDLINE" in
-	*SB=Y*)
-	case "$CMDLINE" in
-		*UNLOCKED=Y*)
-			echo 0 > /sys/class/android_usb/android0/fuse_check
-		;;
-		* )
-			echo 1 > /sys/class/android_usb/android0/fuse_check
-		;;
-	esac
+diag_extra=`getprop persist.sys.usb.config.extra`
+case "$diag_extra" in
+	"diag" | "diag,diag_mdm" | "diag,diag_mdm,diag_qsc")
+		case "$baseband" in
+			"mdm")
+				setprop persist.sys.usb.config.extra diag,diag_mdm
+			;;
+		        "dsda" | "sglte2" )
+				setprop persist.sys.usb.config.extra diag,diag_mdm,diag_qsc
+			;;
+		        "sglte")
+				setprop persist.sys.usb.config.extra diag,diag_qsc
+			;;
+		        "dsda2")
+				setprop persist.sys.usb.config.extra diag,diag_mdm,diag_mdm2
+			;;
+		        *)
+				setprop persist.sys.usb.config.extra diag
+			;;
+	        esac
 	;;
-	* )
-		echo 0 > /sys/class/android_usb/android0/fuse_check
-	;;
-esac
-
-#
-# Add support for exposing lun0 as cdrom in mass-storage
-#
-cdromname="/system/etc/cdrom_install.iso"
-per_sysusbconfig=`getprop persist.sys.usb.config`
-if [ -f $cdromname ]; then 
-	setprop persist.service.cdrom.enable 1
-	echo "mounting usbcdrom lun"
-	echo $cdromname > /sys/class/android_usb/android0/f_mass_storage/lun0/file
-	case "$per_sysusbconfig" in
-		"mtp,adb")
-			setprop persist.sys.usb.config mtp,adb,mass_storage
-		;;
-		"mtp")
-			setprop persist.sys.usb.config mtp,mass_storage
-		;;
-	esac
-else 
-	setprop persist.service.cdrom.enable 0
-	echo "" > /sys/class/android_usb/android0/f_mass_storage/lun0/file
-	case "$per_sysusbconfig" in
-		"mtp,adb,mass_storage")
-			setprop persist.sys.usb.config mtp,adb
-		;;
-		"mtp,mass_storage")
-			setprop persist.sys.usb.config mtp
-		;;
-	esac
-fi
-
-diag_enable=`ls /data/asusdata/diag_enable`
-case "$diag_enable" in
-	*diag_enable*)
-		setprop persist.usb.diag 1
+        *)
+		setprop persist.sys.usb.config.extra none
 	;;
 esac
-

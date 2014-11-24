@@ -275,56 +275,8 @@ service ppd /system/bin/mm-pp-daemon
 on property:init.svc.surfaceflinger=stopped
     stop ppd
 
-#ASUS_BSP: [ASDF] Check for LastShutdown Logs +++
-service check_last /system/bin/sh /system/etc/init.asus.check_last.sh
-    user root
-    disabled
-    oneshot
-#ASUS_BSP: [ASDF] Check for LastShutdown Logs ---
-#ASUS_BSP: [ASDF] Check for Abnormal Shutdown Logs +++
-service asus_chk_asdf /system/bin/sh /system/etc/init.asus.check_asdf.sh
-    user root
-    group root
-    disabled
-    oneshot
-
-on property:sys.boot_completed=1
-    start asus_chk_asdf
-
-on property:persist.radio.check_asdf=*
-    start asus_chk_asdf
-#ASUS_BSP: [ASDF] Check for Abnormal Shutdown Logs ---
-
-#ASUS_BSP: check Navitel for RU +++
-service asus_chk_navitel /system/bin/sh /system/etc/checkNavitel.sh
-    user root
-    group root
-    disabled
-    oneshot
-
-on property:sys.boot_completed=1
-    start asus_chk_navitel
-#ASUS_BSP: check Navitel for RU ---
-
 # ASUS_BSP+++ "dynamic config SSR"
 # config subsystem restart
-on property:persist.sys.modem.restart=*
-    restart restart_cfg
-
-service restart_cfg /system/xbin/restart_cfg.sh
-    class late_start
-    user root
-    group root
-    disabled
-    oneshot
-
-service modem_restart /system/xbin/modem_restart.sh
-    class late_start
-    user root
-    group root
-    disabled
-    oneshot
-
 on property:ril.restart.step=2
     restart atfwd
 # ASUS_BSP--- "dynamic config SSR"
@@ -373,49 +325,6 @@ on property:ril.restart.step=2
     #disabled
 #ASUS_BSP--- LandiceFu "[GPS][NA][Spec] Disable XTRA-T/QUIPS/WiperInterface/ISAGNAV"
 
-# ASUS_BSP--- Bruno "[Audio] Add persist property for Audio debug"
-service asus_audbg /system/etc/init.asus.audbg.sh
-    user root
-    group root
-    disabled
-    oneshot
-
-on property:persist.asus.audbg=0
-    start asus_audbg
-
-on property:persist.asus.audbg=1
-    start asus_audbg
-
-on property:persist.asus.audbg=2
-    start asus_audbg
-# ASUS_BSP--- Bruno "[Audio] Add persist property for Audio debug"
-
-# ASUS_BSP--- Bruno "[Audio] Add persist property for MaxxAudio"
-service maxx_mode_switch /system/etc/init.asus.maxxaudio.sh
-    user root
-    group root
-    disabled
-    oneshot
-
-on property:sys.config.maxxaudio=0
-    start maxx_mode_switch
-
-on property:sys.config.maxxaudio=1
-    start maxx_mode_switch
-
-on property:sys.config.maxxaudio=2
-    start maxx_mode_switch
-
-on property:sys.config.maxxaudio=3
-    start maxx_mode_switch
-
-on property:sys.config.maxxaudio=4
-    start maxx_mode_switch
-
-on property:sys.config.maxxaudio=5
-    start maxx_mode_switch
-# ASUS_BSP--- Bruno "[Audio] Add persist property for MaxxAudio"
-
 #ASUS BSP+++ Jay "add USB Camera FW Update"
 service UsbCam /system/bin/USB_Camera_Update/fw_update.sh
     class late_start
@@ -438,33 +347,3 @@ service UsbCam /system/bin/USB_Camera_Update/fw_update.sh
 #on property:persist.sys.ssr.restart_level=*
 #    exec /system/bin/sh /init.qcom.ssr.sh ${persist.sys.ssr.restart_level}
 # ASUS_BSP--- "remove qcom ssr config"
-
-# ASUS BSP freddy++ "Initialing script for setprop persist.* was executed for P01 Key debug mode"
-service asus_p01dbg /system/etc/init.asus.p01dbg.sh
-    user root
-    group root
-    disabled
-    oneshot
-	
-on property:persist.asus.p01dbg=0
-    start asus_p01dbg
-	
-on property:persist.asus.p01dbg=1
-    start asus_p01dbg
-	
-on property:persist.asus.p01dbg=2
-   start asus_p01dbg
-# ASUS BSP-- freddy "Initialing script for setprop persist.* was executed for P01 Key debug mode"
-
-# ASUS_BSP+++ sr_Huang "add for pad event changed"                   
-                                                                  
-service onPadEvtChg /system/bin/sh  /etc/onPadEventChanged.sh          
-        class core                                                          
-        user root                                                      
-        oneshot                                                      
-        disabled            
-on property:sys.config.resolution=*
-        start onPadEvtChg                                                                 
-                                                                          
-# ASUS_BSP--- sr_Huang "add for pad event changed" 
-

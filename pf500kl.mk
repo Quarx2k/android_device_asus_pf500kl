@@ -76,11 +76,13 @@ PRODUCT_PACKAGES += \
     libxml2
 
 # NFC packages
-#PRODUCT_PACKAGES += \
-#    NfcNci \
-#    Tag \
-#    nfc_nci.pn54x.default \
-#    com.android.nfc_extras
+PRODUCT_PACKAGES += \
+    NfcNci \
+    Tag \
+    nfc_nci.msm8974 \
+    libnfc_ndef \
+    libnfc_jni \
+    com.android.nfc_extras
 
 # Graphics
 PRODUCT_PACKAGES += \
@@ -240,8 +242,6 @@ PRODUCT_COPY_FILES += \
     frameworks/native/data/etc/com.android.nfc_extras.xml:system/etc/permissions/com.android.nfc_extras.xml \
     frameworks/native/data/etc/android.hardware.nfc.xml:system/etc/permissions/android.hardware.nfc.xml \
     frameworks/native/data/etc/android.hardware.nfc.hce.xml:system/etc/permissions/android.hardware.nfc.hce.xml \
-    $(LOCAL_PATH)/configs/libnfc-nxp.conf:system/etc/libnfc-nxp.conf \
-    $(LOCAL_PATH)/configs/libnfc-brcm.conf:system/etc/libnfc-brcm.conf \
     $(LOCAL_PATH)/configs/quipc.conf:system/etc/quipc.conf \
 
 # Rootdir

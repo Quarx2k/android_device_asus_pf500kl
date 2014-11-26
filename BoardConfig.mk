@@ -36,7 +36,7 @@ TARGET_CPU_VARIANT := krait
 TARGET_USE_QCOM_BIONIC_OPTIMIZATION := true
 
 # Kernel
-BOARD_CUSTOM_BOOTIMG_MK := device/asus/pf500kl/mkbootimg.mk
+BOARD_CUSTOM_BOOTIMG_MK := device/asus/t00n/mkbootimg.mk
 BOARD_KERNEL_BASE := 0x00000000
 BOARD_KERNEL_PAGESIZE := 2048
 BOARD_KERNEL_SEPARATED_DT := true
@@ -74,13 +74,13 @@ BOARD_HAVE_BLUETOOTH := true
 BOARD_HAVE_BLUETOOTH_QCOM := true
 QCOM_BT_USE_SMD_TTY := true
 BLUETOOTH_HCI_USE_MCT := true
-BOARD_BLUETOOTH_BDROID_BUILDCFG_INCLUDE_DIR := device/asus/pf500kl/bluetooth 
+BOARD_BLUETOOTH_BDROID_BUILDCFG_INCLUDE_DIR := device/asus/t00n/bluetooth 
 
 # Charger
-BOARD_CHARGER_RES := device/asus/pf500kl/charger/images
+BOARD_CHARGER_RES := device/asus/t00n/charger/images
 
 # Graphics
-BOARD_EGL_CFG := device/asus/pf500kl/configs/egl.cfg
+BOARD_EGL_CFG := device/asus/t00n/configs/egl.cfg
 USE_OPENGL_RENDERER := true
 TARGET_USES_C2D_COMPOSITION := true
 TARGET_USES_ION := true
@@ -127,8 +127,31 @@ TARGET_RECOVERY_PIXEL_FORMAT := "RGBX_8888"
 BOARD_USE_CUSTOM_RECOVERY_FONT := \"roboto_23x41.h\"
 BOARD_HAS_NO_SELECT_BUTTON := true
 BOARD_RECOVERY_SWIPE := true
-TARGET_RECOVERY_FSTAB := device/asus/pf500kl/rootdir/fstab.qcom
-RECOVERY_VARIANT := cm
+TARGET_RECOVERY_FSTAB := device/asus/t00n/rootdir/fstab.qcom
+#RECOVERY_VARIANT := twrp
+
+# Twrp
+TARGET_USE_CUSTOM_LUN_FILE_PATH := "/sys/devices/virtual/android_usb/android0/f_mass_storage/lun%d/file"
+TARGET_RECOVERY_QCOM_RTC_FIX := true
+BOARD_UMS_LUNFILE := /sys/class/android_usb/f_mass_storage/lun0/file
+DEVICE_RESOLUTION := 1920x1080
+RECOVERY_GRAPHICS_USE_LINELENGTH := true
+TW_EXTERNAL_STORAGE_PATH := "/sdcard"
+TW_EXTERNAL_STORAGE_MOUNT_POINT := "sdcard"
+TW_DEFAULT_EXTERNAL_STORAGE := true
+TW_FLASH_FROM_STORAGE := true
+TW_INTERNAL_STORAGE_PATH := "/data/media"
+TW_INTERNAL_STORAGE_MOUNT_POINT := "data"
+TW_NO_REBOOT_BOOTLOADER := true
+RECOVERY_GRAPHICS_USE_LINELENGTH := true
+RECOVERY_SDCARD_ON_DATA := true
+HAVE_SELINUX := true
+
+# NFC
+BOARD_NFC_CHIPSET := pn544
+
+# ANT+
+BOARD_ANT_WIRELESS_DEVICE := "qualcomm-smd"
 
 # No old RPC for prop
 TARGET_NO_RPC := true
@@ -149,7 +172,7 @@ EXTENDED_FONT_FOOTPRINT := true
 BOARD_USES_QC_TIME_SERVICES := true
 
 # Radio
-BOARD_RIL_CLASS := ../../../device/asus/pf500kl/ril/
+BOARD_RIL_CLASS := ../../../device/asus/t00n/ril/
 
 # inherit from the proprietary version
--include vendor/asus/pf500kl/BoardConfigVendor.mk
+-include vendor/asus/tn00n/BoardConfigVendor.mk

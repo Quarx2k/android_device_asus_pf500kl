@@ -75,13 +75,11 @@ PRODUCT_PACKAGES += \
 PRODUCT_PACKAGES += \
     libxml2
 
-# NFC packages
+# NFC
 PRODUCT_PACKAGES += \
+    nfc_nci.pn54x.default \
     NfcNci \
     Tag \
-    nfc_nci.msm8974 \
-    libnfc_ndef \
-    libnfc_jni \
     com.android.nfc_extras
 
 # Graphics
@@ -242,32 +240,32 @@ PRODUCT_COPY_FILES += \
     frameworks/native/data/etc/com.android.nfc_extras.xml:system/etc/permissions/com.android.nfc_extras.xml \
     frameworks/native/data/etc/android.hardware.nfc.xml:system/etc/permissions/android.hardware.nfc.xml \
     frameworks/native/data/etc/android.hardware.nfc.hce.xml:system/etc/permissions/android.hardware.nfc.hce.xml \
-    $(LOCAL_PATH)/configs/quipc.conf:system/etc/quipc.conf \
+    external/ant-wireless/antradio-library/com.dsi.ant.antradio_library.xml:system/etc/permissions/com.dsi.ant.antradio_library.xml
 
 # Rootdir
 PRODUCT_COPY_FILES += \
-    device/asus/pf500kl/rootdir/fstab.qcom:root/fstab.qcom \
-    device/asus/pf500kl/rootdir/init.asus.debugtool.rc:root/init.asus.debugtool.rc \
-    device/asus/pf500kl/rootdir/init.asus.rc:root/init.asus.rc \
-    device/asus/pf500kl/rootdir/init.asus.thermald.rc:root/init.asus.thermald.rc \
-    device/asus/pf500kl/rootdir/init.asus.usb.boot.sh:root/init.asus.usb.boot.sh \
-    device/asus/pf500kl/rootdir/init.asus.usb.diag.sh:root/init.asus.usb.diag.sh \
-    device/asus/pf500kl/rootdir/init.asus.usb.rc:root/init.asus.usb.rc \
-    device/asus/pf500kl/rootdir/init.asusreset.rc:root/init.asusreset.rc \
-    device/asus/pf500kl/rootdir/init.class_main.sh:root/init.class_main.sh \
-    device/asus/pf500kl/rootdir/init.qcom.class_core.sh:root/init.qcom.class_core.sh \
-    device/asus/pf500kl/rootdir/init.qcom.early_boot.sh:root/init.qcom.early_boot.sh \
-    device/asus/pf500kl/rootdir/init.qcom.factory.sh:root/init.qcom.factory.sh \
-    device/asus/pf500kl/rootdir/init.qcom.rc:root/init.qcom.rc \
-    device/asus/pf500kl/rootdir/init.qcom.ril.sh:root/init.qcom.ril.sh \
-    device/asus/pf500kl/rootdir/init.qcom.sensor.sh:root/init.qcom.sensor.sh \
-    device/asus/pf500kl/rootdir/init.qcom.sh:root/init.qcom.sh \
-    device/asus/pf500kl/rootdir/init.qcom.ssr.sh:root/init.qcom.ssr.sh \
-    device/asus/pf500kl/rootdir/init.qcom.syspart_fixup.sh:root/init.qcom.syspart_fixup.sh \
-    device/asus/pf500kl/rootdir/init.qcom.usb.sh:root/init.qcom.usb.sh \
-    device/asus/pf500kl/rootdir/init.qcom.usb.rc:root/init.qcom.usb.rc \
-    device/asus/pf500kl/rootdir/ueventd.qcom.rc:root/ueventd.qcom.rc \
-    device/asus/pf500kl/rootdir/init.target.rc:root/init.target.rc
+    $(LOCAL_PATH)/rootdir/fstab.qcom:root/fstab.qcom \
+    $(LOCAL_PATH)/rootdir/init.asus.debugtool.rc:root/init.asus.debugtool.rc \
+    $(LOCAL_PATH)/rootdir/init.asus.rc:root/init.asus.rc \
+    $(LOCAL_PATH)/rootdir/init.asus.thermald.rc:root/init.asus.thermald.rc \
+    $(LOCAL_PATH)/rootdir/init.asus.usb.boot.sh:root/init.asus.usb.boot.sh \
+    $(LOCAL_PATH)/rootdir/init.asus.usb.diag.sh:root/init.asus.usb.diag.sh \
+    $(LOCAL_PATH)/rootdir/init.asus.usb.rc:root/init.asus.usb.rc \
+    $(LOCAL_PATH)/rootdir/init.asusreset.rc:root/init.asusreset.rc \
+    $(LOCAL_PATH)/rootdir/init.class_main.sh:root/init.class_main.sh \
+    $(LOCAL_PATH)/rootdir/init.qcom.class_core.sh:root/init.qcom.class_core.sh \
+    $(LOCAL_PATH)/rootdir/init.qcom.early_boot.sh:root/init.qcom.early_boot.sh \
+    $(LOCAL_PATH)/rootdir/init.qcom.factory.sh:root/init.qcom.factory.sh \
+    $(LOCAL_PATH)/rootdir/init.qcom.rc:root/init.qcom.rc \
+    $(LOCAL_PATH)/rootdir/init.qcom.ril.sh:root/init.qcom.ril.sh \
+    $(LOCAL_PATH)/rootdir/init.qcom.sensor.sh:root/init.qcom.sensor.sh \
+    $(LOCAL_PATH)/rootdir/init.qcom.sh:root/init.qcom.sh \
+    $(LOCAL_PATH)/rootdir/init.qcom.ssr.sh:root/init.qcom.ssr.sh \
+    $(LOCAL_PATH)/rootdir/init.qcom.syspart_fixup.sh:root/init.qcom.syspart_fixup.sh \
+    $(LOCAL_PATH)/rootdir/init.qcom.usb.sh:root/init.qcom.usb.sh \
+    $(LOCAL_PATH)/rootdir/init.qcom.usb.rc:root/init.qcom.usb.rc \
+    $(LOCAL_PATH)/rootdir/ueventd.qcom.rc:root/ueventd.qcom.rc \
+    $(LOCAL_PATH)/rootdir/init.target.rc:root/init.target.rc
 
 # Others
 PRODUCT_COPY_FILES += \
@@ -278,6 +276,7 @@ PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/configs/init.qcom.post_boot.sh:system/etc/init.qcom.post_boot.sh \
     $(LOCAL_PATH)/configs/init.qcom.wifi.sh:system/etc/init.qcom.wifi.sh \
     $(LOCAL_PATH)/configs/init.crda.sh:system/etc/init.crda.sh \
+    $(LOCAL_PATH)/configs/quipc.conf:system/etc/quipc.conf
 
 # TS/Keys
 PRODUCT_COPY_FILES += \
@@ -285,6 +284,16 @@ PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/configs/elan-touchscreen.idc:system/usr/idc/elan-touchscreen.idc \
     $(LOCAL_PATH)/configs/asus_dds_sis_touch.idc:system/usr/idc/asus_dds_sis_touch.idc \
     $(LOCAL_PATH)/configs/ASUS_TransKeyboard.idc:system/usr/idc/aASUS_TransKeyboard.idc
+
+# TWRP
+PRODUCT_COPY_FILES += \
+    $(LOCAL_PATH)/twrp.fstab:recovery/root/etc/twrp.fstab
+
+# ANT+
+PRODUCT_PACKAGES += \
+    AntHalService \
+    com.dsi.ant.antradio_library \
+    libantradio
 
 # Device uses high-density artwork where available
 PRODUCT_AAPT_CONFIG := normal hdpi xhdpi xxhdpi
@@ -297,5 +306,5 @@ $(call inherit-product-if-exists, frameworks/native/build/phone-xxhdpi-2048-dalv
 $(call inherit-product-if-exists, frameworks/native/build/phone-xxhdpi-2048-hwui-memory.mk)
 
 # call the proprietary setup
-$(call inherit-product-if-exists, vendor/asus/pf500kl/pf500kl-vendor.mk)
+$(call inherit-product-if-exists, vendor/asus/t00n/t00n-vendor.mk)
 

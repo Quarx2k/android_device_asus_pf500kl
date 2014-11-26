@@ -19,21 +19,22 @@ TARGET_SCREEN_WIDTH := 1080
 # Inherit from those products. Most specific first.
 $(call inherit-product, $(SRC_TARGET_DIR)/product/full_base_telephony.mk)
 
-# Inherit from bacon device
-$(call inherit-product, device/asus/pf500kl/pf500kl.mk)
+# Inherit some common CM stuff.
+$(call inherit-product, vendor/cm/config/common_full_phone.mk)
+
+# Inherit from device
+$(call inherit-product, device/asus/t00n/t00n.mk)
 
 # Enhanced NFC
 $(call inherit-product, vendor/cm/config/nfc_enhanced.mk)
 
-# Inherit some common CM stuff.
-$(call inherit-product, vendor/cm/config/common_full_phone.mk)
-
-PRODUCT_NAME := cm_pf500kl
-PRODUCT_DEVICE := pf500kl
-PRODUCT_MANUFACTURER := Asus
-PRODUCT_MODEL := pf500kl
-
+PRODUCT_NAME := cm_t00n
+PRODUCT_DEVICE := t00n
+PRODUCT_MANUFACTURER := asus
+PRODUCT_MODEL := ASUS_T00N
 PRODUCT_BRAND := asus
-TARGET_VENDOR_PRODUCT_NAME := PadfoneS
-TARGET_VENDOR_DEVICE_NAME := pf500kl
+
+TARGET_VENDOR_PRODUCT_NAME := ASUS_T00N
+TARGET_VENDOR_DEVICE_NAME := ASUS_T00N
+PRODUCT_BUILD_PROP_OVERRIDES += TARGET_DEVICE=ASUS_T00N PRODUCT_NAME=WW_PadFone
 

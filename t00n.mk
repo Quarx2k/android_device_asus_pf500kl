@@ -77,10 +77,17 @@ PRODUCT_PACKAGES += \
 
 # NFC
 PRODUCT_PACKAGES += \
-    nfc_nci.pn54x.default \
     NfcNci \
     Tag \
+    nfc_nci.pn54x.default \
     com.android.nfc_extras
+
+# FM radio
+PRODUCT_PACKAGES += \
+    qcom.fmradio \
+    libqcomfm_jni \
+    FM2 \
+    FMRecord
 
 # Graphics
 PRODUCT_PACKAGES += \
@@ -137,23 +144,14 @@ PRODUCT_PACKAGES += \
 PRODUCT_BOOT_JARS += qcmediaplayer
 
 # NFC
-ifeq ($(TARGET_BUILD_VARIANT),user)
-    NFCEE_ACCESS_PATH := $(LOCAL_PATH)/configs/nfcee_access.xml
-else
-    NFCEE_ACCESS_PATH := $(LOCAL_PATH)/configs/nfcee_access_debug.xml
-endif
-
 PRODUCT_COPY_FILES += \
-    $(NFCEE_ACCESS_PATH):system/etc/nfcee_access.xml
+    $(LOCAL_PATH)/configs/libnfc-brcm.conf:system/etc/libnfc-brcm.conf \
+    $(LOCAL_PATH)/configs/libnfc-nxp.conf:system/etc/libnfc-nxp.conf \
+    $(LOCAL_PATH)/configs/nfcee_access.xml:system/etc/nfcee_access.xml
 
 # Power
 PRODUCT_PACKAGES += \
     power.msm8974
-
-# QRNGD
-PRODUCT_PACKAGES += \
-    qrngd \
-    qrngp
 
 # Keystore, buggy currently
 #PRODUCT_PACKAGES += \

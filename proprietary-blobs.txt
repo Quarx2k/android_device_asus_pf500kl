@@ -360,7 +360,6 @@ framework/qcrilhook.jar
 bin/sensors.qcom
 vendor/lib/hw/sensors.Pad.msm8974.so
 lib/hw/sensors.msm8974.so
-lib/hw/lights.msm8974.so
 lib/hw/sensors.514_AKM_B.msm8974.so
 lib/hw/sensors.514_AMI_M.msm8974.so
 lib/hw/sensors.ADSP.msm8974.so

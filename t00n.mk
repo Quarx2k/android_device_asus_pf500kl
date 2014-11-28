@@ -243,37 +243,14 @@ PRODUCT_COPY_FILES += \
 # Rootdir
 PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/rootdir/fstab.qcom:root/fstab.qcom \
-    $(LOCAL_PATH)/rootdir/init.asus.debugtool.rc:root/init.asus.debugtool.rc \
-    $(LOCAL_PATH)/rootdir/init.asus.rc:root/init.asus.rc \
-    $(LOCAL_PATH)/rootdir/init.asus.thermald.rc:root/init.asus.thermald.rc \
-    $(LOCAL_PATH)/rootdir/init.asus.usb.boot.sh:root/init.asus.usb.boot.sh \
-    $(LOCAL_PATH)/rootdir/init.asus.usb.diag.sh:root/init.asus.usb.diag.sh \
-    $(LOCAL_PATH)/rootdir/init.asus.usb.rc:root/init.asus.usb.rc \
-    $(LOCAL_PATH)/rootdir/init.asusreset.rc:root/init.asusreset.rc \
-    $(LOCAL_PATH)/rootdir/init.class_main.sh:root/init.class_main.sh \
-    $(LOCAL_PATH)/rootdir/init.qcom.class_core.sh:root/init.qcom.class_core.sh \
-    $(LOCAL_PATH)/rootdir/init.qcom.early_boot.sh:root/init.qcom.early_boot.sh \
-    $(LOCAL_PATH)/rootdir/init.qcom.factory.sh:root/init.qcom.factory.sh \
     $(LOCAL_PATH)/rootdir/init.qcom.rc:root/init.qcom.rc \
-    $(LOCAL_PATH)/rootdir/init.qcom.ril.sh:root/init.qcom.ril.sh \
-    $(LOCAL_PATH)/rootdir/init.qcom.sensor.sh:root/init.qcom.sensor.sh \
-    $(LOCAL_PATH)/rootdir/init.qcom.sh:root/init.qcom.sh \
-    $(LOCAL_PATH)/rootdir/init.qcom.ssr.sh:root/init.qcom.ssr.sh \
-    $(LOCAL_PATH)/rootdir/init.qcom.syspart_fixup.sh:root/init.qcom.syspart_fixup.sh \
-    $(LOCAL_PATH)/rootdir/init.qcom.usb.sh:root/init.qcom.usb.sh \
     $(LOCAL_PATH)/rootdir/init.qcom.usb.rc:root/init.qcom.usb.rc \
     $(LOCAL_PATH)/rootdir/ueventd.qcom.rc:root/ueventd.qcom.rc \
     $(LOCAL_PATH)/rootdir/init.target.rc:root/init.target.rc
 
 # Others
 PRODUCT_COPY_FILES += \
-    $(LOCAL_PATH)/configs/init.asus.create-smmilink.sh:system/etc/init.asus.create-smmilink.sh \
-    $(LOCAL_PATH)/configs/init.asus.thermal_conf.sh:system/etc/init.asus.thermal_conf.sh \
-    $(LOCAL_PATH)/configs/init.qcom.modem_links.sh:system/etc/init.qcom.modem_links.sh \
     $(LOCAL_PATH)/configs/init.qcom.fm.sh:system/etc/init.qcom.fm.sh \
-    $(LOCAL_PATH)/configs/init.qcom.post_boot.sh:system/etc/init.qcom.post_boot.sh \
-    $(LOCAL_PATH)/configs/init.qcom.wifi.sh:system/etc/init.qcom.wifi.sh \
-    $(LOCAL_PATH)/configs/init.crda.sh:system/etc/init.crda.sh \
     $(LOCAL_PATH)/configs/quipc.conf:system/etc/quipc.conf
 
 # TS/Keys

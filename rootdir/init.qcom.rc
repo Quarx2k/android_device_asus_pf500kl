@@ -25,18 +25,20 @@
 # ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #
 
-#import init.qcom.usb.rc
-import init.asus.usb.rc
-import init.asus.thermald.rc
+import init.qcom.usb.rc
 import init.target.rc
-import init.asus.rc
-import init.asus.debugtool.rc
 
 on early-init
     mount debugfs debugfs /sys/kernel/debug
+    chown system system /sys/kernel/debug/kgsl/proc
+    write /sys/block/mmcblk0/queue/scheduler noop
+    write /sys/block/mmcblk0/bdi/read_ahead_kb 512
 
 on init
+    # Set permissions for persist partition
     mkdir /persist 0771 system system
+    mkdir /firmware 0771 system system
+
     mkdir /storage 0751 system sdcard_r
     mkdir /storage/sdcard1 0700 root root
     mkdir /mnt/media_rw 0700 media_rw media_rw
@@ -54,8 +56,6 @@ on init
     symlink /storage/emulated/legacy /mnt/sdcard
     symlink /storage/emulated/legacy /storage/sdcard0
     symlink /mnt/shell/emulated/0 /storage/emulated/legacy
-    symlink /storage/sdcard1 /extSdCard
-    symlink /storage/sdcard1 /mnt/extSdCard
     symlink /storage/sdcard1 /external_sd
     symlink /storage/usbdisk /usbdisk
     symlink /storage/usbdisk /mnt/usbdisk
@@ -63,17 +63,17 @@ on init
 on early-boot
     # set RLIMIT_MEMLOCK to 64MB
     setrlimit 8 67108864 67108864
-    # Allow subsystem (modem etc) debugging
-    write /sys/module/subsystem_restart/parameters/enable_debug ${persist.sys.ssr.enable_debug}
     write /sys/kernel/boot_adsp/boot 1
-    # set wifi link file.
-    setprop wlan.driver.ath 0
-    symlink /system/lib/modules/pronto/pronto_wlan.ko /system/lib/modules/wlan.ko
-    setprop wlan.driver.config /system/etc/firmware/wlan/prima/WCNSS_qcom_cfg.ini
-    exec /system/bin/sh /init.qcom.early_boot.sh ${ro.board.platform}
-    exec /system/bin/sh /init.qcom.syspart_fixup.sh ${ro.board.platform} ${ro.serialno}
 
 on boot
+    # bring CPUs online
+    write /sys/module/msm_thermal/core_control/enabled 0
+    write /sys/devices/system/cpu/cpu1/online 1
+    write /sys/devices/system/cpu/cpu2/online 1
+    write /sys/devices/system/cpu/cpu3/online 1
+    write /sys/module/msm_thermal/core_control/enabled 1
+
+    # bluetooth
     chown bluetooth bluetooth /sys/module/bluetooth_power/parameters/power
     chown bluetooth bluetooth /sys/class/rfkill/rfkill0/type
     chown bluetooth bluetooth /sys/class/rfkill/rfkill0/state
@@ -96,17 +96,6 @@ on boot
     chmod 0660 /dev/ttyHS2
     chown bluetooth bluetooth /dev/ttyHS2
 
-#+++ ASUS BSP Bernard, MYDP     
-    chown root radio /sys/module/slimport/parameters/write_swing_value
-#--- ASUS BSP Bernard, MYDP    
-
-#ASUS_BSP +++ Peter_Lu "Light/Proximity sensor"
-    chown system system /sys/devices/virtual/sensors/psensor/switch
-    chown system system /sys/devices/virtual/sensors/lsensor/switch
-    chown system system /sys/devices/virtual/sensors/lsensor/calvalue
-    chown system system /sys/bus/i2c/devices/6-001c/al3010/power_state
-#ASUS_BSP --- Peter_Lu
-
     #Create QMUX deamon socket area
     mkdir /dev/socket/qmux_radio 0770 radio radio
     chmod 2770 /dev/socket/qmux_radio
@@ -116,38 +105,38 @@ on boot
     chmod 2770 /dev/socket/qmux_bluetooth
     mkdir /dev/socket/qmux_gps 0770 gps gps
     chmod 2770 /dev/socket/qmux_gps
-# ASUS_BSP +++ Gavin_Chang "ntfs and exfat support"
-    insmod /system/lib/modules/tntfs.ko
-    insmod /system/lib/modules/texfat.ko
-# ASUS_BSP --- Gavin_Chang "ntfs and exfat support"
 
-    setprop wifi.interface wlan0
+    #Create PERFD deamon related dirs
+    mkdir /data/misc/perfd 0770 root system
+    chmod 2770 /data/misc/perfd
+    mkdir /data/system/perfd 0770 root system
+    chmod 2770 /data/system/perfd
 
-#   Define TCP buffer sizes for various networks
-#   ReadMin, ReadInitial, ReadMax, WriteMin, WriteInitial, WriteMax,
-    setprop net.tcp.buffersize.wifi    524288,2097152,4194304,262144,524288,1048576
+    #charger
+    chown root system /sys/module/qpnp_charger/parameters/charger_monitor
+    chown root system /sys/class/power_supply/battery/input_current_max
+    chown root system /sys/class/power_supply/battery/input_current_trim
+    chown root system /sys/class/power_supply/battery/voltage_min
+    chmod 0644 /sys/module/qpnp_charger/parameters/charger_monitor
+    chmod 0644 /sys/class/power_supply/battery/input_current_max
+    chmod 0644 /sys/class/power_supply/battery/input_current_trim
+    chmod 0644 /sys/class/power_supply/battery/voltage_min
 
-
-    setprop ro.telephony.call_ring.multiple false
-
-    #Set SUID bit for usbhub
-    chmod 4755 /system/bin/usbhub
-    chmod 755 /system/bin/usbhub_init
-
-    #Remove SUID bit for iproute2 ip tool
-    chmod 0755 /system/bin/ip
-
-
-    chmod 0444 /sys/devices/platform/msm_hsusb/gadget/usb_state
+    # Allow QMUX daemon to assign port open wait time
+    chown radio radio /sys/devices/virtual/hsicctl/hsicctl0/modem_wait
 
     #For bridgemgr daemon to inform the USB driver of the correct transport
     chown radio radio /sys/class/android_usb/f_rmnet_smd_sdio/transport
 
+    # For setting tcp delayed ack
+    chown system system /sys/kernel/ipv4/tcp_delack_seg
+    chown system system /sys/kernel/ipv4/tcp_use_userconfig
+
 #   Define TCP buffer sizes for various networks
 #   ReadMin, ReadInitial, ReadMax, WriteMin, WriteInitial, WriteMax,
     setprop net.tcp.buffersize.default 4096,87380,110208,4096,16384,110208
-    setprop net.tcp.buffersize.lte     524288,1048576,2560000,262144,524288,1220608
-    setprop net.tcp.buffersize.umts    4094,87380,1220608,4096,16384,110208
+    setprop net.tcp.buffersize.lte     524288,1048576,2097152,262144,524288,1048576
+    setprop net.tcp.buffersize.umts    4094,87380,110208,4096,16384,110208
     setprop net.tcp.buffersize.hspa    4094,87380,1220608,4096,16384,1220608
     setprop net.tcp.buffersize.hsupa   4094,87380,1220608,4096,16384,1220608
     setprop net.tcp.buffersize.hsdpa   4094,87380,1220608,4096,16384,1220608
@@ -155,10 +144,19 @@ on boot
     setprop net.tcp.buffersize.edge    4093,26280,35040,4096,16384,35040
     setprop net.tcp.buffersize.gprs    4092,8760,11680,4096,8760,11680
     setprop net.tcp.buffersize.evdo    4094,87380,262144,4096,16384,262144
+    setprop net.tcp.buffersize.wifi    524288,2097152,4194304,262144,524288,1048576
+
+# Define TCP delayed ack settings for WiFi & LTE
+    setprop net.tcp.delack.default     1
+    setprop net.tcp.delack.wifi        20
+    setprop net.tcp.delack.lte         8
+    setprop net.tcp.usercfg.default    0
+    setprop net.tcp.usercfg.wifi       1
+    setprop net.tcp.usercfg.lte        1
 
 #   Assign TCP buffer thresholds to be ceiling value of technology maximums
 #   Increased technology maximums should be reflected here.
-    write /proc/sys/net/core/rmem_max  2560000
+    write /proc/sys/net/core/rmem_max  2097152
     write /proc/sys/net/core/wmem_max  2097152
 
     #To allow interfaces to get v6 address when tethering is enabled
@@ -191,21 +189,61 @@ on boot
     # an ack packet comes out of order
     write /proc/sys/net/netfilter/nf_conntrack_tcp_be_liberal 1
 
-    # NFC local data and nfcee xml storage
-    mkdir /data/nfc 0770 nfc nfc
-    mkdir /data/nfc/param 0770 nfc nfc
+    # create symlink for fb1 as HDMI
+    symlink /dev/graphics/fb1 /dev/graphics/hdmi
 
-    # Set the console loglevel to < KERN_INFO
-    # Set the default message loglevel to KERN_INFO
-    write /proc/sys/kernel/printk "6 6 1 7"
+    # MDP idle notifier
+    chown system graphics /sys/class/graphics/fb0/idle_time
+    chmod 0664 /sys/class/graphics/fb0/idle_time
+
+    # setup permissions for fb1 related nodes
+    chown system graphics /sys/class/graphics/fb1/hpd
+    chown system graphics /sys/class/graphics/fb1/vendor_name
+    chown system graphics /sys/class/graphics/fb1/product_description
+    chmod 0664 /sys/devices/virtual/graphics/fb1/hpd
+    chmod 0664 /sys/devices/virtual/graphics/fb1/vendor_name
+    chmod 0664 /sys/devices/virtual/graphics/fb1/product_description
+
+    # Subsytem Restart
+    #adsp
+    write /sys/bus/msm_subsys/devices/subsys0/restart_level "related"
+    #modem
+    write /sys/bus/msm_subsys/devices/subsys1/restart_level "related"
+    #venus
+    write /sys/bus/msm_subsys/devices/subsys2/restart_level "related"
+
+on fs
+    mkdir /dev/usb-ffs 0770 shell shell
+    mkdir /dev/usb-ffs/adb 0770 shell shell
+    mount functionfs adb /dev/usb-ffs/adb uid=2000,gid=2000
+    write /sys/class/android_usb/android0/f_ffs/aliases adb
+    mkdir /dev/bus 0755 root root
+    mkdir /dev/bus/usb 0755 root root
 
 # msm specific files that need to be created on /data
 on post-fs-data
-    # we will remap this as /mnt/sdcard with the sdcard fuse tool
     mkdir /data/media 0770 media_rw media_rw
-    chown media_rw media_rw /data/media
+    restorecon_recursive /data/media
 
+    # NFC: create data/nfc for nv storage
+    mkdir /data/nfc 0770 nfc nfc
+    mkdir /data/nfc/param 0770 nfc nfc
+    restorecon_recursive /data/nfc
+
+    #  bluetooth
     mkdir /data/misc/bluetooth 0770 bluetooth bluetooth
+
+    # Create directory used by audio subsystem
+    mkdir /data/misc/audio 0770 audio audio
+    restorecon_recursive /data/misc/audio
+
+    # Create directory used by sensor subsystem
+    mkdir /persist/sensors 0775 system root
+    write /persist/sensors/sensors_settings 1
+    chmod 0644 /persist/sensors/sensors_settings
+    chown system root /persist/sensors/sensors_settings
+    mkdir /data/misc/sensors 0775 system system
+    restorecon_recursive /data/misc/sensors
 
     # Create the directories used by the Wireless subsystem
     mkdir /data/misc/wifi 0770 wifi wifi
@@ -213,129 +251,130 @@ on post-fs-data
     mkdir /data/misc/wifi/wpa_supplicant 0770 wifi wifi
     mkdir /data/misc/dhcp 0770 dhcp dhcp
     chown dhcp dhcp /data/misc/dhcp
-    
-    # Kickstart the Wireless subsystem
-    write /dev/wcnss_wlan 1
 
     # Create the directories used by CnE subsystem
     mkdir /data/connectivity 0771 system system
     chown system system /data/connectivity
 
-    mkdir /data/connectivity/nsrm 0771 system system
-    chown system system /data/connectivity/nsrm
+    # Create the directories used by DPM subsystem
+    mkdir /data/dpm 0771 system system
+    chown system system /data/dpm
 
-    # Create directory used by audio subsystem
-    mkdir /data/misc/audio 0770 audio audio
-
-    # Mounting of persist is moved to 'on emmc-fs' and 'on fs' sections
-    # We chown/chmod /persist again so because mount is run as root + defaults
-    chown system system /persist
-    chmod 0771 /persist
-    chmod 0664 /sys/devices/platform/msm_sdcc.1/polling
-    chmod 0664 /sys/devices/platform/msm_sdcc.2/polling
-    chmod 0664 /sys/devices/platform/msm_sdcc.3/polling
-    chmod 0664 /sys/devices/platform/msm_sdcc.4/polling
-
-    # Chown polling nodes as needed from UI running on system server
-    chown system system /sys/devices/platform/msm_sdcc.1/polling
-    chown system system /sys/devices/platform/msm_sdcc.2/polling
-    chown system system /sys/devices/platform/msm_sdcc.3/polling
-    chown system system /sys/devices/platform/msm_sdcc.4/polling
-
-    #Create the symlink to qcn wpa_supplicant folder for ar6000 wpa_supplicant
-    mkdir /data/system 0775 system system
-    #symlink /data/misc/wifi/wpa_supplicant /data/system/wpa_supplicant
-
-    #Create directories for gpsone_daemon services
-    mkdir /data/misc/gpsone_d 0770 system gps
-
-#ASUS_BSP+++ LandiceFu "[GPS][NA][Spec] Disable XTRA-T/QUIPS/WiperInterface/ISAGNAV"
-    #Create directories for QuIPS
-    mkdir /data/misc/quipc 0770 gps system
+    mkdir /data/dpm/nsrm 0771 system system
+    chown system system /data/dpm/nsrm
 
     #Create directories for Location services
-#    mkdir /data/misc/location 0770 gps gps
-#    mkdir /data/misc/location/mq 0770 gps gps
-#    mkdir /data/misc/location/xtwifi 0770 gps gps
-#ASUS_BSP--- LandiceFu "[GPS][NA][Spec] Disable XTRA-T/QUIPS/WiperInterface/ISAGNAV"
+    mkdir /data/misc/location 0770 gps gps
+    mkdir /data/misc/location/mq 0770 gps gps
+    mkdir /data/misc/location/xtwifi 0770 gps gps
+    mkdir /data/misc/location/gpsone_d 0770 system gps
+    mkdir /data/misc/location/quipc 0770 gps gps
+    mkdir /data/misc/location/gsiff 0770 gps gps
 
     #Create directory from IMS services
     mkdir /data/shared 0755
     chown system system /data/shared
 
-    #Create directory for FOTA
-    mkdir /data/fota 0771
-    chown system system /data/fota
-
-    #Create directory for hostapd
-    mkdir /data/hostapd 0770 system wifi
-
     # Create /data/time folder for time-services
     mkdir /data/time/ 0700 system system
-
-    mkdir /data/audio/ 0770 media audio
+    restorecon_recursive /data/time
 
     setprop vold.post_fs_data_done 1
-
-    #Create a folder for SRS to be able to create a usercfg file
-    mkdir /data/data/media 0770 media media
-
-# Export GPIO56 for fusion targets to enable/disable hub
-service usbhub_init /system/bin/usbhub_init
-   class late_start
-   user root
-   disabled
-   oneshot
-
-on property:persist.radio.atfwd.start=false
-    stop atfwd
-
-on property:ro.board.platform=msm7630_fusion
-    start usbhub_init
 
 on property:init.svc.wpa_supplicant=stopped
     stop dhcpcd
 
-on property:bluetooth.isEnabled=true
-    start btwlancoex
-    write /sys/class/bluetooth/hci0/idle_timeout 7000
-
-on property:bluetooth.sap.status=running
-    start bt-sap
-
-on property:bluetooth.sap.status=stopped
-    stop bt-sap
-
-on property:bluetooth.dun.status=running
-    start bt-dun
-
-on property:bluetooth.dun.status=stopped
-    stop bt-dun
-
-on property:ro.bluetooth.ftm_enabled=true
-    start ftmd
-
-service qcom-c_core-sh /system/bin/sh /init.qcom.class_core.sh
-    class core
-    user root
-    oneshot
-
-service qcom-c_main-sh /system/bin/sh /init.class_main.sh
-    class main
-    user root
-    oneshot
-
-service ril-qmi /system/bin/sh /init.qcom.ril.sh
-    class main
-    user root
-    oneshot
-
 on property:vold.decrypt=trigger_restart_framework
-    start qcom-c_main-sh
     start config_bluetooth
 
-on property:persist.env.fastdorm.enabled=true
-    setprop persist.radio.data_no_toggle 1
+on charger
+    # Enable Power modes and set the CPU Freq Sampling rates
+    write /sys/module/lpm_levels/enable_low_power/l2 2
+    write /sys/module/msm_pm/modes/cpu0/power_collapse/suspend_enabled 1
+    write /sys/module/msm_pm/modes/cpu1/power_collapse/suspend_enabled 1
+    write /sys/module/msm_pm/modes/cpu2/power_collapse/suspend_enabled 1
+    write /sys/module/msm_pm/modes/cpu3/power_collapse/suspend_enabled 1
+    write /sys/module/msm_pm/modes/cpu0/power_collapse/idle_enabled 1
+    write /sys/module/msm_thermal/core_control/enabled 0
+    write /sys/devices/system/cpu/cpu1/online 1
+    write /sys/devices/system/cpu/cpu2/online 1
+    write /sys/devices/system/cpu/cpu3/online 1
+    write /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor "powersave"
+    write /sys/devices/system/cpu/cpu1/cpufreq/scaling_governor "powersave"
+    write /sys/devices/system/cpu/cpu2/cpufreq/scaling_governor "powersave"
+    write /sys/devices/system/cpu/cpu3/cpufreq/scaling_governor "powersave"
+    write /sys/devices/system/cpu/cpu0/cpufreq/scaling_min_freq 300000
+    write /sys/devices/system/cpu/cpu1/cpufreq/scaling_min_freq 300000
+    write /sys/devices/system/cpu/cpu2/cpufreq/scaling_min_freq 300000
+    write /sys/devices/system/cpu/cpu3/cpufreq/scaling_min_freq 300000
+    write /sys/module/msm_thermal/core_control/enabled 1
+    write /sys/devices/system/cpu/cpu1/online 0
+    write /sys/devices/system/cpu/cpu2/online 0
+    write /sys/devices/system/cpu/cpu3/online 0
+
+on property:service.bootanim.exit=1
+    # Enable Power modes
+    write /sys/module/lpm_levels/enable_low_power/l2 4
+    write /sys/module/msm_pm/modes/cpu0/power_collapse/suspend_enabled 1
+    write /sys/module/msm_pm/modes/cpu1/power_collapse/suspend_enabled 1
+    write /sys/module/msm_pm/modes/cpu2/power_collapse/suspend_enabled 1
+    write /sys/module/msm_pm/modes/cpu3/power_collapse/suspend_enabled 1
+    write /sys/module/msm_pm/modes/cpu0/power_collapse/idle_enabled 1
+    write /sys/module/msm_pm/modes/cpu1/power_collapse/idle_enabled 1
+    write /sys/module/msm_pm/modes/cpu2/power_collapse/idle_enabled 1
+    write /sys/module/msm_pm/modes/cpu3/power_collapse/idle_enabled 1
+    write /sys/module/msm_pm/modes/cpu0/standalone_power_collapse/suspend_enabled 1
+    write /sys/module/msm_pm/modes/cpu1/standalone_power_collapse/suspend_enabled 1
+    write /sys/module/msm_pm/modes/cpu2/standalone_power_collapse/suspend_enabled 1
+    write /sys/module/msm_pm/modes/cpu3/standalone_power_collapse/suspend_enabled 1
+    write /sys/module/msm_pm/modes/cpu0/standalone_power_collapse/idle_enabled 1
+    write /sys/module/msm_pm/modes/cpu1/standalone_power_collapse/idle_enabled 1
+    write /sys/module/msm_pm/modes/cpu2/standalone_power_collapse/idle_enabled 1
+    write /sys/module/msm_pm/modes/cpu3/standalone_power_collapse/idle_enabled 1
+    write /sys/module/msm_pm/modes/cpu0/retention/idle_enabled 1
+    write /sys/module/msm_pm/modes/cpu1/retention/idle_enabled 1
+    write /sys/module/msm_pm/modes/cpu2/retention/idle_enabled 1
+    write /sys/module/msm_pm/modes/cpu3/retention/idle_enabled 1
+
+    write /sys/devices/system/cpu/cpu0/cpufreq/scaling_min_freq 300000
+    write /sys/devices/system/cpu/cpu1/cpufreq/scaling_min_freq 300000
+    write /sys/devices/system/cpu/cpu2/cpufreq/scaling_min_freq 300000
+    write /sys/devices/system/cpu/cpu3/cpufreq/scaling_min_freq 300000
+    chown root system /sys/devices/system/cpu/cpu1/online
+    chown root system /sys/devices/system/cpu/cpu2/online
+    chown root system /sys/devices/system/cpu/cpu3/online
+    chmod 664 /sys/devices/system/cpu/cpu1/online
+    chmod 664 /sys/devices/system/cpu/cpu2/online
+    chmod 664 /sys/devices/system/cpu/cpu3/online
+
+on property:init.svc.bootanim=stopped
+    # Switch to ROW and balanced mode after boot for better UX
+    write /sys/class/devfreq/qcom,cpubw.40/governor "cpubw_hwmon"
+    write /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor "interactive"
+    write /sys/devices/system/cpu/cpu1/cpufreq/scaling_governor "interactive"
+    write /sys/devices/system/cpu/cpu2/cpufreq/scaling_governor "interactive"
+    write /sys/devices/system/cpu/cpu3/cpufreq/scaling_governor "interactive"
+    write /sys/devices/system/cpu/cpufreq/interactive/above_hispeed_delay "20000 1400000:40000 1700000:20000"
+    write /sys/devices/system/cpu/cpufreq/interactive/go_hispeed_load 90
+    write /sys/devices/system/cpu/cpufreq/interactive/hispeed_freq 1190400
+    write /sys/devices/system/cpu/cpufreq/interactive/io_is_busy 1
+    write /sys/devices/system/cpu/cpufreq/interactive/target_loads "85 1500000:90 1800000:70"
+    write /sys/devices/system/cpu/cpufreq/interactive/min_sample_time 40000
+    write /sys/devices/system/cpu/cpufreq/interactive/sampling_down_factor 100000
+
+    write /sys/module/cpu_boost/parameters/boost_ms 20
+    write /sys/module/cpu_boost/parameters/sync_threshold 1728000
+    write /sys/module/cpu_boost/parameters/input_boost_freq 1497600
+    write /sys/module/cpu_boost/parameters/input_boost_ms 40
+    write /sys/class/kgsl/kgsl-3d0/devfreq/governor msm-adreno-tz
+    write /dev/cpuctl/apps/cpu.notify_on_migrate 1
+
+    write /sys/block/mmcblk0/queue/scheduler row
+    start mpdecision
+
+on property:init.svc.bootanim=running
+    # Switch to NOOP while booting
+    write /sys/block/mmcblk0/queue/scheduler noop
 
 service irsc_util /system/bin/logwrapper /system/bin/irsc_util "/etc/sec_config"
     class main
@@ -345,40 +384,39 @@ service irsc_util /system/bin/logwrapper /system/bin/irsc_util "/etc/sec_config"
 service rmt_storage /system/bin/rmt_storage
     class core
     user root
-    disabled
-
-on property:ro.boot.emmc=true
-    start rmt_storage
+    group system
 
 service rfs_access /system/bin/rfs_access
    class core
    user system
    group system net_raw
 
-on property:ro.boot.emmc=true
-    start rfs_access
+service mpdecision /system/bin/mpdecision --avg_comp
+   class main
+   user root
+   group system
+   disabled
 
-on property:bluetooth.start_hci=true
-    start start_hci_filter
+service thermal-engine /system/bin/thermal-engine
+   class main
+   user root
+   group radio system
 
-on property:bluetooth.start_hci=false
-    stop start_hci_filter
-
-service start_hci_filter /system/bin/wcnss_filter
+service time_daemon /system/bin/time_daemon
     class late_start
-    user bluetooth
-    group bluetooth
-    disabled
+    user root
+    group root
 
 service config_bluetooth /system/bin/sh /system/etc/init.qcom.bt.sh "onboot"
     class core
     user root
+    group bluetooth net_bt_admin qcom_diag radio
     oneshot
 
 service hciattach /system/bin/sh /system/etc/init.qcom.bt.sh
     class late_start
     user bluetooth
-    group bluetooth net_bt_admin
+    group bluetooth net_bt_admin qcom_diag radio
     disabled
     oneshot
 
@@ -388,121 +426,40 @@ on property:bluetooth.hciattach=true
 on property:bluetooth.hciattach=false
     setprop bluetooth.status off
 
-service hciattach_ath3k /system/bin/sh /system/etc/init.ath3k.bt.sh
-     class late_start
-     user bluetooth
-     group system bluetooth net_bt_admin misc
-     disabled
-     oneshot
-
-service bt-dun /system/bin/dun-server /dev/smd7 /dev/rfcomm0
-    class late_start
-    user bluetooth
-    group bluetooth net_bt_admin inet
-    disabled
-    oneshot
-
-service bt-sap /system/bin/sapd 15
-    user bluetooth
-    group bluetooth net_bt_admin
-    class late_start
-    disabled
-    oneshot
-
-service ftmd /system/bin/logwrapper /system/bin/ftmdaemon
-    class late_start
-    user root
-    group bluetooth net_bt_admin misc net_bt_stack qcom_diag
-    disabled
-    oneshot
-
-service bridgemgrd /system/bin/bridgemgrd
-    class late_start
-    user radio
-    group radio qcom_diag
-    disabled
-
-service port-bridge /system/bin/port-bridge /dev/smd0 /dev/ttyGS0
-    class late_start
-    user system
-    group system inet
-    disabled
-
-service qmiproxy /system/bin/qmiproxy
-    class main
-    user radio
-    group radio qcom_diag
-    disabled
-
 # QMUX must be in multiple groups to support external process connections
 service qmuxd /system/bin/qmuxd
     class main
     user radio
     group radio audio bluetooth gps qcom_diag
-    disabled
 
 service netmgrd /system/bin/netmgrd
     class main
-    disabled
+    user root
+    group radio
 
-# ASUS_BSP +++ Jiunhau_Wang [A91][ADSP][NA][SPEC] improve adsp init
+# QCOM sensor
 service sensors /system/bin/sensors.qcom
-    class core
+    class late_start
     user root
     group root
-    disabled
-
-service qcom-sensor-sh /system/bin/sh /init.qcom.sensor.sh
-    class core
-    user root
-    oneshot
-# ASUS_BSP --- Jiunhau_Wang [A91][ADSP][NA][SPEC] improve adsp init
-
-on property:ro.use_data_netmgrd=false
-    # netmgr not supported on specific target
-    stop netmgrd
 
 # Adjust socket buffer to enlarge TCP receive window for high bandwidth
 # but only if ro.data.large_tcp_window_size property is set.
 on property:ro.data.large_tcp_window_size=true
     write /proc/sys/net/ipv4/tcp_adv_win_scale  2
 
-service btwlancoex /system/bin/sh /system/etc/init.qcom.coex.sh
-    class late_start
-    user bluetooth
-    group bluetooth net_bt_admin inet net_admin net_raw
-    disabled
-    oneshot
-
-service amp_init /system/bin/amploader -i
-    class late_start
-    user root
-    disabled
-    oneshot
-
-service amp_load /system/bin/amploader -l 7000
-    class late_start
-    user root
-    disabled
-    oneshot
-
-service amp_unload /system/bin/amploader -u
-    class late_start
-    user root
-    disabled
-    oneshot
-
 service p2p_supplicant /system/bin/wpa_supplicant \
-    -ip2p0 -Dnl80211 -c/data/misc/wifi/p2p_supplicant.conf \
-    -I/system/etc/wifi/p2p_supplicant_overlay.conf -N \
     -iwlan0 -Dnl80211 -c/data/misc/wifi/wpa_supplicant.conf \
     -I/system/etc/wifi/wpa_supplicant_overlay.conf \
-    -O/data/misc/wifi/sockets -puse_p2p_group_interface=1 \
-    -e/data/misc/wifi/entropy.bin -g@android:wpa_wlan0
-#   we will start as root and wpa_supplicant will switch to user wifi
-#   after setting up the capabilities required for WEXT
-#   user wifi
-#   group wifi inet keystore
+    -O/data/misc/wifi/sockets -N \
+    -ip2p0 -Dnl80211 -c/data/misc/wifi/p2p_supplicant.conf \
+    -I/system/etc/wifi/p2p_supplicant_overlay.conf \
+    -puse_p2p_group_interface=1 -e/data/misc/wifi/entropy.bin \
+    -g@android:wpa_wlan0
+    #   we will start as root and wpa_supplicant will switch to user wifi
+    #   after setting up the capabilities required for WEXT
+    #   user wifi
+    #   group wifi inet keystore
     class main
     socket wpa_wlan0 dgram 660 wifi wifi
     disabled
@@ -522,12 +479,12 @@ service wpa_supplicant /system/bin/wpa_supplicant \
     disabled
     oneshot
 
-service dhcpcd_wlan0 /system/bin/dhcpcd -ABKLG
+service dhcpcd_wlan0 /system/bin/dhcpcd -aABDKL
     class late_start
     disabled
     oneshot
 
-service dhcpcd_p2p /system/bin/dhcpcd -ABKLG
+service dhcpcd_p2p /system/bin/dhcpcd -aABKL
     class late_start
     disabled
     oneshot
@@ -541,45 +498,6 @@ service iprenew_p2p /system/bin/dhcpcd -n
     class late_start
     disabled
     oneshot
-
-service ptt_socket_app /system/bin/ptt_socket_app
-    class main
-    user system
-    group system
-    oneshot
-
-service dhcpcd_bt-pan /system/bin/dhcpcd -BKLG
-    class late_start
-    disabled
-    oneshot
-
-service iprenew_bt-pan /system/bin/dhcpcd -n
-    class late_start
-    disabled
-    oneshot
-
-# ASUS_BSP+++ "dynamic config SSR"
-# config subsystem restart
-on property:persist.sys.modem.restart=*
-    restart restart_cfg
-
-service restart_cfg /system/xbin/restart_cfg.sh
-    class late_start
-    user root
-    group root
-    disabled
-    oneshot
-
-service modem_restart /system/xbin/modem_restart.sh
-    class late_start
-    user root
-    group root
-    disabled
-    oneshot
-
-on property:ril.restart.step=2
-    restart atfwd
-# ASUS_BSP--- "dynamic config SSR"
 
 service dhcpcd_bnep0 /system/bin/dhcpcd -BKLG
     disabled
@@ -601,103 +519,18 @@ service dhcpcd_bnep4 /system/bin/dhcpcd -BKLG
     disabled
     oneshot
 
-#ASUS_BSP+++ LandiceFu "[GPS][NA][Spec] Disable XTRA-T/QUIPS/WiperInterface/ISAGNAV"
-#service gpsone_daemon /system/bin/gpsone_daemon
-    #class late_start
-    #user gps
-    #group gps inet net_raw
-    #disabled
-
-#service quipc_igsn /system/bin/quipc_igsn
-    #class late_start
-    #user gps
-    #group inet gps qcom_diag
-    #disabled
-
-#service quipc_main /system/bin/quipc_main
-    #class late_start
-    #user gps
-    #group gps net_admin wifi inet qcom_diag
-    #disabled
-
-#service location_mq /system/bin/location-mq
-    #class late_start
-    #user gps
-    #group gps
-    #disabled
-
-#service xtwifi_inet /system/bin/xtwifi-inet-agent
-    #class late_start
-    #user gps
-    #group inet gps
-    #disabled
-
-#service xtwifi_client /system/bin/xtwifi-client
-    #class late_start
-    #user gps
-    #group net_admin wifi inet gps
-    #disabled
-
-#service lowi-server /system/bin/lowi-server
-    #class late_start
-    #user gps
-    #group gps net_admin wifi inet qcom_diag
-    #disabled
-#ASUS_BSP--- LandiceFu "[GPS][NA][Spec] Disable XTRA-T/QUIPS/WiperInterface/ISAGNAV"
-
-service fm_dl /system/bin/sh /system/etc/init.qcom.fm.sh
-    class late_start
-    user root
-    group system fm_radio
+service dhcpcd_bt-pan /system/bin/dhcpcd -BKLG
     disabled
     oneshot
 
-on property:crypto.driver.load=1
-     insmod /system/lib/modules/qce.ko
-     insmod /system/lib/modules/qcedev.ko
-
-on property:crypto.driver.load=0
-     exec /system/bin/rmmod qcedev.ko
-     exec /system/bin/rmmod qce.ko
-
-service drmdiag /system/bin/drmdiagapp
-    class late_start
-     user root
-     disabled
-     oneshot
-
-on property:drmdiag.load=1
-    start drmdiag
-
-on property:drmdiag.load=0
-    stop drmdiag
-
-service qcom-sh /system/bin/sh /init.qcom.sh
-    class late_start
-    user root
-    oneshot
-
-service qcom-post-boot /system/bin/sh /system/etc/init.qcom.post_boot.sh
-    class late_start
-    user root
+service iprenew_bt-pan /system/bin/dhcpcd -n
     disabled
     oneshot
 
-service wifi-sdio-on /system/bin/sh /system/etc/init.qcom.sdio.sh
+service qseecomd /system/bin/qseecomd
     class late_start
-    group wifi inet
-    disabled
-    oneshot
-
-service wifi-crda /system/bin/sh /system/etc/init.crda.sh
-   class late_start
-   user root
-   disabled
-   oneshot
-
-
-on property:sys.boot_completed=1
-    start qcom-post-boot
+    user root
+    group root
 
 service hostapd /system/bin/hostapd -dddd /data/hostapd/hostapd.conf
     class late_start
@@ -706,158 +539,63 @@ service hostapd /system/bin/hostapd -dddd /data/hostapd/hostapd.conf
     oneshot
     disabled
 
-service ds_fmc_appd /system/bin/ds_fmc_appd -p "rmnet0" -D
-    class late_start
-    group radio wifi inet
-    disabled
-    oneshot
-
-on property:persist.data.ds_fmc_app.mode=1
-    start ds_fmc_appd
-
-service ims_regmanager /system/bin/exe-ims-regmanagerprocessnative
-    class late_start
-    group net_bt_admin inet radio wifi
-    disabled
-
-on property:persist.ims.regmanager.mode=1
-    start ims_regmanager
-
+# Adjust socket buffer to enlarge TCP receive window for high bandwidth
+# but only if ro.data.large_tcp_window_size property is set.
 on property:ro.data.large_tcp_window_size=true
-    # Adjust socket buffer to enlarge TCP receive window for high bandwidth (e.g. DO-RevB)
     write /proc/sys/net/ipv4/tcp_adv_win_scale  2
-
-service battery_monitor /system/bin/battery_monitor
-    user system
-    group system
-    disabled
-
-service ril-daemon1 /system/bin/rild -c 1
-    class main
-    socket rild1 stream 660 root radio
-    socket rild-debug1 stream 660 radio system
-    user root
-    disabled
-    group radio cache inet misc audio sdcard_r sdcard_rw diag qcom_diag log
-
-service ril-daemon2 /system/bin/rild -c 2
-    class main
-    socket rild2 stream 660 root radio
-    socket rild-debug2 stream 660 radio system
-    user root
-    disabled
-    group radio cache inet misc audio sdcard_r sdcard_rw diag qcom_diag log
-
-service profiler_daemon /system/bin/profiler_daemon
-    class late_start
-    user root
-    group root
-    disabled
-
-# ASUS_BSP--- Bruno "[Audio] Add persist property for Audio debug"
-service asus_audbg /system/etc/init.asus.audbg.sh
-    user root
-    group root
-    disabled
-    oneshot
-
-on property:persist.asus.audbg=0
-    start asus_audbg
-
-on property:persist.asus.audbg=1
-    start asus_audbg
-
-on property:persist.asus.audbg=2
-    start asus_audbg
-# ASUS_BSP--- Bruno "[Audio] Add persist property for Audio debug"
-
-# ASUS_BSP--- Bruno "[Audio] Add persist property for MaxxAudio"
-service maxx_mode_switch /system/etc/init.asus.maxxaudio.sh
-    user root
-    group root
-    disabled
-    oneshot
-
-on property:sys.config.maxxaudio=0
-    start maxx_mode_switch
-
-on property:sys.config.maxxaudio=1
-    start maxx_mode_switch
-
-on property:sys.config.maxxaudio=2
-    start maxx_mode_switch
-
-on property:sys.config.maxxaudio=3
-    start maxx_mode_switch
-
-on property:sys.config.maxxaudio=4
-    start maxx_mode_switch
-
-on property:sys.config.maxxaudio=5
-    start maxx_mode_switch
-# ASUS_BSP--- Bruno "[Audio] Add persist property for MaxxAudio"
-
-service sdcard /system/bin/sdcard -u 1023 -g 1023 -l /data/media /mnt/shell/emulated
-    class late_start
-    
-service fuse_sdcard1 /system/bin/sdcard -u 1023 -g 1023 -d /mnt/media_rw/sdcard1 /storage/sdcard1
-    class late_start
-    disabled
-
-service fuse_usbdisk /system/bin/sdcard -u 1023 -g 1023 /mnt/media_rw/usbdisk /storage/usbdisk
-    class late_start
-    disabled
-
-service hcidump /system/bin/sh /system/etc/hcidump.sh
-    user bluetooth
-    group bluetooth system net_bt_admin net_admin
-    disabled
-    oneshot
 
 service charger /charger
     class charger
 
-#ASUS BSP+++ Jay "add USB Camera FW Update"
 service UsbCam /system/bin/USB_Camera_Update/fw_update.sh
     class late_start
     user root
     group root
     disabled
     oneshot
-#ASUS BSP--- Jay "add USB Camera FW Update"
 
-#ASUS_BSP+++ Allen "Add service to start subsystem_ramdump"
-    service subsys_ramdump /system/bin/subsystem_ramdump 1
+# GPS
+service gsiff_daemon /system/bin/gsiff_daemon
     class late_start
-    user root
-    group root
-    disabled
-#ASUS_BSP--- Allen "Add service to start subsystem_ramdump"
+    user system
+    group gps net_raw
+
+service ppd /system/bin/mm-pp-daemon
+    class late_start
+    user system
+    socket pps stream 0660 system system
+    group system graphics
+
+on property:init.svc.surfaceflinger=stopped
+    stop ppd
+
+#start camera server as daemon
+service qcamerasvr /system/bin/mm-qcamera-daemon
+    class late_start
+    user camera
+    group camera system inet input graphics
+
+service adsprpcd /system/bin/adsprpcd
+   class main
+   user media
+   group media
+
+service audiod /system/bin/audiod
+   class late_start
+   user system
+   group system
+
+service wcnss-service /system/bin/wcnss_service
+    class late_start
+    user system
+    group system wifi qcom_diag radio
+    oneshot
 
 service ssr_diag /system/bin/ssr_diag
     class late_start
+    disabled
     user system
     group system
-
-# SSR setting
-# ASUS_BSP+++ "remove qcom ssr config"
-#on property:persist.sys.ssr.restart_level=*
-#    exec /system/bin/sh /init.qcom.ssr.sh ${persist.sys.ssr.restart_level}
-# ASUS_BSP--- "remove qcom ssr config"
-
-# Define fastmmi
-service fastmmi /system/bin/mmi
-    user root
-    group root
-    disabled
-
-service fastmmisrv /system/bin/sh /init.qcom.factory.sh
-    user root
-    disabled
-    oneshot
-
-on ffbm
-    start fastmmisrv
 
 service hvdcp /system/bin/hvdcp
     class core
@@ -870,65 +608,13 @@ on property:persist.usb.hvdcp.detect=true
 on property:persist.usb.hvdcp.detect=false
     stop hvdcp
 
-# ASUS BSP freddy++ "Initialing script for setprop persist.* was executed for P01 Key debug mode"
-service asus_p01dbg /system/etc/init.asus.p01dbg.sh
-    user root
-    group root
-    disabled
-    oneshot
-	
-on property:persist.asus.p01dbg=0
-    start asus_p01dbg
-	
-on property:persist.asus.p01dbg=1
-    start asus_p01dbg
-	
-on property:persist.asus.p01dbg=2
-   start asus_p01dbg
-# ASUS BSP-- freddy "Initialing script for setprop persist.* was executed for P01 Key debug mode"
-service charger_monitor /system/bin/charger_monitor
+#start gesture server as daemon
+service qgesturesvr /system/bin/mm-gesture-daemon
+    class late_start
     user system
-    group system
-    disabled
+    group system camera input graphics net_bt_stack
 
-service diag_mdlog_start /system/bin/diag_mdlog
+service fm_dl /system/bin/sh /system/etc/init.qcom.fm.sh
     class late_start
-    user sdcard_rw
-    group system qcom_diag sdcard_rw sdcard_r media_rw
-    disabled
-    oneshot
-
-service diag_mdlog_stop /system/bin/diag_mdlog -k
-    class late_start
-    user sdcard_rw
-    group system qcom_diag sdcard_rw sdcard_r media_rw
-    disabled
-    oneshot
-
-# ASUS_BSP+++ sr_Huang "add for pad event changed"                   
-                                                                  
-service onPadEvtChg /system/bin/sh  /etc/onPadEventChanged.sh          
-        class core                                                          
-        user root                                                      
-        oneshot                                                      
-        disabled            
-on property:sys.config.resolution=*
-        start onPadEvtChg                                                                 
-                                                                          
-# ASUS_BSP--- sr_Huang "add for pad event changed" 
-
-service qlogd /system/xbin/qlogd
-    class main
-    disabled
-on property:persist.sys.qlogd=1
-    start qlogd
-on property:persist.sys.qlogd=0
-    stop qlogd
-
-service rootagent /system/bin/sh /system/etc/init.qcom.rootagent.sh
-    disabled
-    oneshot
-on property:persist.sys.rootagent=1
-    start rootagent
-on property:persist.sys.rootagent=0
-    stop rootagent
+    user root
+    group system fm_radio

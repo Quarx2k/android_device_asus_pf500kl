@@ -1,4 +1,4 @@
-/* Copyright (c) 2011-2013, The Linux Foundation. All rights reserved.
+/* Copyright (c) 2011-2012, The Linux Foundation. All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are
@@ -24,41 +24,62 @@
  * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE
  * OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN
  * IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- *
  */
+#ifndef LOC_UTIL_LOG_H
+#define LOC_UTIL_LOG_H
 
-#ifndef __LOC_H__
-#define __LOC_H__
+#if defined(_ANDROID_)
+#include "loc_api_v02_log.h"
+#include <log_util.h>
 
-#ifdef __cplusplus
-extern "C" {
-#endif /* __cplusplus */
+#else // no _ANDROID_
 
-#include <ctype.h>
-#include <cutils/properties.h>
-#include <hardware/gps.h>
-#include <gps_extended.h>
+#if defined(__LOC_API_V02_LOG_SILENT__)
+#define MSG_LOG
+#define LOC_LOGE(...) MSG_LOG(__VA_ARGS__);
+#define LOC_LOGW(...) MSG_LOG(__VA_ARGS__);
+#define LOC_LOGD(...) MSG_LOG(__VA_ARGS__);
+#define LOC_LOGI(...) MSG_LOG(__VA_ARGS__);
+#define LOC_LOGV(...) MSG_LOG(__VA_ARGS__);
+#else
 
-typedef void (*loc_location_cb_ext) (UlpLocation* location, void* locExt);
-typedef void (*loc_sv_status_cb_ext) (GpsSvStatus* sv_status, void* svExt);
-typedef void* (*loc_ext_parser)(void* data);
+// common for QNX and Griffon
 
-typedef struct {
-    loc_location_cb_ext location_cb;
-    gps_status_callback status_cb;
-    loc_sv_status_cb_ext sv_status_cb;
-    gps_nmea_callback nmea_cb;
-    gps_set_capabilities set_capabilities_cb;
-    gps_acquire_wakelock acquire_wakelock_cb;
-    gps_release_wakelock release_wakelock_cb;
-    gps_create_thread create_thread_cb;
-    loc_ext_parser location_ext_parser;
-    loc_ext_parser sv_ext_parser;
-    gps_request_utc_time request_utc_time_cb;
-} LocCallbacks;
+//error logs
+#define LOC_LOGE(...) printf(__VA_ARGS__)
+//warning logs
+#define LOC_LOGW(...) printf(__VA_ARGS__)
+// debug logs
+#define LOC_LOGD(...) printf(__VA_ARGS__)
+//info logs
+#define LOC_LOGI(...) printf(__VA_ARGS__)
+//verbose logs
+#define LOC_LOGV(...) printf(__VA_ARGS__)
+#endif //__LOC_API_V02_LOG_SILENT__
 
-#ifdef __cplusplus
-}
-#endif /* __cplusplus */
+#define MODEM_LOG_CALLFLOW(SPEC, VAL)
+#define EXIT_LOG_CALLFLOW(SPEC, VAL)
 
-#endif //__LOC_H__
+#define loc_get_v02_event_name(X) #X
+#define loc_get_v02_client_status_name(X) #X
+
+#define loc_get_v02_qmi_status_name(X)  #X
+
+//specific to OFF TARGET
+#ifdef LOC_UTIL_TARGET_OFF_TARGET
+
+#include <stdio.h>
+# include <asm/errno.h>
+# include <sys/time.h>
+
+// get around strl*: not found in glibc
+// TBD:look for presence of eglibc other libraries
+// with strlcpy supported.
+#define strlcpy(X,Y,Z) strcpy(X,Y)
+#define strlcat(X,Y,Z) strcat(X,Y)
+
+#endif //LOC_UTIL_TARGET_OFF_TARGET
+
+#endif //_ANDROID_
+
+#endif //LOC_UTIL_LOG_H

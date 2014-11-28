@@ -253,17 +253,16 @@ vendor/lib/libwvdrm_L1.so
 -vendor/lib/mediadrm/libwvdrmengine.so
 
 # GPS
-#bin/gsiff_daemon
-#bin/quipc_igsn
-#bin/quipc_main
-#etc/permissions/com.qualcomm.location.xml
+-priv-app/com.qualcomm.location/com.qualcomm.location.apk
+etc/permissions/com.qualcomm.location.xml
 lib/libloc_api_v02.so
 lib/libloc_ds_api.so
-#vendor/lib/hw/flp.default.so
 vendor/lib/libgeofence.so
 vendor/lib/libizat_core.so
 vendor/lib/liblbs_core.so
 vendor/lib/liblocationservice.so
+vendor/lib/liblowi_client.so
+vendor/lib/libquipc_os_api.so
 vendor/lib/libquipc_os_api.so
 vendor/lib/libquipc_ulp_adapter.so
 vendor/lib/libulp2.so
@@ -352,6 +351,10 @@ lib/libril.so
 etc/qxdm/VoLTE_V3_NO_L2.cfg
 etc/qxdm/VoLTE_V3_SRVCC.cfg
 etc/qxdm/WLAN_V1.cfg
+etc/permissions/qcnvitems.xml
+etc/permissions/qcrilhook.xml
+framework/qcnvitems.jar
+framework/qcrilhook.jar
 
 # Sensors
 bin/sensors.qcom
@@ -378,8 +381,8 @@ vendor/lib/libthermalioctl.so
 
 # Time services
 bin/time_daemon
-vendor/lib/libtime_genoff.so
-vendor/lib/libTimeService.so
+-vendor/lib/libtime_genoff.so
+-vendor/lib/libTimeService.so
 -app/TimeService/TimeService.apk
 
 # QuickBoot

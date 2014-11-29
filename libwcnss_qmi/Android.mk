@@ -13,7 +13,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-ifeq ($(BOARD_VENDOR),asus)
 
 LOCAL_PATH := $(call my-dir)
 
@@ -30,5 +29,3 @@ LOCAL_MODULE_TAGS := optional
 LOCAL_MODULE := libwcnss_qmi
 
 include $(BUILD_SHARED_LIBRARY)
-
-endif

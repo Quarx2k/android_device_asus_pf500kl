@@ -1,5 +1,5 @@
 #
-# Copyright (C) 2013 The CyanogenMod Project
+# Copyright (C) 2014 The CyanogenMod Project
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -13,10 +13,22 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-ifeq ($(TARGET_BOARD_PLATFORM),msm8974)
+ifeq ($(BOARD_VENDOR),asus)
 
-LOC_PATH := $(call my-dir)
+LOCAL_PATH := $(call my-dir)
 
-include $(call first-makefiles-under,$(LOC_PATH))
+include $(CLEAR_VARS)
+
+LOCAL_SRC_FILES := libwcnss_qmi.c
+
+LOCAL_C_INCLUDES += hardware/qcom/wlan/wcnss_service
+LOCAL_CFLAGS += -Wall
+
+LOCAL_SHARED_LIBRARIES := libc libcutils libutils liblog
+
+LOCAL_MODULE_TAGS := optional
+LOCAL_MODULE := libwcnss_qmi
+
+include $(BUILD_SHARED_LIBRARY)
 
 endif

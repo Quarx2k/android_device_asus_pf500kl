@@ -18,10 +18,10 @@ LOCAL_PATH := $(call my-dir)
 
 include $(CLEAR_VARS)
 
-LOCAL_SRC_FILES := libwcnss_qmi.c
+LOCAL_SRC_FILES := libwcnss_qmi.cpp
 
 LOCAL_C_INCLUDES += hardware/qcom/wlan/wcnss_service
-LOCAL_CFLAGS += -Wall
+LOCAL_CFLAGS += -Wall -std=c++11
 
 LOCAL_SHARED_LIBRARIES := libc libcutils libutils liblog
 

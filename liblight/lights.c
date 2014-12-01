@@ -72,7 +72,7 @@ const char *const LED_PWM_FILE
         = "/sys/class/leds/red/device/grppwm";
 
 char const *const LED_BLINK_FILE
-        = "/sys/class/leds/red/device/blink";
+        = "/sys/class/leds/red/blink";
 
 char const *const LED_DT_RED_BRIGHTNESS
         = "/sys/class/leds/led:rgb_red/brightness";

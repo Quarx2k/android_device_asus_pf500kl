@@ -544,8 +544,10 @@ service hostapd /system/bin/hostapd -dddd /data/hostapd/hostapd.conf
 on property:ro.data.large_tcp_window_size=true
     write /proc/sys/net/ipv4/tcp_adv_win_scale  2
 
-service charger /charger
+service charger /sbin/healthd -c
     class charger
+    critical
+    seclabel u:r:healthd:s0
 
 service UsbCam /system/bin/USB_Camera_Update/fw_update.sh
     class late_start
@@ -610,5 +612,7 @@ service qgesturesvr /system/bin/mm-gesture-daemon
 
 service fm_dl /system/bin/sh /system/etc/init.qcom.fm.sh
     class late_start
+    oneshot
     user root
     group system fm_radio
+    disabled

@@ -71,11 +71,11 @@ PRODUCT_PACKAGES += \
     libxml2
 
 # NFC
-PRODUCT_PACKAGES += \
-    NfcNci \
-    Tag \
-    nfc_nci.pn54x.default \
-    com.android.nfc_extras
+#PRODUCT_PACKAGES += \
+#    NfcNci \
+#    Tag \
+#    nfc_nci.pn54x.default \
+#    com.android.nfc_extras
 
 # FM radio
 PRODUCT_PACKAGES += \
@@ -247,7 +247,6 @@ PRODUCT_COPY_FILES += \
 
 # Others
 PRODUCT_COPY_FILES += \
-    $(LOCAL_PATH)/configs/init.qcom.fm.sh:system/etc/init.qcom.fm.sh \
     $(LOCAL_PATH)/configs/quipc.conf:system/etc/quipc.conf
 
 # TS/Keys

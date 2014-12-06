@@ -61,6 +61,11 @@ PRODUCT_PROPERTY_OVERRIDES += \
     audio.offload.24bit.enable=1 \
     media.aaccodectype=1
 
+# Charger
+PRODUCT_PACKAGES += \
+    charger \
+    charger_res_images
+
 # Filesystem management tools
 PRODUCT_PACKAGES += \
     make_ext4fs \

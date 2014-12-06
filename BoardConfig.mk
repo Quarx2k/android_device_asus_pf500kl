@@ -51,6 +51,9 @@ WITH_DEXPREOPT := true
 # QCOM hardware
 BOARD_USES_QCOM_HARDWARE := true
 
+# Charger
+BOARD_CHARGER_RES := device/asus/t00n/charger/images
+
 # Audio
 BOARD_USES_ALSA_AUDIO := true
 AUDIO_FEATURE_ENABLED_FM := true

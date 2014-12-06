@@ -109,8 +109,8 @@ on boot
     chmod 2770 /dev/socket/qmux_gps
 
     #Create PERFD deamon related dirs
-    mkdir /data/misc/perfd 0770 root system
-    chmod 2770 /data/misc/perfd
+    mkdir /data/misc/perfd 0755 root system
+    chmod 2775 /data/misc/perfd
     mkdir /data/system/perfd 0770 root system
     chmod 2770 /data/system/perfd
 
@@ -384,7 +384,7 @@ on property:init.svc.bootanim=running
     # Switch to NOOP while booting
     write /sys/block/mmcblk0/queue/scheduler noop
 
-service irsc_util /system/bin/logwrapper /system/bin/irsc_util "/etc/sec_config"
+service irsc_util /system/bin/irsc_util "/etc/sec_config"
     class main
     user root
     oneshot
@@ -552,10 +552,8 @@ service hostapd /system/bin/hostapd -dddd /data/hostapd/hostapd.conf
 on property:ro.data.large_tcp_window_size=true
     write /proc/sys/net/ipv4/tcp_adv_win_scale  2
 
-service charger /sbin/healthd -c
+service charger /charger
     class charger
-    critical
-    seclabel u:r:healthd:s0
 
 service UsbCam /system/bin/USB_Camera_Update/fw_update.sh
     class late_start

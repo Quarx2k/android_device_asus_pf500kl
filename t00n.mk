@@ -54,12 +54,25 @@ PRODUCT_PROPERTY_OVERRIDES += \
     use.voice.path.for.pcm.voip=true \
     audio.offload.multiple.enabled=false \
     audio.offload.gapless.enabled=true \
+    tunnel.audio.encode=true \
+    media.aac_51_output_enabled=true \
+    audio.offload.pcm.enable=true
+
+PRODUCT_PROPERTY_OVERRIDES += \
+    mm.enable.smoothstreaming=true \
+    mm.enable.qcom_parser=3314291 \
+    ro.qc.sdk.audio.fluencetype=fluence \
+    persist.audio.fluence.voicecall=true \
+    audio.offload.buffer.size.kb=32 \
+    av.offload.enable=true \
+    av.streaming.offload.enable=true \
+    use.voice.path.for.pcm.voip=true \
+    audio.offload.multiple.enabled=false \
+    audio.offload.gapless.enabled=true \
     qcom.hw.aac.encoder=false \
     tunnel.audio.encode=true \
     media.aac_51_output_enabled=true \
     audio.offload.pcm.enable=true \
-    audio.offload.24bit.enable=1 \
-    media.aaccodectype=1
 
 # Charger
 PRODUCT_PACKAGES += \
@@ -240,6 +253,7 @@ PRODUCT_COPY_FILES += \
     frameworks/native/data/etc/com.android.nfc_extras.xml:system/etc/permissions/com.android.nfc_extras.xml \
     frameworks/native/data/etc/android.hardware.nfc.xml:system/etc/permissions/android.hardware.nfc.xml \
     frameworks/native/data/etc/android.hardware.nfc.hce.xml:system/etc/permissions/android.hardware.nfc.hce.xml \
+    frameworks/native/data/etc/android.hardware.ethernet.xml:system/etc/permissions/android.hardware.ethernet.xml \
     external/ant-wireless/antradio-library/com.dsi.ant.antradio_library.xml:system/etc/permissions/com.dsi.ant.antradio_library.xml
 
 # Rootdir

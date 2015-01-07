@@ -59,6 +59,10 @@ PRODUCT_PROPERTY_OVERRIDES += \
     audio.offload.pcm.16bit.enable=true \
     audio.offload.pcm.24bit.enable=true
 
+# CmUpdater
+PRODUCT_PROPERTY_OVERRIDES += \
+    cm.updater.uri=http://api.quarx.cm-for.us/api
+
 # Charger
 PRODUCT_PACKAGES += \
     charger \

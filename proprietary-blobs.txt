@@ -390,5 +390,6 @@ bin/time_daemon
 # Fastcharge
 bin/hvdcp
 
-# WiFi
-#lib/libwcnss_qmi.so
+# NFC
+vendor/firmware/libpn544_c3_fw.so
+

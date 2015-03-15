@@ -281,12 +281,12 @@ vendor/lib/libc2d30-a3xx.so
 vendor/lib/libgsl.so
 vendor/lib/libllvm-qcom.so
 vendor/lib/libOpenCL.so
-vendor/lib/libOpenVG.so
 vendor/lib/libsc-a3xx.so
 vendor/lib/libRSDriver_adreno.so
 vendor/lib/librs_adreno.so
 vendor/lib/librs_adreno_sha1.so
 vendor/lib/libscale.so
+vendor/lib/libbccQTI.so
 
 # Graphics firmware
 etc/firmware/a330_pfp.fw

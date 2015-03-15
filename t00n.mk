@@ -215,8 +215,8 @@ PRODUCT_PROPERTY_OVERRIDES += \
     ro.telephony.call_ring.multiple=0
 
 # HACK for QC errata issue
-PRODUCT_PROPERTY_OVERRIDES += \
-    debug.hwui.render_dirty_regions=false
+#PRODUCT_PROPERTY_OVERRIDES += \
+#    debug.hwui.render_dirty_regions=false
 
 # Enable USB OTG interface
 PRODUCT_PROPERTY_OVERRIDES += \

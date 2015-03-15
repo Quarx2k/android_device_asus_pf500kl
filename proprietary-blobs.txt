@@ -266,6 +266,7 @@ vendor/lib/libquipc_os_api.so
 vendor/lib/libquipc_os_api.so
 vendor/lib/libquipc_ulp_adapter.so
 vendor/lib/libulp2.so
+vendor/lib/libalarmservice_jni.so
 
 # Graphics
 vendor/lib/egl/eglsubAndroid.so

@@ -42,7 +42,7 @@ BOARD_KERNEL_PAGESIZE := 2048
 BOARD_KERNEL_SEPARATED_DT := true
 BOARD_MKBOOTIMG_ARGS := --ramdisk_offset 0x02500000 --tags_offset 0x01e00000
 TARGET_KERNEL_CONFIG := pf500kl-perf_defconfig
-BOARD_KERNEL_CMDLINE := console=ttyHSL0,115200,n8 androidboot.hardware=qcom user_debug=31 msm_rtb.filter=0x37 ehci-hcd.park=3 androidboot.selinux=permissive
+BOARD_KERNEL_CMDLINE := console=ttyHSL0,115200,n8 androidboot.hardware=qcom user_debug=31 msm_rtb.filter=0x37 ehci-hcd.park=3 androidboot.selinux=enforcing
 TARGET_KERNEL_SOURCE := kernel/asus/msm8974
 
 # Enable dex-preoptimization to speed up first boot sequence
@@ -160,6 +160,13 @@ BOARD_USES_QC_TIME_SERVICES := true
 
 # Radio
 BOARD_RIL_CLASS := ../../../device/asus/t00n/ril/
+
+# SELinux policies
+# qcom sepolicy
+include device/qcom/sepolicy/sepolicy.mk
+
+BOARD_SEPOLICY_DIRS += \
+        device/asus/t00n/sepolicy
 
 # inherit from the proprietary version
 -include vendor/asus/tn00n/BoardConfigVendor.mk

@@ -1,0 +1,6 @@
+allow mm-qcamerad unlabeled:dir search;
+allow mm-qcamerad unlabeled:file read;
+allow mm-qcamerad unlabeled:file write;
+allow mm-qcamerad unlabeled:file open;
+
+

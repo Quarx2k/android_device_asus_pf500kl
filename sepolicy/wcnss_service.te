@@ -1,3 +1,8 @@
 allow wcnss_service persist_file:dir { search write create add_name };
+allow wcnss_service unlabeled:dir search;
+allow wcnss_service unlabeled:file read;
+allow wcnss_service unlabeled:file write;
+allow wcnss_service unlabeled:file open;
+allow wcnss_service unlabeled:file getattr;
 
 type_transition wcnss_service persist_file:file wifi_data_file ".genmac";

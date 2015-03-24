@@ -1,0 +1,3 @@
+allow thermal-engine sysfs_battery_supply:dir search;
+allow thermal-engine sysfs_battery_supply:file read;
+allow thermal-engine sysfs_battery_supply:file write;

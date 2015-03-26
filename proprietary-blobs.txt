@@ -12,6 +12,9 @@ lib/libsarcsoft.so
 lib/libsarcsoftface.so
 lib/libsarcsoft_gallery.so
 lib/libsarcsoft_image_engine.so
+lib/libarcsoft_panorama_burstcapture.so
+lib/libarcsoft_sensorndk.so
+lib/libcameraap.so
 lib/libxditk_AT.so
 lib/ditCL.bin
 vendor/lib/libjpegehw.so

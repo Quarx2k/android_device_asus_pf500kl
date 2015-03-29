@@ -1,0 +1,2 @@
+allow nfc zygote:unix_dgram_socket ioctl;
+

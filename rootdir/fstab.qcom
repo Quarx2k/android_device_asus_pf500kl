@@ -7,4 +7,5 @@
 /devices/platform/xhci-hcd				auto		  	vfat    defaults					voldmanaged=usbdisk:auto
 /dev/block/platform/msm_sdcc.1/by-name/boot         	/boot           	emmc    defaults                                        defaults
 /dev/block/platform/msm_sdcc.1/by-name/recovery     	/recovery       	emmc    defaults                                    	defaults
+/dev/block/platform/msm_sdcc.1/by-name/misc		/misc      		emmc    defaults                                        defaults
 

@@ -8,3 +8,6 @@ allow system_server vibeamp_sysfs:file rw_file_perms;
 
 # display tuning
 allow system_server display_sysfs:file rw_file_perms;
+
+allow system_server unlabeled:file { rename write };
+

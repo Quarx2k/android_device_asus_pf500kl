@@ -1,0 +1,2 @@
+allow installd unlabeled:dir setattr;
+allow installd download_file:dir { read search open getattr };

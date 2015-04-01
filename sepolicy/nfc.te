@@ -1,2 +1,4 @@
 allow nfc zygote:unix_dgram_socket ioctl;
+allow nfc unlabeled:dir search;
+allow nfc unlabeled:file { open write read getattr };
 

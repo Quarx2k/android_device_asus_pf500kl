@@ -1,0 +1,3 @@
+allow radio unlabeled:dir { open search getattr read write };
+allow radio unlabeled:file { open read write getattr lock setattr };
+

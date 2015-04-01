@@ -9,5 +9,7 @@ allow system_server vibeamp_sysfs:file rw_file_perms;
 # display tuning
 allow system_server display_sysfs:file rw_file_perms;
 
-allow system_server unlabeled:file { rename write };
+allow system_server unlabeled:file { rename write setattr };
+allow system_server unlabeled:dir { setattr open read getattr write remove_name add_name};
+allow system_server default_prop:property_service set;
 

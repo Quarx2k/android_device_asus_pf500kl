@@ -36,6 +36,7 @@ persist.asus.qxdmlog.message=0
 conn.connectivity_change_delay=0
 ro.telephony.ril_class=AsusLteRIL
 DEVICE_PROVISIONED=1
+rol.ril.ext.ecclist=112,911,999,110,122,119,120,000,08,118
 
 # gps
 persist.gps.qc_nlp_in_use=0

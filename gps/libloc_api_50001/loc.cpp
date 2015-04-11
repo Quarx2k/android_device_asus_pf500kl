@@ -247,6 +247,7 @@ extern "C" const GpsInterface* get_gps_interface()
     switch (gnssType)
     {
     case GNSS_GSS:
+    case GNSS_AUTO:
         //APQ8064
         gps_conf.CAPABILITIES &= ~(GPS_CAPABILITY_MSA | GPS_CAPABILITY_MSB);
         gss_fd = open("/dev/gss", O_RDONLY);
@@ -335,7 +336,7 @@ static int loc_init(GpsCallbacks* callbacks)
     loc_afw_data.adapter->mSupportsPositionInjection = !loc_afw_data.adapter->hasCPIExtendedCapabilities();
     loc_afw_data.adapter->mSupportsTimeInjection = !loc_afw_data.adapter->hasCPIExtendedCapabilities();
     loc_afw_data.adapter->setGpsLockMsg(0);
-    loc_afw_data.adapter->requestUlp(gps_conf.CAPABILITIES);
+    loc_afw_data.adapter->requestUlp(getCarrierCapabilities());
 
     if(retVal) {
         LOC_LOGE("loc_eng_init() fail!");

@@ -13,6 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+
 ifeq ($(TARGET_BOARD_PLATFORM),msm8974)
 
 LOC_PATH := $(call my-dir)

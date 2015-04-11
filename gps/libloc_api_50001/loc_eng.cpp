@@ -101,10 +101,15 @@ static loc_param_s_type gps_conf_table[] =
   {"LPP_PROFILE",                    &gps_conf.LPP_PROFILE,                    NULL, 'n'},
   {"A_GLONASS_POS_PROTOCOL_SELECT",  &gps_conf.A_GLONASS_POS_PROTOCOL_SELECT,  NULL, 'n'},
   {"AGPS_CERT_WRITABLE_MASK",        &gps_conf.AGPS_CERT_WRITABLE_MASK,        NULL, 'n'},
+  {"SUPL_MODE",                      &gps_conf.SUPL_MODE,                      NULL, 'n'},
   {"INTERMEDIATE_POS",               &gps_conf.INTERMEDIATE_POS,               NULL, 'n'},
   {"ACCURACY_THRES",                 &gps_conf.ACCURACY_THRES,                 NULL, 'n'},
   {"NMEA_PROVIDER",                  &gps_conf.NMEA_PROVIDER,                  NULL, 'n'},
   {"CAPABILITIES",                   &gps_conf.CAPABILITIES,                   NULL, 'n'},
+  {"XTRA_VERSION_CHECK",             &gps_conf.XTRA_VERSION_CHECK,             NULL, 'n'},
+  {"XTRA_SERVER_1",                  &gps_conf.XTRA_SERVER_1,                  NULL, 's'},
+  {"XTRA_SERVER_2",                  &gps_conf.XTRA_SERVER_2,                  NULL, 's'},
+  {"XTRA_SERVER_3",                  &gps_conf.XTRA_SERVER_3,                  NULL, 's'},
   {"USE_EMERGENCY_PDN_FOR_EMERGENCY_SUPL",  &gps_conf.USE_EMERGENCY_PDN_FOR_EMERGENCY_SUPL,          NULL, 'n'},
 };
 
@@ -126,12 +131,7 @@ static loc_param_s_type sap_conf_table[] =
   {"SENSOR_CONTROL_MODE",            &sap_conf.SENSOR_CONTROL_MODE,            NULL, 'n'},
   {"SENSOR_USAGE",                   &sap_conf.SENSOR_USAGE,                   NULL, 'n'},
   {"SENSOR_ALGORITHM_CONFIG_MASK",   &sap_conf.SENSOR_ALGORITHM_CONFIG_MASK,   NULL, 'n'},
-  {"SENSOR_PROVIDER",                &sap_conf.SENSOR_PROVIDER,                NULL, 'n'},
-  {"XTRA_VERSION_CHECK",             &gps_conf.XTRA_VERSION_CHECK,                  NULL, 'n'},
-  {"XTRA_SERVER_1",                  &gps_conf.XTRA_SERVER_1,                  NULL, 's'},
-  {"XTRA_SERVER_2",                  &gps_conf.XTRA_SERVER_2,                  NULL, 's'},
-  {"XTRA_SERVER_3",                  &gps_conf.XTRA_SERVER_3,                  NULL, 's'},
-  {"AGPS_CERT_WRITABLE_MASK",        &gps_conf.AGPS_CERT_WRITABLE_MASK,        NULL, 'n'}
+  {"SENSOR_PROVIDER",                &sap_conf.SENSOR_PROVIDER,                NULL, 'n'}
 };
 
 static void loc_default_parameters(void)
@@ -142,6 +142,7 @@ static void loc_default_parameters(void)
    gps_conf.NMEA_PROVIDER = 0;
    gps_conf.GPS_LOCK = 0;
    gps_conf.SUPL_VER = 0x10000;
+   gps_conf.SUPL_MODE = 0x3;
    gps_conf.CAPABILITIES = 0x7;
    /* LTE Positioning Profile configuration is disable by default*/
    gps_conf.LPP_PROFILE = 0;
@@ -508,6 +509,24 @@ struct LocEngSuplVer : public LocMsg {
     }
     inline  void locallog() const {
         LOC_LOGV("SUPL Version: %d", mSuplVer);
+    }
+    inline virtual void log() const {
+        locallog();
+    }
+};
+
+struct LocEngSuplMode : public LocMsg {
+    UlpProxyBase* mUlp;
+
+    inline LocEngSuplMode(UlpProxyBase* ulp) :
+        LocMsg(), mUlp(ulp)
+    {
+        locallog();
+    }
+    inline virtual void proc() const {
+        mUlp->setCapabilities(getCarrierCapabilities());
+    }
+    inline  void locallog() const {
     }
     inline virtual void log() const {
         locallog();
@@ -1586,6 +1605,24 @@ struct LocEngInstallAGpsCert : public LocMsg {
   }
 #define INIT_CHECK(ctx, ret) STATE_CHECK(ctx, "instance not initialized", ret)
 
+uint32_t getCarrierCapabilities() {
+    #define carrierMSA (uint32_t)0x2
+    #define carrierMSB (uint32_t)0x1
+    #define gpsConfMSA (uint32_t)0x4
+    #define gpsConfMSB (uint32_t)0x2
+    uint32_t capabilities = gps_conf.CAPABILITIES;
+    if ((gps_conf.SUPL_MODE & carrierMSA) != carrierMSA) {
+        capabilities &= ~gpsConfMSA;
+    }
+    if ((gps_conf.SUPL_MODE & carrierMSB) != carrierMSB) {
+        capabilities &= ~gpsConfMSB;
+    }
+
+    LOC_LOGV("getCarrierCapabilities: CAPABILITIES %x, SUPL_MODE %x, carrier capabilities %x",
+             gps_conf.CAPABILITIES, gps_conf.SUPL_MODE, capabilities);
+    return capabilities;
+}
+
 /*===========================================================================
 FUNCTION    loc_eng_init
 
@@ -2626,15 +2663,17 @@ void loc_eng_configuration_update (loc_eng_data_s_type &loc_eng_data,
                 adapter->sendMsg(new LocEngAGlonassProtocol(adapter,
                                                             gps_conf.A_GLONASS_POS_PROTOCOL_SELECT));
             }
-            if (NULL != loc_eng_data.set_capabilities_cb) {
-                gps_conf.CAPABILITIES &= gps_conf_old.CAPABILITIES;
-                if (gps_conf.CAPABILITIES != gps_conf_old.CAPABILITIES) {
-                    loc_eng_data.set_capabilities_cb(gps_conf.CAPABILITIES);
-                }
+            if (gps_conf_old.SUPL_MODE != gps_conf.SUPL_MODE) {
+                adapter->sendMsg(new LocEngSuplMode(adapter->getUlpProxy()));
             }
         }
 
-        gps_conf.CAPABILITIES = gps_conf_old.CAPABILITIES;
+        gps_conf_old.SUPL_VER = gps_conf.SUPL_VER;
+        gps_conf_old.LPP_PROFILE = gps_conf.LPP_PROFILE;
+        gps_conf_old.A_GLONASS_POS_PROTOCOL_SELECT = gps_conf.A_GLONASS_POS_PROTOCOL_SELECT;
+        gps_conf_old.SUPL_MODE = gps_conf.SUPL_MODE;
+        gps_conf = gps_conf_old;
+
     }
 
     EXIT_LOG(%s, VOID_RET);

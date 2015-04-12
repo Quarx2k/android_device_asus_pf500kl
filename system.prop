@@ -2,7 +2,7 @@
 # system.prop for Asus T00N
 #
 
-ro.sf.lcd_density=480
+ro.sf.lcd_density=440
 
 # Ril
 rild.libpath=/vendor/lib/libril-qc-qmi-1.so

@@ -582,12 +582,12 @@ service adsprpcd /system/bin/adsprpcd
    group media
 
 service audiod /system/bin/audiod
-    class late_start
-    user system
-    group system
+   class late_start
+   user system
+   group system
 
 service wcnss-service /system/bin/wcnss_service
-    class main
+    class late_start
     user system
     group system wifi qcom_diag radio
     oneshot

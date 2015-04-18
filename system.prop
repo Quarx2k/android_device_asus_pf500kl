@@ -29,14 +29,11 @@ ro.telephony.call_ring.multiple=false
 ro.use_data_netmgrd=true
 persist.data.netmgrd.qos.enable=false
 ro.data.large_tcp_window_size=true
-persist.asus.qxdmlog.sd1mmc0=0
-persist.asus.qxdmlog.filesize=100
-persist.asus.qxdmlog.maxfiles=6
-persist.asus.qxdmlog.message=0
 conn.connectivity_change_delay=0
 ro.telephony.ril_class=AsusLteRIL
 DEVICE_PROVISIONED=1
 rol.ril.ext.ecclist=112,911,999,110,122,119,120,000,08,118
+persist.radio.csg_info_avlbl=1
 
 # gps
 persist.gps.qc_nlp_in_use=0

@@ -45,18 +45,6 @@ TARGET_KERNEL_CONFIG := pf500kl-perf_defconfig
 BOARD_KERNEL_CMDLINE := console=ttyHSL0,115200,n8 androidboot.hardware=qcom user_debug=31 msm_rtb.filter=0x37 ehci-hcd.park=3 androidboot.selinux=enforcing
 TARGET_KERNEL_SOURCE := kernel/asus/msm8974
 
-# Enable transparent compression in the build
-TARGET_TRANSPARENT_COMPRESSION_METHOD := lz4
-
-# Enable dexpreopt to speed boot time
-ifeq ($(HOST_OS),linux)
-  ifeq ($(call match-word-in-list,$(TARGET_BUILD_VARIANT),user),true)
-    ifeq ($(WITH_DEXPREOPT),)
-      WITH_DEXPREOPT := true
-    endif
-  endif
-endif
-
 # QCOM hardware
 BOARD_USES_QCOM_HARDWARE := true
 

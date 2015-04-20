@@ -165,6 +165,10 @@ PRODUCT_COPY_FILES += \
 PRODUCT_PACKAGES += \
     com.android.future.usb.accessory
 
+# Keyhandler
+PRODUCT_PACKAGES += \
+    com.cyanogenmod.keyhandler
+
 # WiFi
 PRODUCT_COPY_FILES += \
     kernel/asus/msm8974/drivers/staging/prima/firmware_bin/WCNSS_cfg.dat:system/etc/firmware/wlan/prima/WCNSS_cfg.dat \

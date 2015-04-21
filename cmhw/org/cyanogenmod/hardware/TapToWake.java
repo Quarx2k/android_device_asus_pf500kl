@@ -21,7 +21,7 @@ import org.cyanogenmod.hardware.util.FileUtils;
 public class TapToWake {
 
     private static String CONTROL_PATH = "/sys/android_touch/doubletap2wake";
-    private static boolean mEnabled = false;
+    private static boolean mEnabled = true;
 
     public static boolean isSupported() {
         return true;

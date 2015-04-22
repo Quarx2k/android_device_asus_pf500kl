@@ -66,6 +66,9 @@ QCOM_BT_USE_SMD_TTY := true
 BLUETOOTH_HCI_USE_MCT := true
 BOARD_BLUETOOTH_BDROID_BUILDCFG_INCLUDE_DIR := device/asus/t00n/bluetooth 
 
+# Hardware tunables framework
+BOARD_HARDWARE_CLASS := device/asus/t00n/cmhw/
+
 # Charger
 BOARD_CHARGER_RES := device/asus/t00n/charger/images
 

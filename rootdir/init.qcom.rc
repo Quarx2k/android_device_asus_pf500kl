@@ -36,6 +36,8 @@ on init
     # Set permissions for persist partition
     mkdir /persist 0771 system system
     mkdir /firmware 0771 system system
+    mkdir /data/asusdata 0755 root shell
+    mkdir /data/asusfw 0660 root shell
 
     mkdir /storage 0751 system sdcard_r
     mkdir /storage/sdcard1 0700 root root
@@ -218,6 +220,7 @@ on boot
     write /sys/bus/msm_subsys/devices/subsys2/restart_level "related"
 
 on fs
+    mount_all fstab.qcom
     mkdir /dev/usb-ffs 0770 shell shell
     mkdir /dev/usb-ffs/adb 0770 shell shell
     mount functionfs adb /dev/usb-ffs/adb uid=2000,gid=2000
@@ -618,3 +621,15 @@ service qgesturesvr /system/bin/mm-gesture-daemon
     class late_start
     user system
     group system camera input graphics net_bt_stack
+
+service sdcard /system/bin/sdcard -u 1023 -g 1023 -l /data/media /mnt/shell/emulated
+    class late_start
+    
+service fuse_sdcard1 /system/bin/sdcard -u 1023 -g 1023 -d /mnt/media_rw/sdcard1 /storage/sdcard1
+    class late_start
+    disabled
+
+service fuse_usbdisk /system/bin/sdcard -u 1023 -g 1023 /mnt/media_rw/usbdisk /storage/usbdisk
+    class late_start
+    disabled
+

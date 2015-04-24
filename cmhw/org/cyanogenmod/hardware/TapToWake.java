@@ -17,22 +17,38 @@
 package org.cyanogenmod.hardware;
 
 import org.cyanogenmod.hardware.util.FileUtils;
+import android.os.SystemProperties;
+import java.io.File;
+
+import android.util.Log;
 
 public class TapToWake {
 
     private static String CONTROL_PATH = "/sys/android_touch/doubletap2wake";
-    private static boolean mEnabled = true;
 
     public static boolean isSupported() {
-        return true;
+        File f = new File(CONTROL_PATH);
+
+        if(f.exists()) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
-    public static boolean isEnabled()  {
-        return mEnabled;
+    public static boolean isEnabled() {
+        if (Integer.parseInt(FileUtils.readOneLine(CONTROL_PATH)) == 1) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
-    public static boolean setEnabled(boolean state)  {
-        mEnabled = state;
-        return FileUtils.writeLine(CONTROL_PATH, (state ? "1" : "0"));
+    public static boolean setEnabled(boolean status) {
+        if (status == true) {
+            return FileUtils.writeLine(CONTROL_PATH, "1");
+        } else {
+            return FileUtils.writeLine(CONTROL_PATH, "0");
+        }
     }
 }

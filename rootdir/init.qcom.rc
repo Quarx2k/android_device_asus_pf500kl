@@ -286,6 +286,8 @@ on post-fs-data
     # Touchscreen
     chown system radio /sys/android_touch/doubletap2wake
     chmod 0660 /sys/android_touch/doubletap2wake
+    # LiveDisplay
+    chmod 0660 /sys/class/graphics/fb0/rgb
 
     # Create /data/time folder for time-services
     mkdir /data/time/ 0700 system system

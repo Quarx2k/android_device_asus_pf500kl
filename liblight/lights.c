@@ -207,9 +207,9 @@ set_light_locked(struct light_device_t *dev, struct light_state_t *state)
         err = write_int(RED_BLINK_FILE, 1);
 	err = write_int(GREEN_BLINK_FILE, 1);
     } else {
-        write_int(RED_LED_FILE, colorRGB ? 255 : 0);
-        write_int(GREEN_LED_FILE, colorRGB ? 255 : 0);
-   }
+        write_int(RED_LED_FILE, (colorRGB >> 16) & 0xFF);
+        write_int(GREEN_LED_FILE, (colorRGB >> 8) & 0xFF);
+    }
     return err;
 }
 

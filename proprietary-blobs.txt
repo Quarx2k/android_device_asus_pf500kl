@@ -395,5 +395,5 @@ bin/time_daemon
 bin/hvdcp
 
 # NFC
-vendor/firmware/libpn544_c3_fw.so
+vendor/firmware/libpn544_fw.so
 

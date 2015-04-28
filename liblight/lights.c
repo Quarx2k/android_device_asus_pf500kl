@@ -102,26 +102,13 @@ write_string(const char *path, const char *buffer)
 }
 
 static int
-write_int(char const* path, int value)
+write_int(const char *path, int value)
 {
-    int fd;
-    static int already_warned = 0;
-
-    fd = open(path, O_RDWR);
-    if (fd >= 0) {
-        char buffer[20];
-        int bytes = sprintf(buffer, "%d\n", value);
-        int amt = write(fd, buffer, bytes);
-        close(fd);
-        return amt == -1 ? -errno : 0;
-    } else {
-        if (already_warned == 0) {
-            ALOGE("write_int failed to open %s\n", path);
-            already_warned = 1;
-        }
-        return -errno;
-    }
+    char buffer[20];
+    sprintf(buffer, "%d\n", value);
+    return write_string(path, buffer);
 }
+
 
 static int
 is_lit(struct light_state_t const* state)
@@ -130,14 +117,13 @@ is_lit(struct light_state_t const* state)
 }
 
 static int
-rgb_to_brightness(struct light_state_t const* state)
+rgb_to_brightness(const struct light_state_t *state)
 {
-    int red = (state->color >> 16) & 0xff;
-    int green = (state->color >> 8) & 0xff;
-    int blue = state->color & 0xff;
-
-    return ((77 * red) + (150 * green) + (29 * blue)) >> 8;
+    int color = state->color & 0x00ffffff;
+    return ((77*((color>>16)&0x00ff))
+            + (150*((color>>8)&0x00ff)) + (29*(color&0x00ff))) >> 8;
 }
+
 
 static int
 set_light_backlight(struct light_device_t* dev,

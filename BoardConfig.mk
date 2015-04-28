@@ -17,7 +17,7 @@
 # inherit from asus common
 -include device/asus/common/BoardConfigCommon.mk
 
-TARGET_OTA_ASSERT_DEVICE := t00n,t00d
+TARGET_OTA_ASSERT_DEVICE := t00n,t00d,ASUS_T00N,ASUS_T00D
 
 # Bootloader
 TARGET_BOOTLOADER_BOARD_NAME := MSM8974

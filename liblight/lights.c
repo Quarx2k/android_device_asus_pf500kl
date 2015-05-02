@@ -45,7 +45,7 @@ static struct light_state_t g_notification;
 static int g_charge_led_active;
 static int g_last_button_brightness;
 
-char const*const LCD_FILE = "/sys/class/leds/lcd-backlight/brightness";
+char const*const LCD_FILE = "/sys/class/leds/wled:backlight/brightness"; ///sys/class/leds/lcd-backlight/brightness";
 char const*const BUTTON_ON_FILE = "/sys/class/leds/button-backlight/brightness";
 
 /* RGB file descriptors */

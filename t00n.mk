@@ -270,6 +270,10 @@ PRODUCT_COPY_FILES += \
 PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/configs/quipc.conf:system/etc/quipc.conf
 
+# OTA
+PRODUCT_COPY_FILES += \
+    device/asus/t00n/prebuilt/fixup.sh:fixup.sh
+
 # TS/Keys
 PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/configs/Himax-touchscreen.idc:system/usr/idc/Himax-touchscreen.idc \

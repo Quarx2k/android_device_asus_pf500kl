@@ -272,7 +272,7 @@ PRODUCT_COPY_FILES += \
 
 # OTA
 PRODUCT_COPY_FILES += \
-    device/asus/t00n/prebuilt/fixup.sh:fixup.sh
+    device/asus/t00n/fixup.sh:fixup.sh
 
 # TS/Keys
 PRODUCT_COPY_FILES += \

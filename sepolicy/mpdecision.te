@@ -1,0 +1,13 @@
+allow mpdecision property_socket:sock_file write;
+allow mpdecision socket_device:dir write;
+allow mpdecision init:unix_stream_socket connectto;
+allow mpdecision socket_device:dir add_name;
+allow mpdecision socket_device:sock_file create;
+allow mpdecision system_prop:property_service set;
+allow mpdecision socket_device:sock_file { write setattr };
+allow mpdecision system_data_file:dir write;
+allow mpdecision system_data_file:dir add_name;
+allow mpdecision system_data_file:file create;
+allow mpdecision system_data_file:file write;
+allow mpdecision system_data_file:file open;
+allow mpdecision system_data_file:file append;

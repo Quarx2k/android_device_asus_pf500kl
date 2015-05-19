@@ -502,7 +502,6 @@ service iprenew_bt-pan /system/bin/dhcpcd -n
     oneshot
 
 service qseecomd /system/bin/qseecomd
-    disabled
     class core
     user root
     group root

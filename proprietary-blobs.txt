@@ -240,6 +240,35 @@ etc/firmware/adsp.b11
 etc/firmware/adsp.b12
 etc/firmware/adsp.mdt
 
+# Firmwares
+etc/firmware/a225_pfp.fw
+etc/firmware/a225_pm4.fw
+etc/firmware/a225p5_pm4.fw
+etc/firmware/a300_pfp.fw
+etc/firmware/a300_pm4.fw
+etc/firmware/cmnlib.b00
+etc/firmware/cmnlib.b01
+etc/firmware/cmnlib.b02
+etc/firmware/cmnlib.b03
+etc/firmware/cmnlib.mdt
+etc/firmware/dxhdcp2.b00
+etc/firmware/dxhdcp2.b01
+etc/firmware/dxhdcp2.b02
+etc/firmware/dxhdcp2.b03
+etc/firmware/dxhdcp2.mdt
+etc/firmware/keymaster.b00
+etc/firmware/keymaster.b01
+etc/firmware/keymaster.b02
+etc/firmware/keymaster.b03
+etc/firmware/keymaster.mdt
+etc/firmware/leia_pfp_470.fw
+etc/firmware/leia_pm4_470.fw
+etc/firmware/widevine.b00
+etc/firmware/widevine.b01
+etc/firmware/widevine.b02
+etc/firmware/widevine.b03
+etc/firmware/widevine.mdt
+
 # DRM
 bin/qseecomd
 vendor/lib/libQSEEComAPI.so
@@ -248,6 +277,7 @@ vendor/lib/libdrmdiag.so
 vendor/lib/libdrmfs.so
 vendor/lib/libdrmtime.so
 vendor/lib/librpmb.so
+vendor/lib/librmp.so
 vendor/lib/libssd.so
 vendor/lib/libwvdrm_L3.so
 vendor/lib/libwvm.so
@@ -354,10 +384,8 @@ lib/libril.so
 etc/qxdm/VoLTE_V3_NO_L2.cfg
 etc/qxdm/VoLTE_V3_SRVCC.cfg
 etc/qxdm/WLAN_V1.cfg
-etc/permissions/qcnvitems.xml
-etc/permissions/qcrilhook.xml
-framework/qcnvitems.jar
-framework/qcrilhook.jar
+#etc/permissions/qcnvitems.xml
+#etc/permissions/qcrilhook.xml
 
 # Sensors
 bin/sensors.qcom

@@ -158,9 +158,9 @@ PRODUCT_BOOT_JARS += qcmediaplayer
 PRODUCT_PACKAGES += \
     power.msm8974
 
-# Keystore, buggy currently
-#PRODUCT_PACKAGES += \
-#    keystore.msm8974
+# Keystore
+PRODUCT_PACKAGES += \
+    keystore.msm8974
 
 # Thermal config
 PRODUCT_COPY_FILES += \

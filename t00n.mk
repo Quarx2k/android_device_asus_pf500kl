@@ -207,6 +207,7 @@ PRODUCT_PACKAGES += \
     ethertypes \
     curl \
     libnl_2 \
+    libxml \
     libbson
 
 # Set default USB interface

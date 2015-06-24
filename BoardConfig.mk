@@ -163,8 +163,8 @@ EXTENDED_FONT_FOOTPRINT := true
 # Time services
 BOARD_USES_QC_TIME_SERVICES := true
 
-# Radio
-BOARD_RIL_CLASS := ../../../device/asus/t00n/ril/
+# Radio @Deprecated after 5.0 release
+#BOARD_RIL_CLASS := ../../../device/asus/t00n/ril/
 
 # SELinux policies
 # qcom sepolicy

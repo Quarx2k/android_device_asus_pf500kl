@@ -386,6 +386,13 @@ etc/qxdm/VoLTE_V3_SRVCC.cfg
 etc/qxdm/WLAN_V1.cfg
 #etc/permissions/qcnvitems.xml
 #etc/permissions/qcrilhook.xml
+lib/libmdmdetect.so
+vendor/lib/libperipheral_client.so
+vendor/lib/libqmi_client_helper.so
+vendor/lib/libqti-perfd-client.so
+vendor/lib/libsmemlog.so
+vendor/lib/libsystem_health_mon.so
+
 
 # Sensors
 bin/sensors.qcom
@@ -403,6 +410,7 @@ vendor/lib/libAKM8963.so
 lib/libinvensense_hal_514_AKM_B.so
 lib/libinvensense_hal_514_AMI306_M.so
 lib/libinvensense_hal_AKM_M.so
+vendor/lib/hw/activity_recognition.msm8974.so
 
 # Thermal
 bin/thermal-engine

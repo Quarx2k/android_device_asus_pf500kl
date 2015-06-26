@@ -392,7 +392,7 @@ vendor/lib/libqmi_client_helper.so
 vendor/lib/libqti-perfd-client.so
 vendor/lib/libsmemlog.so
 vendor/lib/libsystem_health_mon.so
-
+vendor/lib/libxml.so
 
 # Sensors
 bin/sensors.qcom

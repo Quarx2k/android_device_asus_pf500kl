@@ -206,6 +206,7 @@ etc/firmware/venus.b02
 etc/firmware/venus.b03
 etc/firmware/venus.b04
 etc/firmware/venus.mdt
+etc/firmware/venus.mbn
 
 # Pronto firmwae
 etc/firmware/wcnss.b01
@@ -269,9 +270,19 @@ etc/firmware/widevine.b02
 etc/firmware/widevine.b03
 etc/firmware/widevine.mdt
 
+# Signedrompatch fw
+etc/firmware/Signedrompatch_v20.bin
+etc/firmware/Signedrompatch_v21.bin
+etc/firmware/Signedrompatch_v24.bin
+etc/firmware/Signedrompatch_v30.bin
+
+
+
 # DRM
 bin/qseecomd
 vendor/lib/libQSEEComAPI.so
+vendor/lib/libsecureui_svcsock.so
+vendor/lib/libsecureui.so
 lib/libdrmdecrypt.so
 vendor/lib/libdrmdiag.so
 vendor/lib/libdrmfs.so

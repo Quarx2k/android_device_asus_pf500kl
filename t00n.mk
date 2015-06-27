@@ -273,7 +273,8 @@ PRODUCT_COPY_FILES += \
 
 # Others
 PRODUCT_COPY_FILES += \
-    $(LOCAL_PATH)/configs/quipc.conf:system/etc/quipc.conf
+    $(LOCAL_PATH)/configs/quipc.conf:system/etc/quipc.conf \
+    $(LOCAL_PATH)/configs/init.asus.thermal_conf.sh:system/etc/init.asus.thermal_conf.sh
 
 # OTA
 PRODUCT_COPY_FILES += \

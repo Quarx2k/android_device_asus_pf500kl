@@ -191,13 +191,13 @@ vendor/lib/soundfx/libqcbassboost.so
 vendor/lib/soundfx/libqcreverb.so
 vendor/lib/soundfx/libqcvirt.so
 vendor/lib/libaudcal.so
-etc/Bluetooth_cal.acdb
-etc/General_cal.acdb
-etc/Global_cal.acdb
-etc/Handset_cal.acdb
-etc/Hdmi_cal.acdb
-etc/Headset_cal.acdb
-etc/Speaker_cal.acdb
+etc/acdbdata/PF500KL/PF500KL_Bluetooth_cal.acdb
+etc/acdbdata/PF500KL/PF500KL_General_cal.acdb
+etc/acdbdata/PF500KL/PF500KL_Global_cal.acdb
+etc/acdbdata/PF500KL/PF500KL_Handset_cal.acdb
+etc/acdbdata/PF500KL/PF500KL_Hdmi_cal.acdb
+etc/acdbdata/PF500KL/PF500KL_Headset_cal.acdb
+etc/acdbdata/PF500KL/PF500KL_Speaker_cal.acdb
 
 # Venus (media) firmware
 etc/firmware/venus.b00

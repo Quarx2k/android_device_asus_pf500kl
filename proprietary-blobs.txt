@@ -406,20 +406,14 @@ vendor/lib/libconfigdb.so
 
 # Sensors
 bin/sensors.qcom
-vendor/lib/hw/sensors.Pad.msm8974.so
+lib/hw/sensors.Pad.msm8974.so
 lib/hw/sensors.msm8974.so
-lib/hw/sensors.514_AKM_B.msm8974.so
-lib/hw/sensors.514_AMI_M.msm8974.so
 lib/hw/sensors.ADSP.msm8974.so
-lib/hw/sensors.AKM_M.msm8974.so
 lib/libcmdthread.so
 vendor/lib/libsensor1.so
 vendor/lib/libsensor_reg.so
 etc/sensor_def_qcomdev.conf
 vendor/lib/libAKM8963.so
-lib/libinvensense_hal_514_AKM_B.so
-lib/libinvensense_hal_514_AMI306_M.so
-lib/libinvensense_hal_AKM_M.so
 vendor/lib/hw/activity_recognition.msm8974.so
 
 # Thermal

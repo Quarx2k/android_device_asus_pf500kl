@@ -292,4 +292,8 @@
     com.android.internal.os.DeviceKeyHandler interface. -->
     <string name="config_deviceKeyHandlerClass" translatable="false">com.cyanogenmod.settings.device.KeyHandler</string>
 
+    <!-- Performance profiles -->
+    <string name="config_perf_profile_prop">powerhal</string>
+    <string name="config_perf_profile_default_entry">1</string>
+
 </resources>

@@ -163,6 +163,9 @@ EXTENDED_FONT_FOOTPRINT := true
 # Time services
 BOARD_USES_QC_TIME_SERVICES := true
 
+# PowerHal
+TARGET_POWERHAL_VARIANT := qcom
+
 # SELinux policies
 # qcom sepolicy
 include device/qcom/sepolicy/sepolicy.mk

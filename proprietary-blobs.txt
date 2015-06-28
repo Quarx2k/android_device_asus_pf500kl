@@ -389,9 +389,6 @@ vendor/lib/libnetmgr.so
 vendor/lib/libril-qc-qmi-1.so
 vendor/lib/libril-qcril-hook-oem.so
 lib/libril.so
-etc/qxdm/VoLTE_V3_NO_L2.cfg
-etc/qxdm/VoLTE_V3_SRVCC.cfg
-etc/qxdm/WLAN_V1.cfg
 #etc/permissions/qcnvitems.xml
 #etc/permissions/qcrilhook.xml
 lib/libmdmdetect.so

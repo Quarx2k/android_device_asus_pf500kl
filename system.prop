@@ -6,7 +6,7 @@ ro.sf.lcd_density=440
 
 # Ril
 rild.libpath=/vendor/lib/libril-qc-qmi-1.so
-ro.vendor.extension_library=/vendor/lib/libqti-perfd-client.so
+ro.vendor.extension_library=libqti-perfd-client.so
 rild.libargs=-d /dev/smd0
 persist.rild.nitz_plmn=
 persist.rild.nitz_long_ons_0=

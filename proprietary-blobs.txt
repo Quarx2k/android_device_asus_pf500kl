@@ -167,7 +167,7 @@ vendor/lib/libbtnv.so
 
 # Perf
 bin/mpdecision
-#vendor/lib/libqti-perfd-client.so
+vendor/lib/libqti-perfd-client.so
 
 # ADSP
 bin/adsprpcd
@@ -388,7 +388,6 @@ bin/rmt_storage
 vendor/lib/libnetmgr.so
 vendor/lib/libril-qc-qmi-1.so
 vendor/lib/libril-qcril-hook-oem.so
-vendor/lib/libqc-opt.so
 lib/libril.so
 etc/qxdm/VoLTE_V3_NO_L2.cfg
 etc/qxdm/VoLTE_V3_SRVCC.cfg
@@ -398,7 +397,6 @@ etc/qxdm/WLAN_V1.cfg
 lib/libmdmdetect.so
 vendor/lib/libperipheral_client.so
 vendor/lib/libqmi_client_helper.so
-vendor/lib/libqti-perfd-client.so
 vendor/lib/libsmemlog.so
 vendor/lib/libsystem_health_mon.so
 vendor/lib/libxml.so

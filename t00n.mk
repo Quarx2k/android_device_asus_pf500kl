@@ -164,11 +164,7 @@ PRODUCT_PACKAGES += \
 
 # Thermal config
 PRODUCT_COPY_FILES += \
-    $(LOCAL_PATH)/configs/thermal-engine-8974.conf:system/etc/thermal-engine-8974.conf \
-    $(LOCAL_PATH)/configs/thermald-8974.conf:system/etc/thermald-8974.conf \
-    $(LOCAL_PATH)/configs/thermald-disabled-mode.conf:system/etc/thermald-disabled-mode.conf \
-    $(LOCAL_PATH)/configs/thermald-pad.conf:system/etc/thermald-pad.conf \
-    $(LOCAL_PATH)/configs/thermald-ultimate-mode.conf:system/etc/thermald-ultimate-mode.conf
+    $(LOCAL_PATH)/configs/thermal-engine-8974.conf:system/etc/thermal-engine-8974.conf
 
 # USB
 PRODUCT_PACKAGES += \

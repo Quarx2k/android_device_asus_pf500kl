@@ -184,6 +184,10 @@ on boot
     # MDP idle notifier
     chown system graphics /sys/class/graphics/fb0/idle_time
     chmod 0664 /sys/class/graphics/fb0/idle_time
+    chown system graphics /sys/class/graphics/fb1/idle_time
+    chmod 0664 /sys/class/graphics/fb1/idle_time
+    chown system graphics /sys/class/graphics/fb1/hpd
+    chmod 0664 /sys/devices/virtual/graphics/fb1/hpd
 
     # Subsytem Restart
     #adsp

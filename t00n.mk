@@ -204,7 +204,8 @@ PRODUCT_PACKAGES += \
     curl \
     libnl_2 \
     libxml \
-    libbson
+    libbson \
+    HdmiMonitor
 
 # Set default USB interface
 PRODUCT_DEFAULT_PROPERTY_OVERRIDES += \

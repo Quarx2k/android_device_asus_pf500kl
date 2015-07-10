@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">HdmiMonitor</string>
+
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
+    <string name="hdmi_connected">Micro HDMI connected</string>
+    <string name="hdmi_connected_text">Display screen via micro-HDMI</string>
+</resources>

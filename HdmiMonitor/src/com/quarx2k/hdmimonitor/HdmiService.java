@@ -21,6 +21,8 @@ import java.io.IOException;
 public class HdmiService extends Service {
     private static Handler mHandler = null;
     private Runnable mRunnable;
+    private Notification.Builder builder = null;
+    private NotificationManager manager = null;
 
     @Override
     public IBinder onBind(Intent intent) {
@@ -29,7 +31,7 @@ public class HdmiService extends Service {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        HandlerThread mThread = new HandlerThread("SyncThread");
+        HandlerThread mThread = new HandlerThread("Thread");
         mThread.start();
         mHandler = new Handler(mThread.getLooper());
         if (mRunnable == null) {
@@ -40,7 +42,6 @@ public class HdmiService extends Service {
                         @Override
                         public void run() {
                             checkHdmi();
-                            Log.e("XXX", "check");
                             mHandler.postDelayed(mRunnable, 2 * 1000);
                         }
                     });
@@ -85,14 +86,15 @@ public class HdmiService extends Service {
         }
     }
     private void showNotify(Boolean enable) {
-        Notification.Builder builder =
-                new Notification.Builder(this)
-                        .setSmallIcon(R.drawable.hdmi)
-                        .setContentTitle(getString(R.string.hdmi_connected))
-                        .setContentText(getString(R.string.hdmi_connected_text))
-                        .setOngoing(true)
-                        .setAutoCancel(false);
-        NotificationManager manager = (NotificationManager) HdmiService.this.getSystemService(Context.NOTIFICATION_SERVICE);
+        if (builder == null || manager == null) {
+                        builder = new Notification.Builder(this)
+                                        .setSmallIcon(R.drawable.hdmi)
+                                        .setContentTitle(getString(R.string.hdmi_connected))
+                                        .setContentText(getString(R.string.hdmi_connected_text))
+                                        .setOngoing(true)
+                                        .setAutoCancel(false);
+                        manager = (NotificationManager) HdmiService.this.getSystemService(Context.NOTIFICATION_SERVICE);
+        }
         if (enable) {
             manager.notify(1, builder.build());
         } else {

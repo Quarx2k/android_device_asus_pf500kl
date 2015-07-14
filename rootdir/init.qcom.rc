@@ -352,7 +352,6 @@ on property:service.bootanim.exit=1
     write /sys/module/msm_pm/modes/cpu1/retention/idle_enabled 1
     write /sys/module/msm_pm/modes/cpu2/retention/idle_enabled 1
     write /sys/module/msm_pm/modes/cpu3/retention/idle_enabled 1
-
     write /sys/devices/system/cpu/cpu0/cpufreq/scaling_min_freq 300000
     write /sys/devices/system/cpu/cpu1/cpufreq/scaling_min_freq 300000
     write /sys/devices/system/cpu/cpu2/cpufreq/scaling_min_freq 300000
@@ -391,6 +390,9 @@ on property:init.svc.bootanim=stopped
 on property:init.svc.bootanim=running
     # Switch to NOOP while booting
     write /sys/block/mmcblk0/queue/scheduler noop
+    # Disable audio uart, enable maxxaudio
+    write /proc/driver/audio_debug 0
+    write /proc/driver/audio_debug "maxxaudio 1"
 
 service rmt_storage /system/bin/rmt_storage
     class core

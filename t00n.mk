@@ -73,7 +73,8 @@ PRODUCT_PACKAGES += \
     setup_fs
 
 PRODUCT_PACKAGES += \
-    libxml2
+    libxml2 \
+    librmnetctl
 
 # NFC packages
 PRODUCT_PACKAGES += \

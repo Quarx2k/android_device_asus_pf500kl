@@ -388,7 +388,6 @@ bin/rmt_storage
 vendor/lib/libnetmgr.so
 vendor/lib/libril-qc-qmi-1.so
 vendor/lib/libril-qcril-hook-oem.so
-lib/libril.so
 #etc/permissions/qcnvitems.xml
 #etc/permissions/qcrilhook.xml
 lib/libmdmdetect.so

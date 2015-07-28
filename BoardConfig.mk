@@ -53,7 +53,11 @@ TARGET_KERNEL_SOURCE := kernel/asus/msm8974
 # QCOM hardware
 BOARD_USES_QCOM_HARDWARE := true
 QC_PROP_ROOT := vendor/qcom/proprietary
+PROTOBUF_SUPPORTED := true
 TARGET_RIL_VARIANT := caf
+TARGET_PROVIDES_WCNSS_QMI := true
+TARGET_HAVE_QC_PERF := false
+BOARD_USES_QCNE := true
 
 # Charger
 BOARD_CHARGER_RES := device/asus/t00n/charger/images

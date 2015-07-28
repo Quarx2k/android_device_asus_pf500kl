@@ -15,7 +15,7 @@
 #
 
 ifneq ($(QCPATH),)
-$(call inherit-product-if-exists, $(QCPATH)/common/config/device-vendor.mk)
+$(call inherit-product-if-exists, $(LOCAL_PATH)/proprietary.mk)
 endif
 
 # overlays
@@ -309,5 +309,5 @@ $(call inherit-product-if-exists, frameworks/native/build/phone-xxhdpi-2048-dalv
 $(call inherit-product-if-exists, frameworks/native/build/phone-xxhdpi-2048-hwui-memory.mk)
 
 # call the proprietary setup
-$(call inherit-product-if-exists, vendor/asus/t00n/t00n-vendor.mk)
+$(call inherit-product, vendor/asus/t00n/t00n-vendor.mk)
 

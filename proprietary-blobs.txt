@@ -1,8 +1,6 @@
 # Camera
 lib/hw/camera.msm8974.so
 bin/mm-qcamera-daemon
-bin/config.dat
-bin/Denoice_data.ncf
 bin/USB_Camera_Update/fw_update.sh
 bin/USB_Camera_Update/rts_usb
 lib/libmmcamera_interface.so
@@ -17,6 +15,16 @@ lib/libarcsoft_sensorndk.so
 lib/libcameraap.so
 lib/libxditk_AT.so
 lib/ditCL.bin
+lib/libAFE.so
+lib/libcamera_defocus.so
+lib/libcamera_pano.so
+lib/libchromatix_imx135_liveshot.so
+lib/libfilterfw.so
+lib/libfilterpack_facedetect.so
+lib/libfilterpack_imageproc.so
+lib/libmm-qcamera.so
+lib/libmorpho_panorama_gp.so
+lib/libsphere3.so
 vendor/lib/libjpegehw.so
 vendor/lib/libmmcamera2_c2d_module.so
 vendor/lib/libmmcamera2_cpp_module.so
@@ -154,6 +162,38 @@ vendor/lib/libchromatix_skuf_ov5648_p5v23c_common.so
 vendor/lib/libchromatix_skuf_ov5648_p5v23c_default_video.so
 vendor/lib/libchromatix_skuf_ov5648_p5v23c_preview.so
 vendor/lib/libchromatix_skuf_ov5648_p5v23c_snapshot.so
+vendor/lib/libactuator_dw9714.so
+vendor/lib/libactuator_dw9714_camcorder.so
+vendor/lib/libactuator_dw9714_camera.so
+vendor/lib/libactuator_dw9716.so
+vendor/lib/libactuator_dw9716_camcorder.so
+vendor/lib/libactuator_dw9716_camera.so
+vendor/lib/libactuator_iu074.so
+vendor/lib/libactuator_iu074_camcorder.so
+vendor/lib/libactuator_iu074_camera.so
+vendor/lib/libactuator_ov12830.so
+vendor/lib/libactuator_ov12830_camcorder.so
+vendor/lib/libactuator_ov12830_camera.so
+vendor/lib/libactuator_ov8825.so
+vendor/lib/libactuator_ov8825_camcorder.so
+vendor/lib/libactuator_ov8825_camera.so
+vendor/lib/libactuator_rohm_bu64243gwz.so
+vendor/lib/libactuator_rohm_bu64243gwz_camcorder.so
+vendor/lib/libactuator_rohm_bu64243gwz_camera.so
+vendor/lib/libarcsoft_panorama_burstcapture.so
+vendor/lib/libchromatix_imx132_common.so
+vendor/lib/libchromatix_imx132_default_video.so
+vendor/lib/libchromatix_imx132_liveshot.so
+vendor/lib/libchromatix_imx132_preview.so
+vendor/lib/libchromatix_imx132_snapshot.so
+vendor/lib/libjpegdhw.so
+vendor/lib/libmmcamera2_frame_algorithm.so
+vendor/lib/libmmcamera2_is.so
+vendor/lib/libmmcamera_imx132.so
+vendor/lib/libxditk_DIT_MSM8916.so
+vendor/lib/libxditk_DIT_Qualcomm.so
+vendor/lib/libxditk_mmcamera2_stats_algorithm.so
+vendor/etc/style.cng
 
 # Camera firmware
 etc/firmware/cpp_firmware_v1_1_1.fw

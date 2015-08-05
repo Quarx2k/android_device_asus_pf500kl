@@ -1,0 +1,5 @@
+
+
+Build using: ndk-build NDK_PROJECT_PATH=. APP_BUILD_SCRIPT=./Android.mk
+
+viewmem will output to /jni/libs/armeabi/getroot

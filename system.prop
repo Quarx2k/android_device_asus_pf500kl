@@ -33,6 +33,7 @@ conn.connectivity_change_delay=0
 DEVICE_PROVISIONED=1
 rol.ril.ext.ecclist=112,911,999,110,122,119,120,000,08,118
 persist.radio.csg_info_avlbl=1
+ro.telephony.default_network=9
 
 # gps
 persist.gps.qc_nlp_in_use=0

@@ -19,10 +19,9 @@ on property:sys.usb.config=charging
 on property:sys.usb.config=rndis
     write /sys/class/android_usb/android0/enable 0
     write /sys/class/android_usb/android0/idVendor 0B05
-    write /sys/class/android_usb/android0/idProduct 7775
+    write /sys/class/android_usb/android0/idProduct 7774
     write /sys/class/android_usb/android0/functions ${sys.usb.config}
     write /sys/class/android_usb/android0/enable 1
-    start adbd
     setprop sys.usb.state ${sys.usb.config}
 
 on property:sys.usb.config=rndis,adb

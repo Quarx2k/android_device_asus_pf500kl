@@ -10,6 +10,9 @@ on init
     # Set permissions for persist partition
     mkdir /persist 0771 system system
     mkdir /firmware 0771 system system
+    mkdir /ADF 0771 system system
+    mkdir /asdf 0771 system system
+
     mkdir /data/asusdata 0755 root shell
     mkdir /data/asusfw 0660 root shell
 
@@ -202,6 +205,9 @@ on boot
     write /sys/module/lowmemorykiller/parameters/vmpressure_file_min 53059
 
 on post-fs-data
+
+    start usb-serial
+
     mkdir /data/media 0770 media_rw media_rw
 
     # NFC: create data/nfc for nv storage
@@ -289,6 +295,7 @@ on post-fs-data
     start thermal-serivce
 on fs
     mount_all fstab.qcom
+
     mkdir /dev/usb-ffs 0770 shell shell
     mkdir /dev/usb-ffs/adb 0770 shell shell
     mount functionfs adb /dev/usb-ffs/adb uid=2000,gid=2000
@@ -424,6 +431,11 @@ service sensors /system/bin/sensors.qcom
     class late_start
     user root
     group root
+
+service usb-serial /system/bin/sh /init.qcom.usb.sh
+    user root
+    oneshot
+    disabled
 
 # Adjust socket buffer to enlarge TCP receive window for high bandwidth
 # but only if ro.data.large_tcp_window_size property is set.

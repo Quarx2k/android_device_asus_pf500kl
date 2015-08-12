@@ -84,7 +84,6 @@ BOARD_HARDWARE_CLASS := device/asus/t00n/cmhw/
 BOARD_CHARGER_RES := device/asus/t00n/charger/images
 
 # Graphics
-BOARD_EGL_CFG := device/asus/t00n/configs/egl.cfg
 USE_OPENGL_RENDERER := true
 TARGET_USES_C2D_COMPOSITION := true
 TARGET_USES_ION := true

@@ -204,6 +204,7 @@ PRODUCT_PACKAGES += \
     curl \
     libnl_2 \
     libxml \
+    libtinyxml \
     libbson \
     HdmiMonitor
 

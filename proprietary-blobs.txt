@@ -419,6 +419,7 @@ lib/hw/sensors.ADSP.msm8974.so
 lib/libcmdthread.so
 vendor/lib/libsensor1.so
 vendor/lib/libsensor_reg.so
+vendor/lib/libAKM8963.so
 
 # Thermal
 bin/thermal-engine

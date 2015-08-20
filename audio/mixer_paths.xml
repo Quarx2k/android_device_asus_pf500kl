@@ -32,7 +32,7 @@
     <ctl name="RX4 Digital Volume" value="86" />
     <ctl name="RX5 Digital Volume" value="86" />
     <ctl name="RX6 Digital Volume" value="86" />
-    <ctl name="RX7 Digital Volume" value="86" />
+    <ctl name="RX7 Digital Volume" value="86" /> <!-- Speaker -->
     <ctl name="ADC1 Volume" value="19" />
     <ctl name="ADC2 Volume" value="19" />
     <ctl name="ADC3 Volume" value="0" />
@@ -1047,6 +1047,7 @@
 
     <path name="voice-speaker">
         <path name="speaker" />
+        <ctl name="RX7 Digital Volume" value="110" /> <!-- Increase voice-speaker -->
         <ctl name="COMP0 Switch" value="1" />
     </path>
 

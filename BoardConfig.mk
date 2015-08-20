@@ -19,7 +19,6 @@
 
 # Vendor Init
 TARGET_OTA_ASSERT_DEVICE := t00n,t00d,ASUS_T00N,ASUS_T00D
-TARGET_UNIFIED_DEVICE := true
 TARGET_INIT_VENDOR_LIB := libinit_msm
 TARGET_LIBINIT_DEFINES_FILE := device/asus/t00n/init/init_asus.c
 

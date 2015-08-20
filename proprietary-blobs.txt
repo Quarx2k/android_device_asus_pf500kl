@@ -169,6 +169,7 @@ etc/firmware/venus.mdt
 etc/firmware/venus.mbn
 
 # Pronto firmwae
+etc/firmware/wcnss.b00
 etc/firmware/wcnss.b01
 etc/firmware/wcnss.b02
 etc/firmware/wcnss.b04

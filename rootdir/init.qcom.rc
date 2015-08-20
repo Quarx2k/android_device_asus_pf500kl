@@ -92,14 +92,6 @@ on boot
     chmod system system /sys/class/leds/wled:backlight/brightness
     chmod 0666 /sys/class/leds/wled:backlight/brightness
 
-    # Sensors
-    chown system system /sys/bus/i2c/devices/6-001c/al3010/power_state
-    chown system system /sys/bus/i2c/devices/6-001c/al3010/flush
-    chown system system /sys/bus/i2c/devices/6-001c/al3010/lux
-    chown system system /sys/bus/i2c/devices/6-001c/al3010/mode
-    chown system system /sys/bus/i2c/devices/6-001c/al3010/range
-
-    # Bluetooth
     chmod 0660 /dev/ttyHS2
     chown bluetooth bluetooth /dev/ttyHS2
 
@@ -436,9 +428,14 @@ service netmgrd /system/bin/netmgrd
 
 # QCOM sensor
 service sensors /system/bin/sensors.qcom
-    class late_start
+    class core
     user root
     group root
+    disabled
+service qcom-sensor-sh /system/bin/sh /init.qcom.sensor.sh
+    class core
+    user root
+    oneshot
 
 service usb-serial /system/bin/sh /init.qcom.usb.sh
     user root

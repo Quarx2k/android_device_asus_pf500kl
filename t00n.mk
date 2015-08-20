@@ -133,8 +133,7 @@ PRODUCT_COPY_FILES += \
     frameworks/av/media/libstagefright/data/media_codecs_google_telephony.xml:system/etc/media_codecs_google_telephony.xml \
     frameworks/av/media/libstagefright/data/media_codecs_google_video.xml:system/etc/media_codecs_google_video.xml \
     $(LOCAL_PATH)/configs/media_codecs.xml:system/etc/media_codecs.xml \
-    $(LOCAL_PATH)/configs/media_profiles.xml:system/etc/media_profiles.xml \
-    $(LOCAL_PATH)/configs/mixer_paths.xml:system/etc/mixer_paths.xml
+    $(LOCAL_PATH)/configs/media_profiles.xml:system/etc/media_profiles.xml
 
 # Media
 PRODUCT_PACKAGES += \
@@ -273,7 +272,6 @@ PRODUCT_COPY_FILES += \
 
 # Others
 PRODUCT_COPY_FILES += \
-    $(LOCAL_PATH)/configs/quipc.conf:system/etc/quipc.conf \
     $(LOCAL_PATH)/configs/init.asus.thermal_conf.sh:system/etc/init.asus.thermal_conf.sh \
     $(LOCAL_PATH)/configs/init.qcom.bt.sh:system/etc/init.qcom.bt.sh
 

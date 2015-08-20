@@ -67,3 +67,6 @@ mm.enable.qcom_parser=37491
 
 #Other
 persist.sys.enableSMMI=2
+
+#Fix for AsusCamera
+ro.epad.mount_point.microsd = /storage/sdcard1

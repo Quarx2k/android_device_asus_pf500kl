@@ -14,4 +14,4 @@ else if [[ "$model" == *"$PF500KL"* ]]; then
 fi
 fi
 
-umount /data/asusfw
+umount /asusfw

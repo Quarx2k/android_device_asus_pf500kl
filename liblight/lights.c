@@ -42,6 +42,7 @@ static pthread_mutex_t g_lock = PTHREAD_MUTEX_INITIALIZER;
 
 static struct light_state_t g_battery;
 static struct light_state_t g_notification;
+static struct light_state_t g_attention;
 static int g_charge_led_active;
 static int g_last_button_brightness;
 
@@ -146,7 +147,7 @@ set_light_locked(struct light_device_t *dev, struct light_state_t *state)
 {
     int err = 0;
     int onMS, offMS;
-    unsigned int colorRGB;
+    int red, green;
 
     if (state == NULL) {
         write_int(RED_BLINK_FILE, 0);
@@ -168,7 +169,8 @@ set_light_locked(struct light_device_t *dev, struct light_state_t *state)
             break;
     }
 
-    colorRGB = state->color;
+    red = (state->color >> 16) & 0xFF;
+    green = (state->color >> 8) & 0xFF;
 
     if (onMS > 0 && offMS > 0) {
         char dutystr[(3+1)*LED_DT_DUTY_STEPS+1];
@@ -188,15 +190,18 @@ set_light_locked(struct light_device_t *dev, struct light_state_t *state)
             p += sprintf(p, ",%d", 100 - min((100*n*stepMS)/LED_DT_RAMP_MS, 100));
         }
         p += sprintf(p, "\n");
-        err = write_int(LED_RED_RAMP_STEP_FILE, stepMS);
-        err = write_int(LED_GREEN_RAMP_STEP_FILE, stepMS);
-        err = write_string(LED_RED_DUTY_FILE, dutystr);
-        err = write_string(LED_GREEN_DUTY_FILE, dutystr);
-        err = write_int(RED_BLINK_FILE, 1);
-	err = write_int(GREEN_BLINK_FILE, 1);
+	if (red > 0) {
+            err = write_int(LED_RED_RAMP_STEP_FILE, stepMS);
+            err = write_string(LED_RED_DUTY_FILE, dutystr);
+            err = write_int(RED_BLINK_FILE, 1);
+	} else {
+            err = write_int(LED_GREEN_RAMP_STEP_FILE, stepMS);
+            err = write_string(LED_GREEN_DUTY_FILE, dutystr);
+            err = write_int(GREEN_BLINK_FILE, 1);
+        }
     } else {
-        write_int(RED_LED_FILE, (colorRGB >> 16) & 0xFF);
-        write_int(GREEN_LED_FILE, (colorRGB >> 8) & 0xFF);
+        write_int(RED_LED_FILE, red);
+        write_int(GREEN_LED_FILE, green);
     }
     return err;
 }
@@ -206,13 +211,13 @@ static int
 handle_light_locked(struct light_device_t *dev)
 {
     int retval = 0;
-    int show_charge = g_charge_led_active;
-
-    if (is_lit(&g_notification)) {
-        retval = set_light_locked(dev, &g_notification);
-        show_charge = 0;
+    set_light_locked(dev, NULL);
+    if (is_lit(&g_attention)) {
+       retval = set_light_locked(dev, &g_attention);
+    } else if (is_lit(&g_notification)) {
+       retval = set_light_locked(dev, &g_notification);
     } else {
-        retval = set_light_locked(dev, &g_battery);
+       retval = set_light_locked(dev, &g_battery);
     }
 
     return retval;
@@ -247,7 +252,20 @@ static int
 set_light_attention(struct light_device_t* dev,
         struct light_state_t const* state)
 {
-    /* we don't have an attention light */
+    pthread_mutex_lock(&g_lock);
+
+    g_attention = *state;
+    if (state->flashMode == LIGHT_FLASH_HARDWARE) {
+        if (g_attention.flashOnMS > 0 && g_attention.flashOffMS == 0) {
+            g_attention.flashMode = LIGHT_FLASH_NONE;
+        }
+    } else if (state->flashMode == LIGHT_FLASH_NONE) {
+        g_attention.color = 0;
+    }
+    set_light_locked(dev, state);
+
+    pthread_mutex_unlock(&g_lock);
+
     return 0;
 }
 

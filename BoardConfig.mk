@@ -53,6 +53,9 @@ TARGET_KERNEL_CONFIG := pf500kl-perf_defconfig
 BOARD_KERNEL_CMDLINE := console=ttyHSL0,115200,n8 androidboot.hardware=qcom user_debug=31 msm_rtb.filter=0x37 ehci-hcd.park=3 androidboot.selinux=enforcing
 TARGET_KERNEL_SOURCE := kernel/asus/msm8974
 
+# Enable dex-preoptimization to speed up first boot sequence
+WITH_DEXPREOPT := true
+
 # QCOM hardware
 BOARD_USES_QCOM_HARDWARE := true
 QC_PROP_ROOT := vendor/qcom/proprietary

@@ -137,6 +137,7 @@ BOARD_USERDATAIMAGE_PARTITION_SIZE := 13271448576
 
 # Recovery
 TARGET_RECOVERY_FSTAB := device/asus/t00n/recovery.fstab
+TARGET_INCREMENTAL_OTA_VERBATIM_FILES := /system/priv-app/OneTimeInitializer/OneTimeInitializer.apk
 
 # Twrp
 TARGET_USE_CUSTOM_LUN_FILE_PATH := "/sys/devices/virtual/android_usb/android0/f_mass_storage/lun%d/file"

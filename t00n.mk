@@ -277,12 +277,11 @@ PRODUCT_COPY_FILES += \
 
 # OTA
 PRODUCT_COPY_FILES += \
-    $(LOCAL_PATH)/fixup.sh:fixup.sh
-
-#    $(LOCAL_PATH)/firmware-update/NON-HLOS.bin:firmware-update/NON-HLOS.bin
-#    $(LOCAL_PATH)/firmware-update/asusfw.img:firmware-update/asusfw.img
-#    $(LOCAL_PATH)/firmware-update/tz.mbn:firmware-update/tz.mbn
-#    $(LOCAL_PATH)/firmware-update/rpm.mbn:firmware-update/rpm.mbn
+    $(LOCAL_PATH)/fixup.sh:fixup.sh \
+    $(LOCAL_PATH)/firmware-update/NON-HLOS.bin:firmware-update/NON-HLOS.bin \
+    $(LOCAL_PATH)/firmware-update/asusfw.img:firmware-update/asusfw.img \
+    $(LOCAL_PATH)/firmware-update/tz.mbn:firmware-update/tz.mbn \
+    $(LOCAL_PATH)/firmware-update/rpm.mbn:firmware-update/rpm.mbn
 
 # TS/Keys
 PRODUCT_COPY_FILES += \

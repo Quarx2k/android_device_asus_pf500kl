@@ -173,6 +173,10 @@ PRODUCT_PACKAGES += \
 PRODUCT_PACKAGES += \
     com.cyanogenmod.keyhandler
 
+RODUCT_SYSTEM_SERVER_JARS += com.cyanogenmod.keyhandler
+# never dexopt the keyhandler
+$(call add-product-dex-preopt-module-config,com.cyanogenmod.keyhandler,disable)
+
 # WiFi
 PRODUCT_COPY_FILES += \
     kernel/asus/msm8974/drivers/staging/prima/firmware_bin/WCNSS_cfg.dat:system/etc/firmware/wlan/prima/WCNSS_cfg.dat \

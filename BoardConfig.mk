@@ -146,22 +146,27 @@ BOARD_USERDATAIMAGE_PARTITION_SIZE := 13271448576
 TARGET_RECOVERY_FSTAB := device/asus/t00n/recovery.fstab
 TARGET_INCREMENTAL_OTA_VERBATIM_FILES := /system/priv-app/OneTimeInitializer/OneTimeInitializer.apk /system/priv-app/OneTimeInitializer/arm/OneTimeInitializer.odex 
 
-# Twrp
-TARGET_USE_CUSTOM_LUN_FILE_PATH := "/sys/devices/virtual/android_usb/android0/f_mass_storage/lun%d/file"
-TARGET_RECOVERY_QCOM_RTC_FIX := true
-BOARD_UMS_LUNFILE := /sys/class/android_usb/f_mass_storage/lun0/file
-DEVICE_RESOLUTION := 1920x1080
+# TWRP specific build flags
+TW_THEME := portrait_hdpi
 RECOVERY_GRAPHICS_USE_LINELENGTH := true
+TARGET_RECOVERY_PIXEL_FORMAT := "RGB_565"
+TARGET_USE_CUSTOM_LUN_FILE_PATH := "/sys/devices/virtual/android_usb/android0/f_mass_storage/lun/file"
+TARGET_RECOVERY_QCOM_RTC_FIX := true
+BOARD_UMS_LUNFILE := "/sys/class/android_usb/f_mass_storage/lun0/file"
+BOARD_USE_CUSTOM_RECOVERY_FONT := \"roboto_23x41.h\"
+RECOVERY_SDCARD_ON_DATA := true
+TW_INCLUDE_JB_CRYPTO := false
+TW_NO_SCREEN_BLANK := true
+TW_EXCLUDE_ENCRYPTED_BACKUPS := true
+TW_INCLUDE_L_CRYPTO := true
 TW_EXTERNAL_STORAGE_PATH := "/sdcard"
 TW_EXTERNAL_STORAGE_MOUNT_POINT := "sdcard"
 TW_DEFAULT_EXTERNAL_STORAGE := true
 TW_FLASH_FROM_STORAGE := true
 TW_INTERNAL_STORAGE_PATH := "/data/media"
 TW_INTERNAL_STORAGE_MOUNT_POINT := "data"
-TW_NO_REBOOT_BOOTLOADER := true
-RECOVERY_GRAPHICS_USE_LINELENGTH := true
-RECOVERY_SDCARD_ON_DATA := true
-HAVE_SELINUX := true
+TW_BRIGHTNESS_PATH := "/sys/class/leds/wled:backlight/brightness"
+TW_SECONDARY_BRIGHTNESS_PATH := "/sys/class/leds/lcd-backlight/brightness"
 
 # NFC
 BOARD_NFC_CHIPSET := pn547

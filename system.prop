@@ -29,11 +29,9 @@ ro.qc.sdk.camera.facialproc=true
 #   W or w - warnings
 #   I or i - info
 #
-PRODUCT_PROPERTY_OVERRIDES += \
-    debug.qualcomm.sns.hal=e \
-    debug.qualcomm.sns.daemon=e \
-    debug.qualcomm.sns.libsensor1=e
-
+debug.qualcomm.sns.hal=e
+debug.qualcomm.sns.daemon=e
+debug.qualcomm.sns.libsensor1=e
 #persist.debug.sensors.hal=0
 #persist.debug.ar.hal=e
 

@@ -57,6 +57,7 @@ TARGET_KERNEL_SOURCE := kernel/asus/msm8974
 ifeq ($(HOST_OS),linux)
 WITH_DEXPREOPT := true
 DONT_DEXPREOPT_PREBUILTS := true
+WITH_DEXPREOPT_COMP := false
 endif
 
 # QCOM hardware

@@ -99,7 +99,6 @@ BOARD_CHARGER_RES := device/asus/t00n/charger/images
 
 # Graphics
 USE_OPENGL_RENDERER := true
-TARGET_USES_C2D_COMPOSITION := true
 TARGET_USES_ION := true
 NUM_FRAMEBUFFER_SURFACE_BUFFERS := 3
 

@@ -84,6 +84,17 @@ PRODUCT_PACKAGES += \
     Nfc \
     Tag
 
+# Root
+PRODUCT_PACKAGES += \
+    init.qcom.rc \
+    init.qcom.power.rc \
+    init.recovery.qcom.rc \
+    init.qcom.usb.rc \
+    init.qcom.usb.sh \
+    init.qcom.sensor.sh \
+    ueventd.qcom.rc \
+    fstab.qcom
+
 PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/configs/nfcee_access.xml:system/etc/nfcee_access.xml \
     packages/apps/Nfc/migrate_nfc.txt:system/etc/updatecmds/migrate_nfc.txt \
@@ -271,16 +282,6 @@ PRODUCT_COPY_FILES += \
     frameworks/native/data/etc/android.hardware.ethernet.xml:system/etc/permissions/android.hardware.ethernet.xml \
     external/ant-wireless/antradio-library/com.dsi.ant.antradio_library.xml:system/etc/permissions/com.dsi.ant.antradio_library.xml
 
-# Rootdir
-PRODUCT_COPY_FILES += \
-    $(LOCAL_PATH)/rootdir/fstab.qcom:root/fstab.qcom \
-    $(LOCAL_PATH)/rootdir/init.qcom.rc:root/init.qcom.rc \
-    $(LOCAL_PATH)/rootdir/init.qcom.usb.rc:root/init.qcom.usb.rc \
-    $(LOCAL_PATH)/rootdir/ueventd.qcom.rc:root/ueventd.qcom.rc \
-    $(LOCAL_PATH)/rootdir/init.qcom.usb.sh:root/init.qcom.usb.sh \
-    $(LOCAL_PATH)/rootdir/init.qcom.sensor.sh:root/init.qcom.sensor.sh \
-    $(LOCAL_PATH)/rootdir/init.recovery.qcom.rc:root/init.recovery.qcom.rc \
-
 # Others
 PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/configs/init.asus.thermal_conf.sh:system/etc/init.asus.thermal_conf.sh \
@@ -310,6 +311,10 @@ PRODUCT_PACKAGES += \
     AntHalService \
     com.dsi.ant.antradio_library \
     libantradio
+
+# IO Scheduler
+PRODUCT_PROPERTY_OVERRIDES += \
+    sys.io.scheduler=bfq
 
 # ART
 PRODUCT_PROPERTY_OVERRIDES += \

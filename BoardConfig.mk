@@ -53,11 +53,11 @@ BOARD_KERNEL_CMDLINE := console=ttyHSL0,115200,n8 androidboot.hardware=qcom user
 TARGET_KERNEL_SOURCE := kernel/asus/msm8974
 
 # Enable dex-preoptimization to speed up first boot sequence
-ifeq ($(HOST_OS),linux)
-WITH_DEXPREOPT := true
-DONT_DEXPREOPT_PREBUILTS := true
-WITH_DEXPREOPT_COMP := false
-endif
+#ifeq ($(HOST_OS),linux)
+#WITH_DEXPREOPT := true
+#DONT_DEXPREOPT_PREBUILTS := true
+#WITH_DEXPREOPT_COMP := false
+#endif
 
 # QCOM hardware
 BOARD_USES_QCOM_HARDWARE := true

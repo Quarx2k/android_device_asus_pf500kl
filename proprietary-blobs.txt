@@ -433,12 +433,6 @@ bin/time_daemon
 -vendor/lib/libTimeService.so
 -app/TimeService/TimeService.apk
 
-# Listen service
-vendor/lib/liblistenhardware.so
-vendor/lib/liblistenjni.so
--vendor/lib/liblisten.so
-vendor/lib/liblistensoundmodel.so
-
 # QuickBoot
 -app/QuickBoot/QuickBoot.apk
 

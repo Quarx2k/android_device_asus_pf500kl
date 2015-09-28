@@ -70,7 +70,7 @@ TARGET_PROVIDES_WCNSS_QMI := true
 TARGET_HAVE_QC_PERF := false
 
 # Charger
-BOARD_CHARGER_RES := device/asus/t00n/charger/images
+BOARD_HEALTHD_CUSTOM_CHARGER_RES := device/asus/t00n/charger/images
 
 # Audio
 BOARD_USES_ALSA_AUDIO := true

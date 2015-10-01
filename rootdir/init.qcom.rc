@@ -212,7 +212,7 @@ on post-fs-data
     //Load AsusDebug
     chmod 0777 /proc/asusdebug
     write /proc/asusdebug load
-    write /proc/asusdebug get_lastshutdown_log
+    write /proc/asusdebug get_asdf_log
 
     mkdir /data/media 0770 media_rw media_rw
 

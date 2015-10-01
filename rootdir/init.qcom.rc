@@ -209,6 +209,11 @@ on post-fs-data
 
     start usb-serial
 
+    //Load AsusDebug
+    chmod 0777 /proc/asusdebug
+    write /proc/asusdebug load
+    write /proc/asusdebug get_lastshutdown_log
+
     mkdir /data/media 0770 media_rw media_rw
 
     # NFC: create data/nfc for nv storage

@@ -69,7 +69,8 @@ PRODUCT_PACKAGES += \
 PRODUCT_PACKAGES += \
     make_ext4fs \
     e2fsck \
-    setup_fs
+    setup_fs \
+    mkfs.f2fs
 
 PRODUCT_PACKAGES += \
     libxml2 \

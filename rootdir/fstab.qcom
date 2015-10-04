@@ -11,6 +11,6 @@
 /dev/block/platform/msm_sdcc.1/by-name/misc             /misc                   emmc    defaults                                                                       defaults
 /dev/block/platform/msm_sdcc.1/by-name/asusdata         /data/asusdata          ext4    ro,nosuid,nodev,barrier=1,noauto_da_alloc                                      wait
 /dev/block/platform/msm_sdcc.1/by-name/asusfw           /data/asusfw            ext4    ro,nosuid,nodev,barrier=1,noauto_da_alloc                                      wait
-/dev/block/platform/msm_sdcc.1/by-name/tombstones       /asdf                   ext4    rw,nosuid,nodev,barrier=1,noauto_da_alloc                                      wait
-/dev/block/platform/msm_sdcc.1/by-name/ADF              /ADF                    ext4    rw,nosuid,nodev,barrier=1,noauto_da_alloc                                      wait
+№/dev/block/platform/msm_sdcc.1/by-name/tombstones       /asdf                   ext4    rw,nosuid,nodev,barrier=1,noauto_da_alloc                                      wait
+№/dev/block/platform/msm_sdcc.1/by-name/ADF              /ADF                    ext4    rw,nosuid,nodev,barrier=1,noauto_da_alloc                                      wait
 /dev/block/platform/msm_sdcc.1/by-name/modem            /firmware               vfat    ro,shortname=lower,uid=1000,gid=1000,dmask=227,fmask=337,context=u:object_r:firmware_file:s0        wait

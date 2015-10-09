@@ -200,11 +200,11 @@ include device/qcom/sepolicy/sepolicy.mk
 BOARD_SEPOLICY_DIRS += \
         device/asus/t00n/sepolicy
 
-BOARD_SEPOLICY_UNION += \
-	platform_app.te \
-	nfc.te \
-	tee.te \
-	mpdecision.te
+#BOARD_SEPOLICY_UNION += \
+#	platform_app.te \
+#	nfc.te \
+#	tee.te \
+#	mpdecision.te
 
 # inherit from the proprietary version
 -include vendor/asus/tn00n/BoardConfigVendor.mk

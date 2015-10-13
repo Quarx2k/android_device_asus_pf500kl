@@ -49,7 +49,7 @@ BOARD_KERNEL_PAGESIZE := 2048
 BOARD_KERNEL_SEPARATED_DT := true
 BOARD_MKBOOTIMG_ARGS := --ramdisk_offset 0x02500000 --tags_offset 0x01e00000
 TARGET_KERNEL_CONFIG := pf500kl-perf_defconfig
-BOARD_KERNEL_CMDLINE := console=ttyHSL0,115200,n8 androidboot.hardware=qcom user_debug=31 msm_rtb.filter=0x37 ehci-hcd.park=3 androidboot.selinux=enforcing
+BOARD_KERNEL_CMDLINE := console=ttyHSL0,115200,n8 androidboot.hardware=qcom user_debug=31 msm_rtb.filter=0x37 ehci-hcd.park=3 androidboot.selinux=permissive
 TARGET_KERNEL_SOURCE := kernel/asus/msm8974
 
 # Enable dex-preoptimization to speed up first boot sequence
@@ -128,7 +128,7 @@ TARGET_USES_WCNSS_CTRL := true
 TARGET_USES_QCOM_WCNSS_QMI := true
 WIFI_DRIVER_FW_PATH_STA := "sta"
 WIFI_DRIVER_FW_PATH_AP := "ap"
-CONFIG_EAP_PROXY := qmi
+#CONFIG_EAP_PROXY := qmi
 
 # Filesystem #Fix to real sizes.
 TARGET_USERIMAGES_USE_EXT4 := true
@@ -175,11 +175,13 @@ BOARD_NFC_CHIPSET := pn547
 # ANT+
 BOARD_ANT_WIRELESS_DEVICE := "qualcomm-smd"
 
-# No old RPC for prop
+# GPS
+BOARD_VENDOR_QCOM_GPS_LOC_API_HARDWARE := $(TARGET_BOARD_PLATFORM)
+BOARD_VENDOR_QCOM_LOC_PDK_FEATURE_SET := true
 TARGET_NO_RPC := true
 
 # Use HW crypto for ODE
-TARGET_HW_DISK_ENCRYPTION := true
+#TARGET_HW_DISK_ENCRYPTION := true
 
 # Enable Minikin text layout engine (will be the default soon)
 USE_MINIKIN := true

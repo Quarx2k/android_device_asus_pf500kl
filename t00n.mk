@@ -120,10 +120,10 @@ PRODUCT_PACKAGES += \
 
 # GPS
 PRODUCT_PACKAGES += \
-    gps.msm8974
+    gps.msm8974 \
+    gps.conf
 
 PRODUCT_COPY_FILES += \
-    $(LOCAL_PATH)/gps/gps.conf:system/etc/gps.conf \
     $(LOCAL_PATH)/gps/flp.conf:system/etc/flp.conf \
     $(LOCAL_PATH)/gps/izat.conf:system/etc/izat.conf \
     $(LOCAL_PATH)/gps/quipc.conf:system/etc/quipc.conf \
@@ -159,17 +159,18 @@ PRODUCT_PACKAGES += \
     libOmxVdecHevc \
     libOmxVenc \
     libstagefrighthw \
-    qcmediaplayer
-
-PRODUCT_BOOT_JARS += qcmediaplayer
 
 # Power
 PRODUCT_PACKAGES += \
     power.msm8974
 
 # Keystore
-PRODUCT_PACKAGES += \
-    keystore.msm8974
+#PRODUCT_PACKAGES += \
+#    keystore.msm8974
+
+# http://b/15193147
+# TODO(danalbert): Remove this once stlport is dead and gone.
+PRODUCT_PACKAGES += libstlport
 
 # Thermal config
 PRODUCT_COPY_FILES += \
@@ -180,12 +181,13 @@ PRODUCT_PACKAGES += \
     com.android.future.usb.accessory
 
 # Keyhandler
-PRODUCT_PACKAGES += \
-    com.cyanogenmod.keyhandler
+#PRODUCT_PACKAGES += \
+#    com.cyanogenmod.keyhandler
 
-RODUCT_SYSTEM_SERVER_JARS += com.cyanogenmod.keyhandler
+#RODUCT_SYSTEM_SERVER_JARS += com.cyanogenmod.keyhandler
+
 # never dexopt the keyhandler
-$(call add-product-dex-preopt-module-config,com.cyanogenmod.keyhandler,disable)
+#$(call add-product-dex-preopt-module-config,com.cyanogenmod.keyhandler,disable)
 
 # WiFi
 PRODUCT_COPY_FILES += \
@@ -319,7 +321,8 @@ PRODUCT_PROPERTY_OVERRIDES += \
 
 # ART
 PRODUCT_PROPERTY_OVERRIDES += \
-    dalvik.vm.dex2oat-flags=--no-watch-dog
+    dalvik.vm.dex2oat-flags=--no-watch-dog \
+    dalvik.vm.dex2oat-swap=false
 
 # Device uses high-density artwork where available
 PRODUCT_AAPT_CONFIG := normal

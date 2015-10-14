@@ -22,10 +22,6 @@
     <!-- If this is true, the screen will fade off. -->
     <bool name="config_animateScreenLights">false</bool>
 
-    <!-- The duration (in milliseconds) that the radio will scan for a signal
-         when there's no network connection. If the scan doesn't timeout, use zero -->
-    <integer name="config_radioScanningTimeout">0</integer>
-
     <!-- Boolean indicating whether the wifi chipset has dual frequency band support -->
     <bool translatable="false" name="config_wifi_dual_band_support">true</bool>
 
@@ -56,6 +52,8 @@
         <item>"mobile_cbs,12,0,2,60000,true"</item>
         <item>"mobile_ia,14,0,2,-1,true"</item>
         <item>"bluetooth,7,7,2,-1,true"</item>
+        <item>"ethernet,9,9,9,-1,true"</item>
+        <item>"mobile_emergency,15,0,2,-1,true</item>
     </string-array>
 
     <!-- This string array should be overridden by the device to present a list of radio
@@ -95,11 +93,10 @@
 
     <!-- Array of ConnectivityManager.TYPE_xxxx values allowable for tethering -->
     <!-- Common options are [1, 4] for TYPE_WIFI and TYPE_MOBILE_DUN or
-    <!== [0,1,5,7] for TYPE_MOBILE, TYPE_WIFI, TYPE_MOBILE_HIPRI and TYPE_BLUETOOTH -->
+         [0,1,5,7] for TYPE_MOBILE, TYPE_WIFI, TYPE_MOBILE_HIPRI and TYPE_BLUETOOTH -->
     <integer-array translatable="false" name="config_tether_upstream_types">
         <item>0</item>
         <item>1</item>
-        <item>4</item>
         <item>5</item>
         <item>7</item>
     </integer-array>
@@ -135,14 +132,6 @@
          flag is set for wifi displays.
     -->
     <bool name="config_wifiDisplaySupportsProtectedBuffers">true</bool>
-
-    <!-- Enable overlay for all location components. -->
-    <bool name="config_enableNetworkLocationOverlay" translatable="false">false</bool>
-    <string name="config_networkLocationProviderPackageName" translatable="false">com.qualcomm.location</string>
-    <bool name="config_enableFusedLocationOverlay" translatable="false">false</bool>
-    <string name="config_fusedLocationProviderPackageName" translatable="false">com.qualcomm.location</string>
-
-    <!-- Device specific options -->
 
     <!-- Flag indicating whether the we should enable the automatic brightness in Settings.
          Software implementation will be used if config_hardware_auto_brightness_available is not set -->
@@ -275,12 +264,18 @@
     <!-- IP address of the dns server to use if nobody else suggests one -->
     <string name="config_default_dns_server">8.8.8.8</string>
 
-    <!-- Doze mode -->
+    <!-- The RadioAccessFamilies supported by the device.
+         Empty is viewed as "all".  Only used on devices which
+         don't support RIL_REQUEST_GET_RADIO_CAPABILITY
+         format is UMTS|LTE|... -->
+    <string translatable="false" name="config_radio_access_family">GSM | WCDMA | LTE</string>
+    
+    <!-- Doze mode
     <string name="config_dozeComponent">com.android.systemui/com.android.systemui.doze.DozeService</string>
     <integer name="config_screenBrightnessDoze">5</integer>
     <bool name="config_dozeAfterScreenOff">true</bool>
     <bool name="config_powerDecoupleInteractiveModeFromDisplay">true</bool>
-
+    -->
     <!-- The list absolute paths of jar/apk files containing the device specific handlers,
     delimited by File.pathSeparator, which defaults to ":" on Android
     <string name="config_deviceKeyHandlerLib" translatable="false">/system/framework/com.cyanogenmod.keyhandler.jar</string>

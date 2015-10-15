@@ -339,7 +339,7 @@ vendor/lib/libizat_core.so
 vendor/lib/liblbs_core.so
 vendor/lib/libloc_api_v02.so
 vendor/lib/libloc_ds_api.so
-vendor/lib/libwvdrm_L1.s
+vendor/lib/libwvdrm_L1.so
 
 # Graphics
 vendor/lib/egl/eglsubAndroid.so
@@ -409,6 +409,7 @@ vendor/lib/libqmi_encdec.so
 vendor/lib/libsmemlog.so
 vendor/lib/libsystem_health_mon.so
 
+
 # Radio
 -app/qcrilmsgtunnel/qcrilmsgtunnel.apk
 -app/shutdownlistener/shutdownlistener.apk
@@ -425,9 +426,16 @@ framework/qcrilhook.jar
 vendor/lib/libconfigdb.so
 vendor/lib/libnetmgr.so
 vendor/lib/libperipheral_client.so
-vendor/lib/libril-qc-qmi-1.so
+lib/libril-qc-qmi-1.so
 vendor/lib/libril-qcril-hook-oem.so
 vendor/lib/libxml.so
+vendor/lib/libCommandSvc.so
+vendor/lib/libvss_common_core.so
+vendor/lib/libvss_common_idl.so
+vendor/lib/libvss_common_iface.so
+vendor/lib/libvss_nv_core.so
+vendor/lib/libvss_nv_idl.so
+vendor/lib/libvss_nv_iface.so
 
 # Sensors
 bin/sensors.qcom
@@ -437,6 +445,7 @@ lib/hw/sensors.ADSP.msm8974.so
 lib/libcmdthread.so
 vendor/lib/libsensor1.so
 vendor/lib/libsensor_reg.so
+vendor/lib/libsensor_user_cal.so
 vendor/lib/libAKM8963.so
 
 # Thermal

@@ -286,13 +286,19 @@ vendor/lib/libdrmfs.so
 vendor/lib/libdrmtime.so
 vendor/lib/librpmb.so
 vendor/lib/libssd.so
-vendor/lib/libwvdrm_L3.so
 vendor/lib/libwvm.so
-vendor/lib/libWVStreamControlAPI_L3.so
+vendor/lib/libWVStreamControlAPI_L1.so
+vendor/lib/libWVphoneAPI.so
 vendor/lib/drm/libdrmwvmplugin.so
 vendor/lib/mediadrm/libwvdrmengine.so
 
 # GPS
+vendor/lib/libgeofence.so
+vendor/lib/libizat_core.so
+vendor/lib/liblbs_core.so
+vendor/lib/libloc_api_v02.so
+vendor/lib/libloc_ds_api.so
+vendor/lib/libwvdrm_L1.s
 
 # Graphics
 vendor/lib/egl/eglsubAndroid.so
@@ -352,7 +358,6 @@ vendor/lib/libdsi_netctrl.so
 vendor/lib/libqdi.so
 vendor/lib/libqdp.so
 -vendor/lib/libqmi.so
-vendor/lib/libqmiservices.so
 vendor/lib/libqmi_cci.so
 -vendor/lib/libqmi_client_qmux.so
 vendor/lib/libqmi_common_so.so

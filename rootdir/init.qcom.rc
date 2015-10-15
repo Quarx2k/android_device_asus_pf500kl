@@ -17,6 +17,7 @@ on init
     mkdir /firmware 0771 system system
     mkdir /ADF 0771 system system
     mkdir /asdf 0771 system system
+
     mkdir /data/asusdata 0755 root shell
     mkdir /data/asusfw 0660 root shell
     symlink /data/asusdata /factory
@@ -299,7 +300,10 @@ on property:init.svc.wpa_supplicant=stopped
 on property:init.svc.bootanim=running
     # Disable audio uart, enable maxxaudio
     write /proc/driver/audio_debug 0
+
     #write /proc/driver/audio_debug "maxxaudio 1"
+    #  Preload camera firmware and calibration data to memory.
+    write /proc/driver/mt9m114_power 3
 
 service rmt_storage /system/bin/rmt_storage
     class core

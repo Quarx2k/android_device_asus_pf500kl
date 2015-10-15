@@ -228,7 +228,8 @@ PRODUCT_PACKAGES += \
     libxml \
     libtinyxml \
     libbson \
-    HdmiMonitor
+    HdmiMonitor \
+    libboringssl-compat
 
 # Set default USB interface
 PRODUCT_DEFAULT_PROPERTY_OVERRIDES += \

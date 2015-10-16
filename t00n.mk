@@ -328,6 +328,11 @@ PRODUCT_PROPERTY_OVERRIDES += \
     dalvik.vm.dex2oat-flags=--no-watch-dog \
     dalvik.vm.dex2oat-swap=false
 
+# Temporary files
+PRODUCT_COPY_FILES += \
+    $(LOCAL_PATH)/temp/media_codecs_ffmpeg.xml:system/etc/media_codecs_ffmpeg.xml \
+    $(LOCAL_PATH)/temp/libstlport.so:system/lib/libstlport.so
+
 # Device uses high-density artwork where available
 PRODUCT_AAPT_CONFIG := normal
 PRODUCT_AAPT_PREF_CONFIG := xxhdpi

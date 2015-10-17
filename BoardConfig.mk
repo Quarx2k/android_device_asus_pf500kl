@@ -128,6 +128,7 @@ TARGET_USES_WCNSS_CTRL := true
 TARGET_USES_QCOM_WCNSS_QMI := true
 WIFI_DRIVER_FW_PATH_STA := "sta"
 WIFI_DRIVER_FW_PATH_AP := "ap"
+WLAN_PATH = wlan-caf
 #CONFIG_EAP_PROXY := qmi
 
 # Filesystem #Fix to real sizes.

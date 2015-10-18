@@ -82,6 +82,7 @@ PRODUCT_PACKAGES += \
     nfc.msm8974 \
     libnfc \
     libnfc_jni \
+    libnfc_ndef \
     Nfc \
     Tag
 

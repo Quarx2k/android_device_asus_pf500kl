@@ -382,13 +382,6 @@ vendor/lib/libOmxQcelp13Dec.so
 vendor/lib/libOmxWmaDec.so
 vendor/lib/libSHIMDivxDrm.so
 
-# Postprocessing
--app/PPPreference/PPPreference.apk
-bin/mm-pp-daemon
-vendor/lib/libdisp-aba.so
-vendor/lib/libmm-abl.so
-vendor/lib/libmm-abl-oem.so
-
 # Qualcomm framework
 bin/irsc_util
 -vendor/lib/libdiag.so
@@ -399,7 +392,7 @@ vendor/lib/libdsi_netctrl.so
 vendor/lib/libqdi.so
 vendor/lib/libqdp.so
 -vendor/lib/libqmi.so
-vendor/lib/libqmi_cci.so
+-vendor/lib/libqmi_cci.so
 -vendor/lib/libqmi_client_qmux.so
 vendor/lib/libqmi_common_so.so
 vendor/lib/libqmi_csi.so
@@ -426,16 +419,10 @@ framework/qcrilhook.jar
 vendor/lib/libconfigdb.so
 vendor/lib/libnetmgr.so
 vendor/lib/libperipheral_client.so
-lib/libril-qc-qmi-1.so
+vendor/lib/libril-qc-qmi-1.so
 vendor/lib/libril-qcril-hook-oem.so
 vendor/lib/libxml.so
 vendor/lib/libCommandSvc.so
-vendor/lib/libvss_common_core.so
-vendor/lib/libvss_common_idl.so
-vendor/lib/libvss_common_iface.so
-vendor/lib/libvss_nv_core.so
-vendor/lib/libvss_nv_idl.so
-vendor/lib/libvss_nv_iface.so
 
 # Sensors
 bin/sensors.qcom

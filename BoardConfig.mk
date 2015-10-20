@@ -91,6 +91,7 @@ BOARD_BLUETOOTH_BDROID_BUILDCFG_INCLUDE_DIR := device/asus/t00n/bluetooth
 # CM Hardware
 BOARD_USES_CYANOGEN_HARDWARE := true
 BOARD_HARDWARE_CLASS := device/asus/t00n/cmhw/
+TARGET_TAP_TO_WAKE_NODE := "/sys/android_touch/doubletap2wake"
 
 # Charger
 BOARD_CHARGER_RES := device/asus/t00n/charger/images

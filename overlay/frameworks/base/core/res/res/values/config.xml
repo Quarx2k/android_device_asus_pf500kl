@@ -300,4 +300,8 @@
         <item>evdo:4094,87380,524288,4096,16384,262144</item>
     </string-array>
  -->
+
+    <!-- Whether device supports double tap to wake -->
+    <bool name="config_supportDoubleTapWake">true</bool>
+
 </resources>

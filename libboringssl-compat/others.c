@@ -22,7 +22,7 @@ int cb_event_notify_egl_sync_is_signaled_qcom() {
 int cb_event_register_egl_sync_observer_qcom() {
     return 0;
 }
-
+#if 0
 // Stubs for old sensors.qcom with new QMI
 int qmi_client_init_instance() {
    return 0;
@@ -31,3 +31,4 @@ int qmi_client_init_instance() {
 int qmi_client_register_notify_cb() {
    return 0;
 }
+#endif

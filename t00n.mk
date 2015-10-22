@@ -338,7 +338,6 @@ PRODUCT_PROPERTY_OVERRIDES += \
 
 # Temporary files
 PRODUCT_COPY_FILES += \
-    $(LOCAL_PATH)/temp/media_codecs_ffmpeg.xml:system/etc/media_codecs_ffmpeg.xml \
     $(LOCAL_PATH)/temp/libstlport.so:system/lib/libstlport.so
 
 # Device uses high-density artwork where available

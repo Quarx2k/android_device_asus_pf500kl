@@ -186,7 +186,7 @@ BOARD_VENDOR_QCOM_LOC_PDK_FEATURE_SET := true
 TARGET_NO_RPC := true
 
 # Use HW crypto for ODE
-#TARGET_HW_DISK_ENCRYPTION := true
+TARGET_HW_DISK_ENCRYPTION := true
 
 # Enable Minikin text layout engine (will be the default soon)
 USE_MINIKIN := true

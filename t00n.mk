@@ -180,8 +180,8 @@ PRODUCT_PACKAGES += \
     power.msm8974
 
 # Keystore
-#PRODUCT_PACKAGES += \
-#    keystore.msm8974
+PRODUCT_PACKAGES += \
+    keystore.msm8974
 
 # http://b/15193147
 # TODO(danalbert): Remove this once stlport is dead and gone.
@@ -194,12 +194,6 @@ PRODUCT_COPY_FILES += \
 # USB
 PRODUCT_PACKAGES += \
     com.android.future.usb.accessory
-
-# Keyhandler
-#PRODUCT_PACKAGES += \
-#    com.cyanogenmod.keyhandler
-
-#RODUCT_SYSTEM_SERVER_JARS += com.cyanogenmod.keyhandler
 
 # never dexopt the keyhandler
 #$(call add-product-dex-preopt-module-config,com.cyanogenmod.keyhandler,disable)

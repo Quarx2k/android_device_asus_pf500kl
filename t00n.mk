@@ -125,11 +125,11 @@ PRODUCT_PACKAGES += \
     gps.conf
 
 # Tcmiface
-PRODUCT_PACKAGES += \
-    tcmiface
+#PRODUCT_PACKAGES += \
+#    tcmiface
 
-PRODUCT_BOOT_JARS += \
-    tcmiface
+#PRODUCT_BOOT_JARS += \
+#    tcmiface
 
 PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/gps/flp.conf:system/etc/flp.conf \

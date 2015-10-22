@@ -99,23 +99,15 @@ TARGET_TAP_TO_WAKE_NODE := "/sys/android_touch/doubletap2wake"
 BOARD_CHARGER_RES := device/asus/t00n/charger/images
 
 # Graphics
-USE_OPENGL_RENDERER := true
+HAVE_ADRENO_SOURCE := false
+MAX_EGL_CACHE_KEY_SIZE := 12*1024
+MAX_EGL_CACHE_SIZE := 2048*1024
+OVERRIDE_RS_DRIVER := libRSDriver_adreno.so
+SF_VSYNC_EVENT_PHASE_OFFSET_NS := 5000000
 TARGET_CONTINUOUS_SPLASH_ENABLED := true
 TARGET_USES_ION := true
-OVERRIDE_RS_DRIVER := libRSDriver_adreno.so
-HAVE_ADRENO_SOURCE:= false
+USE_OPENGL_RENDERER := true
 VSYNC_EVENT_PHASE_OFFSET_NS := 7500000
-SF_VSYNC_EVENT_PHASE_OFFSET_NS := 5000000
-
-# Shader cache config options
-# Maximum size of the  GLES Shaders that can be cached for reuse.
-# Increase the size if shaders of size greater than 12KB are used.
-MAX_EGL_CACHE_KEY_SIZE := 12*1024
-
-# Maximum GLES shader cache size for each app to store the compiled shader
-# binaries. Decrease the size if RAM or Flash Storage size is a limitation
-# of the device.
-MAX_EGL_CACHE_SIZE := 2048*1024
 
 # Lights
 TARGET_PROVIDES_LIBLIGHT := true

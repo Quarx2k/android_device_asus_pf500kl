@@ -268,22 +268,11 @@
          Empty is viewed as "all".  Only used on devices which
          don't support RIL_REQUEST_GET_RADIO_CAPABILITY
          format is UMTS|LTE|... -->
-    <string translatable="false" name="config_radio_access_family">GSM | WCDMA | LTE</string>
-    
-    <!-- Doze mode
-    <string name="config_dozeComponent">com.android.systemui/com.android.systemui.doze.DozeService</string>
-    <integer name="config_screenBrightnessDoze">5</integer>
-    <bool name="config_dozeAfterScreenOff">true</bool>
-    <bool name="config_powerDecoupleInteractiveModeFromDisplay">true</bool>
-    -->
-    <!-- The list absolute paths of jar/apk files containing the device specific handlers,
-    delimited by File.pathSeparator, which defaults to ":" on Android
-    <string name="config_deviceKeyHandlerLib" translatable="false">/system/framework/com.cyanogenmod.keyhandler.jar</string>
- -->
-     <!-- Full qualified name of the class that implements
-    com.android.internal.os.DeviceKeyHandler interface.
-    <string name="config_deviceKeyHandlerClass" translatable="false">com.cyanogenmod.settings.device.KeyHandler</string>
- -->
+    <string translatable="false" name="config_radio_access_family">GSM|WCDMA|LTE</string>
+
+        <!-- enable doze powersaving mode -->
+    <bool name="config_enableAutoPowerModes">true</bool>
+
     <!-- Performance profiles
     <string name="config_perf_profile_prop">powerhal</string>
     <string name="config_perf_profile_default_entry">1</string>

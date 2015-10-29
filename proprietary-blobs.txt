@@ -200,12 +200,83 @@ etc/firmware/cpp_firmware_v1_1_1.fw
 etc/firmware/cpp_firmware_v1_1_6.fw
 etc/firmware/cpp_firmware_v1_2_0.fw
 
+# Venus (media) firmware
+etc/firmware/venus.b00
+etc/firmware/venus.b01
+etc/firmware/venus.b02
+etc/firmware/venus.b03
+etc/firmware/venus.b04
+etc/firmware/venus.mdt
+etc/firmware/venus.mbn
+
+# Pronto firmwae
+etc/firmware/wcnss.b00
+etc/firmware/wcnss.b01
+etc/firmware/wcnss.b02
+etc/firmware/wcnss.b04
+etc/firmware/wcnss.b06
+etc/firmware/wcnss.b07
+etc/firmware/wcnss.b08
+etc/firmware/wcnss.b09
+etc/firmware/wcnss.mdt
+
+# Keymaster firmware
+vendor/firmware/keymaster/keymaster.b00
+vendor/firmware/keymaster/keymaster.b01
+vendor/firmware/keymaster/keymaster.b02
+vendor/firmware/keymaster/keymaster.b03
+vendor/firmware/keymaster/keymaster.mdt
+
+# ADSP Firmware
+etc/firmware/adsp.b00
+etc/firmware/adsp.b01
+etc/firmware/adsp.b02
+etc/firmware/adsp.b03
+etc/firmware/adsp.b04
+etc/firmware/adsp.b05
+etc/firmware/adsp.b06
+etc/firmware/adsp.b07
+etc/firmware/adsp.b08
+etc/firmware/adsp.b09
+etc/firmware/adsp.b10
+etc/firmware/adsp.b11
+etc/firmware/adsp.b12
+etc/firmware/adsp.mdt
+
 # Firmwares
 etc/firmware/a225_pfp.fw
 etc/firmware/a225_pm4.fw
 etc/firmware/a225p5_pm4.fw
 etc/firmware/a300_pfp.fw
 etc/firmware/a300_pm4.fw
+etc/firmware/cmnlib.b00
+etc/firmware/cmnlib.b01
+etc/firmware/cmnlib.b02
+etc/firmware/cmnlib.b03
+etc/firmware/cmnlib.mdt
+etc/firmware/dxhdcp2.b00
+etc/firmware/dxhdcp2.b01
+etc/firmware/dxhdcp2.b02
+etc/firmware/dxhdcp2.b03
+etc/firmware/dxhdcp2.mdt
+etc/firmware/keymaster.b00
+etc/firmware/keymaster.b01
+etc/firmware/keymaster.b02
+etc/firmware/keymaster.b03
+etc/firmware/keymaster.mdt
+etc/firmware/leia_pfp_470.fw
+etc/firmware/leia_pm4_470.fw
+etc/firmware/widevine.b00
+etc/firmware/widevine.b01
+etc/firmware/widevine.b02
+etc/firmware/widevine.b03
+etc/firmware/widevine.mdt
+
+# Signedrompatch fw
+etc/firmware/Signedrompatch_v20.bin
+etc/firmware/Signedrompatch_v21.bin
+etc/firmware/Signedrompatch_v24.bin
+etc/firmware/Signedrompatch_v30.bin
 
 # Bluetooth
 bin/btnvtool

@@ -16,7 +16,7 @@ LOCAL_PATH:= $(call my-dir)
 
 include $(CLEAR_VARS)
 LOCAL_SRC_FILES := asus-compat.c
-LOCAL_SHARED_LIBRARIES := liblog
+LOCAL_SHARED_LIBRARIES := liblog libcutils
 LOCAL_MODULE := libasus-compat
 LOCAL_MODULE_TAGS := optional
 include $(BUILD_SHARED_LIBRARY)

@@ -14,14 +14,16 @@
  * limitations under the License.
  */
 
+#include <cutils/log.h>
+
 // Stubs for libOpenCL.so
 int cb_event_notify_egl_sync_is_signaled_qcom() {
-    Log.e("%s",__func__);
+    ALOGE("%s",__func__);
     return 0;
 }
 
 int cb_event_register_egl_sync_observer_qcom() {
-    Log.e("%s",__func__);
+    ALOGE("%s",__func__);
     return 0;
 }
 #if 0

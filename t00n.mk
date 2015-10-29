@@ -184,10 +184,6 @@ PRODUCT_PACKAGES += \
 PRODUCT_PACKAGES += \
     keystore.msm8974
 
-# http://b/15193147
-# TODO(danalbert): Remove this once stlport is dead and gone.
-PRODUCT_PACKAGES += libstlport
-
 # Thermal config
 PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/configs/thermal-engine-8974.conf:system/etc/thermal-engine-8974.conf
@@ -232,7 +228,8 @@ PRODUCT_PACKAGES += \
     libtinyxml \
     libbson \
     HdmiMonitor \
-    libboringssl-compat
+    libboringssl-compat \
+    libasus-compat
 
 # Set default USB interface
 PRODUCT_DEFAULT_PROPERTY_OVERRIDES += \

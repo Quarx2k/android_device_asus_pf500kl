@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2015 Sony Mobile Communications AB
+ * Copyright (C) 2015 The Android Open Source Project, Quarx2k(https://github.com/Quarx2k)
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,13 +14,23 @@
  * limitations under the License.
  */
 
-#include <openssl/rsa.h>
-
-int RSA_verify_PKCS1_PSS(RSA *rsa,
-			 const unsigned char *mHash,
-			 const EVP_MD *Hash,
-			 const unsigned char *EM,
-			 int sLen)
-{
-	return RSA_verify_PKCS1_PSS_mgf1(rsa, mHash, Hash, NULL, EM, sLen);
+// Stubs for libOpenCL.so
+int cb_event_notify_egl_sync_is_signaled_qcom() {
+    Log.e("%s",__func__);
+    return 0;
 }
+
+int cb_event_register_egl_sync_observer_qcom() {
+    Log.e("%s",__func__);
+    return 0;
+}
+#if 0
+// Stubs for old sensors.qcom with new QMI
+int qmi_client_init_instance() {
+   return 0;
+}
+
+int qmi_client_register_notify_cb() {
+   return 0;
+}
+#endif

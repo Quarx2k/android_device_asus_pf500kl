@@ -67,7 +67,7 @@ endif
 
 # QCOM hardware
 BOARD_USES_QCOM_HARDWARE := true
-QC_PROP_ROOT := vendor/qcom/proprietary
+#QC_PROP_ROOT := vendor/qcom/proprietary
 PROTOBUF_SUPPORTED := true
 TARGET_RIL_VARIANT := caf
 COMMON_GLOBAL_CFLAGS += -DUSE_RIL_VERSION_10

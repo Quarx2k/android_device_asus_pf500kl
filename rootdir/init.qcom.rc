@@ -320,6 +320,7 @@ on property:init.svc.bootanim=running
     # Disable audio uart, enable maxxaudio
     write /proc/driver/audio_debug 0
     #write /proc/driver/audio_debug "maxxaudio 1"
+    write /proc/driver/android_boot_complete 1
 
 service rmt_storage /system/bin/rmt_storage
     class core

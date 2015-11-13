@@ -193,6 +193,9 @@ BOARD_USES_QC_TIME_SERVICES := true
 # PowerHal
 TARGET_POWERHAL_VARIANT := qcom
 
+# Override healthd HAL
+BOARD_HAL_STATIC_LIBRARIES := libhealthd.msm8974
+
 # SELinux policies
 # qcom sepolicy
 include device/qcom/sepolicy/sepolicy.mk

@@ -306,7 +306,9 @@ PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/configs/Himax-touchscreen.idc:system/usr/idc/Himax-touchscreen.idc \
     $(LOCAL_PATH)/configs/elan-touchscreen.idc:system/usr/idc/elan-touchscreen.idc \
     $(LOCAL_PATH)/configs/asus_dds_sis_touch.idc:system/usr/idc/asus_dds_sis_touch.idc \
-    $(LOCAL_PATH)/configs/ASUS_TransKeyboard.idc:system/usr/idc/ASUS_TransKeyboard.idc
+    $(LOCAL_PATH)/configs/ASUS_TransKeyboard.idc:system/usr/idc/ASUS_TransKeyboard.idc \
+    $(LOCAL_PATH)/configs/gpio-keys.kl:system/usr/idc/gpio-keys.kl
+
 
 # TWRP
 PRODUCT_COPY_FILES += \

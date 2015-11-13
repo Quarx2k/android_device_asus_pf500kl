@@ -289,6 +289,10 @@ PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/configs/init.asus.thermal_conf.sh:system/etc/init.asus.thermal_conf.sh \
     $(LOCAL_PATH)/configs/init.qcom.bt.sh:system/etc/init.qcom.bt.sh
 
+# Add own hdmi mode: EDIDData(HDMI_VFRMT_1920x1200p60_16_10, 1920, 1200, 60, 25),
+PRODUCT_COPY_FILES += \
+    $(LOCAL_PATH)/configs/libhdmi.so:system/lib/libhdmi.so
+
 # OTA
 PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/fixup.sh:fixup.sh \

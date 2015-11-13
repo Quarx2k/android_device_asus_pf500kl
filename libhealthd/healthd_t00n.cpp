@@ -21,6 +21,9 @@ void
 healthd_board_init(struct healthd_config *config)
 {
     config->dockBatterySupported  = true;
+    config->dockBatteryPresentPath  = "/sys/microp/dock_status";
+    config->dockBatteryCapacityPath  = "/sys/microp/battery_capacity";
+    config->dockBatteryStatusPath  = "/sys/microp/battery_charging_status";
     // others use defaults
 }
 

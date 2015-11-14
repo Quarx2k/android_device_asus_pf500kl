@@ -21,9 +21,6 @@ void
 healthd_board_init(struct healthd_config *config)
 {
     config->dockBatterySupported  = true;
-    config->dockBatteryPresentPath  = "/sys/microp/dock_status";
-    config->dockBatteryCapacityPath  = "/sys/microp/battery_capacity";
-    config->dockBatteryStatusPath  = "/sys/microp/battery_charging_status";
     // others use defaults
 }
 
@@ -31,7 +28,7 @@ int
 healthd_board_battery_update(struct android::BatteryProperties *props)
 {
     // return 0 to log periodic polled battery status to kernel log
-    return -1;
+    return 0;
 }
 
 void healthd_board_mode_charger_draw_battery(struct android::BatteryProperties*)

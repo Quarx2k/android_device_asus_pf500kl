@@ -235,6 +235,11 @@ PRODUCT_PACKAGES += \
     libboringssl-compat \
     libasus-compat
 
+# Sony timekeep
+PRODUCT_PACKAGES += \
+    timekeep \
+    TimeKeep
+
 # Set default USB interface
 PRODUCT_DEFAULT_PROPERTY_OVERRIDES += \
     persist.sys.usb.config=mtp

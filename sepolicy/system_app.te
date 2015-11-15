@@ -2,4 +2,5 @@ allow system_app touchpanel_sysfs:dir search;
 allow system_app touchpanel_sysfs:file rw_file_perms;
 allow system_app unlabeled:dir { search read write getattr remove_name open add_name};
 allow system_app unlabeled:file { read getattr open write lock };
-
+# Sony Timekeep
+allow system_app timekeep_prop:property_service set;

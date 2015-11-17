@@ -86,6 +86,10 @@ PRODUCT_PACKAGES += \
     Nfc \
     Tag
 
+PRODUCT_PACKAGES += \
+    librmnetctl \
+    rmnetcli
+
 # Root
 PRODUCT_PACKAGES += \
     init.qcom.rc \

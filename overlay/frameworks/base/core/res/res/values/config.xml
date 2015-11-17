@@ -26,7 +26,7 @@
     <bool translatable="false" name="config_wifi_dual_band_support">true</bool>
 
     <!-- Boolean indicating whether the wifi chipset has background scan support -->
-    <bool translatable="false" name="config_wifi_background_scan_support">true</bool>
+    <bool translatable="false" name="config_wifi_background_scan_support">false</bool>
 
     <!-- We dont have different firmware for wifi modes, prevent reloading it 
     <bool name="config_wifiApFirmwareReload">false</bool> 
@@ -268,7 +268,7 @@
          Empty is viewed as "all".  Only used on devices which
          don't support RIL_REQUEST_GET_RADIO_CAPABILITY
          format is UMTS|LTE|... -->
-    <string translatable="false" name="config_radio_access_family">GSM|WCDMA|LTE</string>
+    <string name="config_radio_access_family">GPRS|EDGE|UMTS|HSDPA|HSUPA|HSPA|LTE|HSPAP|GSM|WCDMA|LTE_CA</string>
 
         <!-- enable doze powersaving mode -->
     <bool name="config_enableAutoPowerModes">true</bool>

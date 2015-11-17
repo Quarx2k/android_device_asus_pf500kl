@@ -52,6 +52,11 @@ TARGET_KERNEL_CONFIG := pf500kl-perf_defconfig
 BOARD_KERNEL_CMDLINE := console=ttyHSL0,115200,n8 androidboot.hardware=qcom user_debug=31 msm_rtb.filter=0x37 ehci-hcd.park=3 androidboot.selinux=permissive
 TARGET_KERNEL_SOURCE := kernel/asus/msm8974
 
+USE_CLANG_PLATFORM_BUILD := true
+
+# Keymaster
+TARGET_KEYMASTER_WAIT_FOR_QSEE := true
+
 # Enable dex-preoptimization to speed up first boot sequence
 ifeq ($(HOST_OS),linux)
 WITH_DEXPREOPT := true
@@ -103,11 +108,12 @@ HAVE_ADRENO_SOURCE := false
 MAX_EGL_CACHE_KEY_SIZE := 12*1024
 MAX_EGL_CACHE_SIZE := 2048*1024
 OVERRIDE_RS_DRIVER := libRSDriver_adreno.so
-SF_VSYNC_EVENT_PHASE_OFFSET_NS := 5000000
 TARGET_CONTINUOUS_SPLASH_ENABLED := true
+TARGET_USES_C2D_COMPOSITION := true
 TARGET_USES_ION := true
 USE_OPENGL_RENDERER := true
-VSYNC_EVENT_PHASE_OFFSET_NS := 7500000
+VSYNC_EVENT_PHASE_OFFSET_NS := 2500000
+SF_VSYNC_EVENT_PHASE_OFFSET_NS := 0000000
 
 # Lights
 TARGET_PROVIDES_LIBLIGHT := true
@@ -173,8 +179,8 @@ BOARD_NFC_CHIPSET := pn547
 BOARD_ANT_WIRELESS_DEVICE := "qualcomm-smd"
 
 # GPS
-TARGET_GPS_HAL_PATH := $(PLATFORM_PATH)/gps
-TARGET_PROVIDES_GPS_LOC_API := true
+USE_DEVICE_SPECIFIC_LOC_API := true
+USE_DEVICE_SPECIFIC_GPS := true
 TARGET_NO_RPC := true
 
 # Use HW crypto for ODE

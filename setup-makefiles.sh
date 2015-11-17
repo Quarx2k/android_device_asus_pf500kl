@@ -58,6 +58,8 @@ done
 DEVICE_PACKAGE_OVERLAYS := vendor/$VENDOR/$DEVICE/overlay
 
 PRODUCT_PACKAGES += \\
+    com.qualcomm.location \\
+    qcrilmsgtunnel \\
     shutdownlistener \\
     libHevcSwDecoder \\
     libtime_genoff \\
@@ -72,7 +74,8 @@ PRODUCT_PACKAGES += \\
     libdsutils \\
     libmdmdetect \\
     libqmi_cci \\
-    libwpa_qmi_eap_proxy
+    libwpa_qmi_eap_proxy \\
+    libmm-abl
 
 #Asus Apps
 PRODUCT_PACKAGES += \\
@@ -139,12 +142,13 @@ include \$(BUILD_PREBUILT)
 
 include \$(CLEAR_VARS)
 LOCAL_MODULE := qcrilmsgtunnel
-LOCAL_MODULE_OWNER := asus
-LOCAL_SRC_FILES := proprietary/app/qcrilmsgtunnel/qcrilmsgtunnel.apk
+LOCAL_MODULE_OWNER := $VENDOR
+LOCAL_SRC_FILES := proprietary/priv-app/qcrilmsgtunnel/qcrilmsgtunnel.apk
 LOCAL_MODULE_TAGS := optional
 LOCAL_MODULE_SUFFIX := \$(COMMON_ANDROID_PACKAGE_SUFFIX)
 LOCAL_MODULE_CLASS := APPS
 LOCAL_CERTIFICATE := platform
+LOCAL_PRIVILEGED_MODULE := true
 include \$(BUILD_PREBUILT)
 
 include \$(CLEAR_VARS)
@@ -161,6 +165,16 @@ include \$(CLEAR_VARS)
 LOCAL_MODULE := libHevcSwDecoder
 LOCAL_MODULE_OWNER := $VENDOR
 LOCAL_SRC_FILES := proprietary/vendor/lib/libHevcSwDecoder.so
+LOCAL_MODULE_PATH := \$(TARGET_OUT_VENDOR_SHARED_LIBRARIES)
+LOCAL_MODULE_TAGS := optional
+LOCAL_MODULE_SUFFIX := .so
+LOCAL_MODULE_CLASS := SHARED_LIBRARIES
+include \$(BUILD_PREBUILT)
+
+include \$(CLEAR_VARS)
+LOCAL_MODULE := libmm-abl
+LOCAL_MODULE_OWNER := $VENDOR
+LOCAL_SRC_FILES := proprietary/vendor/lib/libmm-abl.so
 LOCAL_MODULE_PATH := \$(TARGET_OUT_VENDOR_SHARED_LIBRARIES)
 LOCAL_MODULE_TAGS := optional
 LOCAL_MODULE_SUFFIX := .so
@@ -281,6 +295,16 @@ LOCAL_MODULE_PATH := \$(TARGET_OUT_SHARED_LIBRARIES)
 LOCAL_PROPRIETARY_MODULE := true
 include \$(BUILD_PREBUILT)
 
+include \$(CLEAR_VARS)
+LOCAL_MODULE := liblisten
+LOCAL_MODULE_OWNER := $VENDOR
+LOCAL_SRC_FILES := proprietary/vendor/lib/liblisten.so
+LOCAL_MODULE_PATH := \$(TARGET_OUT_VENDOR_SHARED_LIBRARIES)
+LOCAL_MODULE_TAGS := optional
+LOCAL_MODULE_SUFFIX := .so
+LOCAL_MODULE_CLASS := SHARED_LIBRARIES
+include \$(BUILD_PREBUILT)
+
 #include \$(CLEAR_VARS)
 #LOCAL_MODULE := libwpa_qmi_eap_proxy
 #LOCAL_MODULE_OWNER := $VENDOR
@@ -296,10 +320,10 @@ include \$(CLEAR_VARS)
 LOCAL_MODULE := libqmi_cci
 LOCAL_MODULE_OWNER := asus
 LOCAL_SRC_FILES := proprietary/vendor/lib/libqmi_cci.so
+LOCAL_MODULE_PATH := \$(TARGET_OUT_VENDOR_SHARED_LIBRARIES)
 LOCAL_MODULE_TAGS := optional
 LOCAL_MODULE_SUFFIX := .so
 LOCAL_MODULE_CLASS := SHARED_LIBRARIES
-LOCAL_MODULE_PATH := \$(TARGET_OUT_SHARED_LIBRARIES)
 LOCAL_PROPRIETARY_MODULE := true
 include \$(BUILD_PREBUILT)
 
@@ -314,6 +338,7 @@ LOCAL_MODULE_SUFFIX := \$(COMMON_ANDROID_PACKAGE_SUFFIX)
 LOCAL_MODULE_CLASS := APPS
 LOCAL_CERTIFICATE := PRESIGNED
 LOCAL_PROPRIETARY_MODULE := true
+LOCAL_OVERRIDES_PACKAGES := Camera2 Camera
 include \$(BUILD_PREBUILT)
 
 endif

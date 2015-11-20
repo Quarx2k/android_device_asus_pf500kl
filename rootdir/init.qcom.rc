@@ -312,6 +312,13 @@ on fs
     mkdir /persist/data/sfs 0700 system system
     mkdir /persist/data/tz 0700 system system
 
+on property:sys.config.resolution=1
+    write /proc/msm_dwc3/mode "auto peripheral"
+    start onPadEvtChg
+on property:sys.config.resolution=2
+    write /proc/msm_dwc3/mode "auto host"
+    start onPadEvtChg
+
 on property:init.svc.wpa_supplicant=stopped
     stop dhcpcd
 
@@ -585,3 +592,10 @@ service fuse_sdcard1 /system/bin/sdcard -u 1023 -g 1023 -d /mnt/media_rw/sdcard1
 service fuse_usbdisk /system/bin/sdcard -u 1023 -g 1023 /mnt/media_rw/usbdisk /storage/usbdisk
     class late_start
     disabled
+
+service onPadEvtChg /system/bin/sh  /system/etc/onPadEventChanged.sh
+    class core
+    user root
+    oneshot
+    disabled
+

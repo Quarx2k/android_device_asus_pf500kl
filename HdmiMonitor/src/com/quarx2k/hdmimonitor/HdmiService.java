@@ -9,6 +9,7 @@ import android.content.Intent;
 import android.os.Handler;
 import android.os.HandlerThread;
 import android.os.IBinder;
+import android.os.SystemProperties;
 import android.util.Log;
 
 import java.io.BufferedReader;
@@ -23,6 +24,7 @@ public class HdmiService extends Service {
     private Runnable mRunnable;
     private Notification.Builder builder = null;
     private NotificationManager manager = null;
+    private int oldPropValue = -1;
 
     @Override
     public IBinder onBind(Intent intent) {
@@ -53,11 +55,12 @@ public class HdmiService extends Service {
     }
 
     private void checkHdmi() {
+
         BufferedReader buffered_reader=null;
         try
         {
             buffered_reader = new BufferedReader(new FileReader("/sys/devices/virtual/graphics/fb1/connected"));
-            String line;
+            String line = "";
 
             while ((line = buffered_reader.readLine()) != null)
             {
@@ -67,6 +70,24 @@ public class HdmiService extends Service {
                     showNotify(false);
                 }
             }
+
+            line = "";
+            buffered_reader = new BufferedReader(new FileReader("/sys/android_touch/PAD"));
+            while ((line = buffered_reader.readLine()) != null)
+            {
+                if (line.trim().equals("1")) {
+                    if (oldPropValue != 2) {
+                        SystemProperties.set("sys.config.resolution", "2");
+                        oldPropValue = 2;
+                    }
+                } else {
+                    if (oldPropValue != 1) {
+                        SystemProperties.set("sys.config.resolution", "1");
+                        oldPropValue = 1;
+                    }
+                }
+            }
+
         }
         catch (IOException e)
         {

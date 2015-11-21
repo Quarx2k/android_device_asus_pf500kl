@@ -232,8 +232,7 @@ PRODUCT_PACKAGES += \
     libtinyxml \
     libbson \
     HdmiMonitor \
-    libboringssl-compat \
-    libasus-compat
+    libboringssl-compat
 
 # Sony timekeep
 PRODUCT_PACKAGES += \

@@ -511,7 +511,7 @@ service thermal-serivce /system/bin/sh /system/etc/init.asus.thermal_conf.sh
    user root
    oneshot
 
-service thermal-engine /system/bin/thermal-engine
+service thermal-engine /system/vendor/bin/thermal-engine
    class main
    user root
    group root

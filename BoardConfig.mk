@@ -207,8 +207,7 @@ BOARD_SEPOLICY_UNION += \
 	platform_app.te \
 	nfc.te \
 	tee.te \
-	mpdecision.te \
-	timekeep.te
+	mpdecision.te
 
 # inherit from the proprietary version
 -include vendor/asus/tn00n/BoardConfigVendor.mk

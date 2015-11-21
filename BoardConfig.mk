@@ -65,6 +65,8 @@ WITH_DEXPREOPT_BOOT_IMG_ONLY := true
 DONT_DEXPREOPT_PREBUILTS := true
 endif
 
+COMMON_GLOBAL_CFLAGS += -DCAMERA_VENDOR_L_COMPAT
+
 # QCOM hardware
 BOARD_USES_QCOM_HARDWARE := true
 #QC_PROP_ROOT := vendor/qcom/proprietary
@@ -83,8 +85,7 @@ BOARD_USES_ALSA_AUDIO := true
 AUDIO_FEATURE_ENABLED_HWDEP_CAL := true
 AUDIO_FEATURE_ENABLED_MULTI_VOICE_SESSIONS := true
 AUDIO_FEATURE_ENABLED_NEW_SAMPLE_RATE := true
-#AUDIO_FEATURE_ENABLED_FM := true
-TARGET_QCOM_NO_FM_FIRMWARE := true
+TARGET_FM_LEGACY_PATCHLOADER := true
 USE_CUSTOM_AUDIO_POLICY := 1
 
 # Bluetooth
@@ -208,5 +209,3 @@ include device/qcom/sepolicy/sepolicy.mk
 BOARD_SEPOLICY_DIRS += \
         device/asus/t00n/sepolicy
 
-# inherit from the proprietary version
--include vendor/asus/tn00n/BoardConfigVendor.mk

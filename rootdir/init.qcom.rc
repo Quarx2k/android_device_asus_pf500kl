@@ -578,4 +578,11 @@ service onPadEvtChg /system/bin/sh  /system/etc/onPadEventChanged.sh
     oneshot
     disabled
 
+service fm_dl /system/bin/sh /system/etc/init.qcom.fm.sh
+    class late_start
+    user system
+    group system
+    disabled
+    oneshot
+
 

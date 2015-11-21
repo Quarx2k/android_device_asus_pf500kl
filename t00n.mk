@@ -232,11 +232,6 @@ PRODUCT_PACKAGES += \
     HdmiMonitor \
     libboringssl-compat
 
-# Sony timekeep
-PRODUCT_PACKAGES += \
-    timekeep \
-    TimeKeep
-
 # Set default USB interface
 PRODUCT_DEFAULT_PROPERTY_OVERRIDES += \
     persist.sys.usb.config=mtp

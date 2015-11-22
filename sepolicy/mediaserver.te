@@ -8,4 +8,5 @@ allow mediaserver shell_data_file:dir search;
 allow mediaserver system_data_file:sock_file write;
 allow mediaserver system_server:unix_stream_socket { read write };
 allow mediaserver init:unix_dgram_socket sendto;
+allow mediaserver system_file:file execmod;
 

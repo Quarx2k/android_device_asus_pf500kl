@@ -3,4 +3,5 @@ allow init fuse:dir search;
 allow init self:capability sys_module;
 allow init fuse:dir mounton;
 allow init vfat:dir search;
-
+allow init functionfs:dir mounton;
+allow init system_data_file:dir mounton;

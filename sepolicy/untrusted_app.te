@@ -17,6 +17,10 @@ allow untrusted_app proc_security:file getattr;
 allow untrusted_app unlabeled:file { open read getattr write lock setattr execute rename unlink ioctl append };
 allow untrusted_app unlabeled:dir { open read write getattr setattr search remove_name add_name };
 
+allow untrusted_app proc_drop_caches:file getattr;
+allow untrusted_app radio_data_file:dir { getattr search };
+allow untrusted_app sensors_data_file:dir { read getattr };
+
 # test apps needs to communicate with imscm
 # using binder call
 userdebug_or_eng(`

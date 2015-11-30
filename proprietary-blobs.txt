@@ -387,14 +387,8 @@ etc/firmware/a330_pfp.fw
 etc/firmware/a330_pm4.fw
 
 # Media
--vendor/lib/libHevcSwDecoder.so
 vendor/lib/libI420colorconvert.so
 vendor/lib/libmm-color-convertor.so
-vendor/lib/libOmxAacDec.so
-vendor/lib/libOmxAmrwbplusDec.so
-vendor/lib/libOmxEvrcDec.so
-vendor/lib/libOmxQcelp13Dec.so
-vendor/lib/libOmxWmaDec.so
 
 # Qualcomm framework
 bin/irsc_util
@@ -446,12 +440,6 @@ vendor/lib/libril-qc-qmi-1.so
 vendor/lib/libril-qcril-hook-oem.so
 vendor/lib/libxml.so
 
-# Postprocessing
-vendor/bin/mm-pp-daemon
-vendor/lib/libdisp-aba.so
--vendor/lib/libmm-abl.so
-vendor/lib/libmm-abl-oem.so
-
 # Sensors
 bin/sensors.qcom
 lib/hw/sensors.Pad.msm8974.so
@@ -474,5 +462,5 @@ bin/time_daemon
 -app/TimeService/TimeService.apk
 
 # WiFi
-#-lib/libwpa_qmi_eap_proxy.so
+lib/libwpa_qmi_eap_proxy.so
 

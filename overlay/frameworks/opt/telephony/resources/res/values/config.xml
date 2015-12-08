@@ -24,8 +24,8 @@
     OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN
     IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 -->
-<!--
 <resources>
+<!--
 -->
     <!--The .jar file name which has the extended implementation
      of telephony base classes.-->
@@ -35,5 +35,5 @@
     <!--Fully qualified class name of telephony extended plugin.-->
 <!--
     <string name="telephony_plugin_class_name" translatable="false">com.qti.internal.telephony.QtiTelephonyPlugin</string>
-</resources>
 -->
+</resources>

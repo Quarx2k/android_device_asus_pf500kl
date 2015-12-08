@@ -51,7 +51,7 @@ BOARD_MKBOOTIMG_ARGS := --ramdisk_offset 0x02500000 --tags_offset 0x01e00000
 TARGET_KERNEL_CONFIG := pf500kl-perf_defconfig
 BOARD_KERNEL_CMDLINE := console=ttyHSL0,115200,n8 androidboot.hardware=qcom user_debug=31 msm_rtb.filter=0x37 ehci-hcd.park=3 androidboot.selinux=enforcing
 TARGET_KERNEL_SOURCE := kernel/asus/msm8974
-TARGET_KERNEL_CROSS_COMPILE_PREFIX := arm-linux-androideabi-
+#TARGET_KERNEL_CROSS_COMPILE_PREFIX := arm-linux-androideabi-
 
 USE_CLANG_PLATFORM_BUILD := true
 

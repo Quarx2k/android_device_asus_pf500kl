@@ -314,11 +314,6 @@ PRODUCT_PACKAGES += \
 PRODUCT_PROPERTY_OVERRIDES += \
     sys.io.scheduler=bfq
 
-# ART
-PRODUCT_PROPERTY_OVERRIDES += \
-    dalvik.vm.dex2oat-flags=--no-watch-dog \
-    dalvik.vm.dex2oat-swap=false
-
 # Temporary files
 PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/temp/libstlport.so:system/lib/libstlport.so

@@ -1,5 +1,5 @@
 diff --git a/services/surfaceflinger/SurfaceFlinger.cpp b/services/surfaceflinger/SurfaceFlinger.cpp
-index 4051b38..b3a62fc 100644
+index 4051b38..6d5770f 100644
 --- a/services/surfaceflinger/SurfaceFlinger.cpp
 +++ b/services/surfaceflinger/SurfaceFlinger.cpp
 @@ -188,6 +188,15 @@ SurfaceFlinger::SurfaceFlinger()
@@ -40,7 +40,7 @@ index 4051b38..b3a62fc 100644
              if (density == 0) {
                  // the build doesn't provide a density -- this is wrong!
                  // use xdpi instead
-@@ -892,15 +909,28 @@ void SurfaceFlinger::onHotplugReceived(int type, bool connected) {
+@@ -892,16 +909,29 @@ void SurfaceFlinger::onHotplugReceived(int type, bool connected) {
  
      if (uint32_t(type) < DisplayDevice::NUM_BUILTIN_DISPLAY_TYPES) {
          Mutex::Autolock _l(mStateLock);
@@ -67,13 +67,14 @@ index 4051b38..b3a62fc 100644
 +            ALOGE("Quarx: What we do?");
 +            if (connected) {
 +                ALOGE("Quarx: Switch to PAD");
-+                setPowerMode(getBuiltInDisplay(0), 0); //Disable phone display
-+		// We need it?! //type = 0; // Override type of display to DisplayDevice::DISPLAY_PRIMARY
-+            } else {
++                setPowerMode(getBuiltInDisplay(0), 0); //Disable phone display 
++           } else {
 +                ALOGE("Quarx: Switch to Phone");
 +                setPowerMode(getBuiltInDisplay(0), 2); //Reenable display.
 +            }
 +        }
          // Defer EventThread notification until SF has updated mDisplays.
++	setTransactionFlags(eDisplayTransactionNeeded);
      }
  }
+ 

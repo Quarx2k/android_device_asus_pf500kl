@@ -3,6 +3,7 @@
 #
 
 ro.sf.lcd_density=440
+ro.sf.pad_density=240
 
 # Ril
 rild.libpath=/system/vendor/lib/libril-qc-qmi-1.so

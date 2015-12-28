@@ -80,15 +80,17 @@ index e8a857b..1fe122c 100644
                      handleDisplayDeviceAdded(device);
                      break;
 diff --git a/services/core/java/com/android/server/display/LocalDisplayAdapter.java b/services/core/java/com/android/server/display/LocalDisplayAdapter.java
-index b2207f3..37d779c 100644
+index b2207f3..3e22d09 100644
 --- a/services/core/java/com/android/server/display/LocalDisplayAdapter.java
 +++ b/services/core/java/com/android/server/display/LocalDisplayAdapter.java
-@@ -120,6 +120,29 @@ final class LocalDisplayAdapter extends DisplayAdapter {
+@@ -120,6 +120,39 @@ final class LocalDisplayAdapter extends DisplayAdapter {
          }
      }
  
 +    private void trySwitchPrimaryDisplayLocked(int builtInDisplayId) {
 +        IBinder displayToken = SurfaceControl.getBuiltInDisplay(builtInDisplayId);
++        Slog.w(TAG, "Quarx framework: Display: " +
++                builtInDisplayId);
 +        if (displayToken != null) {
 +            SurfaceControl.PhysicalDisplayInfo[] configs =
 +                    SurfaceControl.getDisplayConfigs(displayToken);
@@ -100,20 +102,28 @@ index b2207f3..37d779c 100644
 +            }
 +            int activeConfig = SurfaceControl.getActiveConfig(displayToken);
 +            if (activeConfig < 0) {
++                // There is no active config, and for now we don't have the
++                // policy to set one.
 +                Slog.w(TAG, "No active config found for display device " +
 +                        builtInDisplayId);
 +                return;
 +            }
 +            LocalDisplayDevice device = mDevices.get(builtInDisplayId);
 +            device.updatePhysicalDisplayInfoLocked(configs, activeConfig);
++            // Display properties changed.
 +            sendDisplayDeviceEventLocked(device, DISPLAY_DEVICE_EVENT_SWITCHED);
++        } else {
++            Slog.w(TAG, "Quarx framework: DisplayToken Null");
++            // The display is no longer available. Ignore the attempt to add it.
++            // If it was connected but has already been disconnected, we'll get a
++            // disconnect event that will remove it from mDevices.
 +        }
 +    }
 +
      private void tryDisconnectDisplayLocked(int builtInDisplayId) {
          LocalDisplayDevice device = mDevices.get(builtInDisplayId);
          if (device != null) {
-@@ -644,9 +667,16 @@ final class LocalDisplayAdapter extends DisplayAdapter {
+@@ -644,9 +677,16 @@ final class LocalDisplayAdapter extends DisplayAdapter {
          @Override
          public void onHotplug(long timestampNanos, int builtInDisplayId, boolean connected) {
              synchronized (getSyncRoot()) {

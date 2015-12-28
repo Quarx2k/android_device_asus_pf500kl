@@ -1,27 +1,24 @@
 diff --git a/services/surfaceflinger/SurfaceFlinger.cpp b/services/surfaceflinger/SurfaceFlinger.cpp
-index 4051b38..21e6a7e 100644
+index 4051b38..b3a62fc 100644
 --- a/services/surfaceflinger/SurfaceFlinger.cpp
 +++ b/services/surfaceflinger/SurfaceFlinger.cpp
-@@ -188,6 +188,18 @@ SurfaceFlinger::SurfaceFlinger()
+@@ -188,6 +188,15 @@ SurfaceFlinger::SurfaceFlinger()
      ALOGI_IF(mDebugDDMS, "DDMS debugging enabled");
  }
  
-+bool isPadExist() {
++int getPadType() {
 +    char val[PROPERTY_VALUE_MAX];
 +    int hdmiType = 0;
 +    property_get("hw.hdmi.type", val, "0");
 +    hdmiType = atoi(val);
 +    ALOGE("Quarx: HDMI TYPE: %d", hdmiType);
-+    if (hdmiType == 2)
-+        return true;
-+    else
-+        return false;
++    return hdmiType;
 +}
 +
  void SurfaceFlinger::onFirstRef()
  {
      mEventQueue.init(this);
-@@ -602,6 +614,8 @@ status_t SurfaceFlinger::getDisplayConfigs(const sp<IBinder>& display,
+@@ -602,6 +611,8 @@ status_t SurfaceFlinger::getDisplayConfigs(const sp<IBinder>& display,
              return getDensityFromProperty("qemu.sf.lcd_density"); }
          static int getBuildDensity()  {
              return getDensityFromProperty("ro.sf.lcd_density"); }
@@ -30,12 +27,12 @@ index 4051b38..21e6a7e 100644
      };
  
      configs->clear();
-@@ -618,6 +632,12 @@ status_t SurfaceFlinger::getDisplayConfigs(const sp<IBinder>& display,
+@@ -618,6 +629,12 @@ status_t SurfaceFlinger::getDisplayConfigs(const sp<IBinder>& display,
          if (type == DisplayDevice::DISPLAY_PRIMARY) {
              // The density of the device is provided by a build property
              float density = Density::getBuildDensity() / 160.0f;
 +
-+            if (!isPadExist())
++            if (getPadType() != 2)
 +                  density = Density::getBuildDensity() / 160.0f;
 +            else
 +                  density = Density::getPadDensity() / 160.0f;
@@ -43,7 +40,7 @@ index 4051b38..21e6a7e 100644
              if (density == 0) {
                  // the build doesn't provide a density -- this is wrong!
                  // use xdpi instead
-@@ -892,13 +912,24 @@ void SurfaceFlinger::onHotplugReceived(int type, bool connected) {
+@@ -892,15 +909,28 @@ void SurfaceFlinger::onHotplugReceived(int type, bool connected) {
  
      if (uint32_t(type) < DisplayDevice::NUM_BUILTIN_DISPLAY_TYPES) {
          Mutex::Autolock _l(mStateLock);
@@ -53,8 +50,10 @@ index 4051b38..21e6a7e 100644
 -            mCurrentState.displays.removeItem(mBuiltinDisplays[type]);
 -            mBuiltinDisplays[type].clear();
 -            updateVisibleRegionsDirty();
-+
-+	if (!isPadExist()) {
+-        }
+-        setTransactionFlags(eDisplayTransactionNeeded);
+ 
++	if (getPadType() != 2) {
 +            if (connected) {
 +                createBuiltinDisplayLocked((DisplayDevice::DisplayType)type);
 +            } else {
@@ -62,15 +61,19 @@ index 4051b38..21e6a7e 100644
 +                mBuiltinDisplays[type].clear();
 +                updateVisibleRegionsDirty();
 +            }
-+	} else {
-+	    ALOGE("Quarx: What we do?");
++	}
++
++        if (getPadType() != 1) {
++            ALOGE("Quarx: What we do?");
 +            if (connected) {
 +                ALOGE("Quarx: Switch to PAD");
++                setPowerMode(getBuiltInDisplay(0), 0); //Disable phone display
++		// We need it?! //type = 0; // Override type of display to DisplayDevice::DISPLAY_PRIMARY
 +            } else {
 +                ALOGE("Quarx: Switch to Phone");
++                setPowerMode(getBuiltInDisplay(0), 2); //Reenable display.
 +            }
-         }
-+	
-         setTransactionFlags(eDisplayTransactionNeeded);
- 
++        }
          // Defer EventThread notification until SF has updated mDisplays.
+     }
+ }

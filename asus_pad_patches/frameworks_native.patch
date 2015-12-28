@@ -1,0 +1,36 @@
+diff --git a/services/surfaceflinger/SurfaceFlinger.cpp b/services/surfaceflinger/SurfaceFlinger.cpp
+index 4051b38..0e56412 100644
+--- a/services/surfaceflinger/SurfaceFlinger.cpp
++++ b/services/surfaceflinger/SurfaceFlinger.cpp
+@@ -892,13 +892,25 @@ void SurfaceFlinger::onHotplugReceived(int type, bool connected) {
+ 
+     if (uint32_t(type) < DisplayDevice::NUM_BUILTIN_DISPLAY_TYPES) {
+         Mutex::Autolock _l(mStateLock);
+-        if (connected) {
+-            createBuiltinDisplayLocked((DisplayDevice::DisplayType)type);
+-        } else {
+-            mCurrentState.displays.removeItem(mBuiltinDisplays[type]);
+-            mBuiltinDisplays[type].clear();
+-            updateVisibleRegionsDirty();
++	char val[PROPERTY_VALUE_MAX];
++	int hdmiType = 0;
++	property_get("hw.hdmi.type", val, "0");
++	hdmiType = atoi(val);
++
++	ALOGE("Quarx: HDMI TYPE: %d", hdmiType);
++
++	if (hdmiType != 2) {
++            if (connected) {
++                createBuiltinDisplayLocked((DisplayDevice::DisplayType)type);
++            } else {
++                mCurrentState.displays.removeItem(mBuiltinDisplays[type]);
++                mBuiltinDisplays[type].clear();
++                updateVisibleRegionsDirty();
++            }
++	} else {
++	    ALOGE("Quarx: What we do?");
+         }
++
+         setTransactionFlags(eDisplayTransactionNeeded);
+ 
+         // Defer EventThread notification until SF has updated mDisplays.

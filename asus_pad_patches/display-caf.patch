@@ -1,0 +1,65 @@
+diff --git a/libhdmi/hdmi.cpp b/libhdmi/hdmi.cpp
+index 2b50e51..6bbc5c7 100644
+--- a/libhdmi/hdmi.cpp
++++ b/libhdmi/hdmi.cpp
+@@ -74,6 +74,7 @@ EDIDData gEDIDData [] = {
+     EDIDData(HDMI_VFRMT_1920x1080p30_16_9, 1920, 1080, 30, 17),
+     EDIDData(HDMI_VFRMT_1920x1080p50_16_9, 1920, 1080, 50, 18),
+     EDIDData(HDMI_VFRMT_1920x1080p60_16_9, 1920, 1080, 60, 19),
++    EDIDData(HDMI_VFRMT_1920x1200p60_16_10, 1920, 1200, 60, 25),
+     EDIDData(HDMI_VFRMT_2560x1600p60_16_9, 2560, 1600, 60, 20),
+     EDIDData(HDMI_VFRMT_3840x2160p24_16_9, 3840, 2160, 24, 21),
+     EDIDData(HDMI_VFRMT_3840x2160p25_16_9, 3840, 2160, 25, 22),
+diff --git a/libhwcomposer/hwc_uevents.cpp b/libhwcomposer/hwc_uevents.cpp
+index c26a6ce..d7522ca 100644
+--- a/libhwcomposer/hwc_uevents.cpp
++++ b/libhwcomposer/hwc_uevents.cpp
+@@ -21,8 +21,10 @@
+ #define UEVENT_DEBUG 0
+ #include <hardware_legacy/uevent.h>
+ #include <utils/Log.h>
++#include <cutils/properties.h>
+ #include <sys/resource.h>
+ #include <sys/prctl.h>
++#include <sys/ioctl.h>
+ #include <string.h>
+ #include <stdlib.h>
+ #include "hwc_utils.h"
+@@ -114,6 +116,21 @@ static void handle_uevent(hwc_context_t* ctx, const char* udata, int len)
+     ALOGE_IF(UEVENT_DEBUG,"%s: uevent received: %s switch state: %d",
+              __FUNCTION__,udata, switch_state);
+ 
++    char str[PROPERTY_VALUE_MAX];
++    int val = 0;
++    int fd = -1;
++
++//Quarx changes start//
++    if ((fd = open("/dev/graphics/fb0", O_RDWR)) < 0)
++        ALOGE("Error open /dev/graphics/fb0");
++
++    if (ioctl(fd, MSMFB_PADFONE_STATE, &val) < 0)
++        ALOGE("Error call MSMFB_PADFONE_STATE ioctl");
++
++    sprintf(str, "%d", val);
++    property_set("hw.hdmi.type", str);
++//Quarx changes end//
++
+     switch(switch_state) {
+     case EXTERNAL_OFFLINE:
+         {
+@@ -123,7 +140,6 @@ static void handle_uevent(hwc_context_t* ctx, const char* udata, int len)
+                          "for display: %d", __FUNCTION__, dpy);
+                 break;
+             }
+-
+             ctx->mDrawLock.lock();
+             destroyCompositionResources(ctx, dpy);
+             if(dpy == HWC_DISPLAY_EXTERNAL) {
+@@ -154,6 +170,7 @@ static void handle_uevent(hwc_context_t* ctx, const char* udata, int len)
+                          "for display: %d", __FUNCTION__, dpy);
+                 break;
+             }
++
+             ctx->mDrawLock.lock();
+             //Force composition to give up resources like pipes and
+             //close fb. For example if assertive display is going on,

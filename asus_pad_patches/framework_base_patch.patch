@@ -1,0 +1,133 @@
+diff --git a/services/core/java/com/android/server/WiredAccessoryManager.java b/services/core/java/com/android/server/WiredAccessoryManager.java
+index 1b82ed6..8fd6385 100644
+--- a/services/core/java/com/android/server/WiredAccessoryManager.java
++++ b/services/core/java/com/android/server/WiredAccessoryManager.java
+@@ -60,9 +60,10 @@ final class WiredAccessoryManager implements WiredAccessoryCallbacks {
+     private static final int BIT_USB_HEADSET_DGTL = (1 << 3);
+     private static final int BIT_HDMI_AUDIO = (1 << 4);
+     private static final int BIT_LINEOUT = (1 << 5);
++    private static final int BIT_P03_AUDIO = (1 << 6);
+     private static final int SUPPORTED_HEADSETS = (BIT_HEADSET|BIT_HEADSET_NO_MIC|
+                                                    BIT_USB_HEADSET_ANLG|BIT_USB_HEADSET_DGTL|
+-                                                   BIT_HDMI_AUDIO|BIT_LINEOUT);
++                                                   BIT_HDMI_AUDIO|BIT_LINEOUT|BIT_P03_AUDIO);
+ 
+     private static final String NAME_H2W = "h2w";
+     private static final String NAME_USB_AUDIO = "usb_audio";
+@@ -276,7 +277,7 @@ final class WiredAccessoryManager implements WiredAccessoryCallbacks {
+                 outDevice = AudioManager.DEVICE_OUT_LINE;
+             } else if (headset == BIT_USB_HEADSET_ANLG) {
+                 outDevice = AudioManager.DEVICE_OUT_ANLG_DOCK_HEADSET;
+-            } else if (headset == BIT_USB_HEADSET_DGTL) {
++            } else if (headset == BIT_USB_HEADSET_DGTL || headset == BIT_P03_AUDIO ) {
+                 outDevice = AudioManager.DEVICE_OUT_DGTL_DOCK_HEADSET;
+             } else if (headset == BIT_HDMI_AUDIO) {
+                 outDevice = AudioManager.DEVICE_OUT_HDMI;
+@@ -333,7 +334,6 @@ final class WiredAccessoryManager implements WiredAccessoryCallbacks {
+                         file.close();
+                         curState = validateSwitchState(
+                                 Integer.valueOf((new String(buffer, 0, len)).trim()));
+-
+                         if (curState > 0) {
+                             updateStateLocked(uei.getDevPath(), uei.getDevName(), curState);
+                         }
+@@ -403,7 +403,7 @@ final class WiredAccessoryManager implements WiredAccessoryCallbacks {
+             //
+             // If the kernel does not have an "hdmi_audio" switch, just fall back on the older
+             // "hdmi" switch instead.
+-            uei = new UEventInfo(NAME_HDMI_AUDIO, BIT_HDMI_AUDIO, 0, 0);
++            uei = new UEventInfo(NAME_HDMI_AUDIO, BIT_HDMI_AUDIO, BIT_P03_AUDIO, 0);
+             if (uei.checkSwitchExists()) {
+                 retVal.add(uei);
+             } else {
+diff --git a/services/core/java/com/android/server/display/DisplayAdapter.java b/services/core/java/com/android/server/display/DisplayAdapter.java
+index 701b9f1..b5f1dad 100644
+--- a/services/core/java/com/android/server/display/DisplayAdapter.java
++++ b/services/core/java/com/android/server/display/DisplayAdapter.java
+@@ -43,6 +43,7 @@ abstract class DisplayAdapter {
+     public static final int DISPLAY_DEVICE_EVENT_ADDED = 1;
+     public static final int DISPLAY_DEVICE_EVENT_CHANGED = 2;
+     public static final int DISPLAY_DEVICE_EVENT_REMOVED = 3;
++    public static final int DISPLAY_DEVICE_EVENT_SWITCHED = 4;
+ 
+     /**
+      * Used to generate globally unique display mode ids.
+diff --git a/services/core/java/com/android/server/display/DisplayManagerService.java b/services/core/java/com/android/server/display/DisplayManagerService.java
+index e8a857b..1fe122c 100644
+--- a/services/core/java/com/android/server/display/DisplayManagerService.java
++++ b/services/core/java/com/android/server/display/DisplayManagerService.java
+@@ -744,6 +744,11 @@ public final class DisplayManagerService extends SystemService {
+         scheduleTraversalLocked(false);
+     }
+ 
++    private void handleDisplayDeviceSwitch(DisplayDevice device) {
++        Slog.i(TAG, "Quarx: Display device changed!!!");
++        handleDisplayDeviceChanged(device);
++    }
++
+     private void applyGlobalDisplayStateLocked(List<Runnable> workQueue) {
+         final int count = mDisplayDevices.size();
+         for (int i = 0; i < count; i++) {
+@@ -1122,6 +1127,10 @@ public final class DisplayManagerService extends SystemService {
+         @Override
+         public void onDisplayDeviceEvent(DisplayDevice device, int event) {
+             switch (event) {
++                case DisplayAdapter.DISPLAY_DEVICE_EVENT_SWITCHED:
++                    handleDisplayDeviceSwitch(device);
++                    break;
++
+                 case DisplayAdapter.DISPLAY_DEVICE_EVENT_ADDED:
+                     handleDisplayDeviceAdded(device);
+                     break;
+diff --git a/services/core/java/com/android/server/display/LocalDisplayAdapter.java b/services/core/java/com/android/server/display/LocalDisplayAdapter.java
+index b2207f3..37d779c 100644
+--- a/services/core/java/com/android/server/display/LocalDisplayAdapter.java
++++ b/services/core/java/com/android/server/display/LocalDisplayAdapter.java
+@@ -120,6 +120,29 @@ final class LocalDisplayAdapter extends DisplayAdapter {
+         }
+     }
+ 
++    private void trySwitchPrimaryDisplayLocked(int builtInDisplayId) {
++        IBinder displayToken = SurfaceControl.getBuiltInDisplay(builtInDisplayId);
++        if (displayToken != null) {
++            SurfaceControl.PhysicalDisplayInfo[] configs =
++                    SurfaceControl.getDisplayConfigs(displayToken);
++            if (configs == null) {
++                // There are no valid configs for this device, so we can't use it
++                Slog.w(TAG, "No valid configs found for display device " +
++                        builtInDisplayId);
++                return;
++            }
++            int activeConfig = SurfaceControl.getActiveConfig(displayToken);
++            if (activeConfig < 0) {
++                Slog.w(TAG, "No active config found for display device " +
++                        builtInDisplayId);
++                return;
++            }
++            LocalDisplayDevice device = mDevices.get(builtInDisplayId);
++            device.updatePhysicalDisplayInfoLocked(configs, activeConfig);
++            sendDisplayDeviceEventLocked(device, DISPLAY_DEVICE_EVENT_SWITCHED);
++        }
++    }
++
+     private void tryDisconnectDisplayLocked(int builtInDisplayId) {
+         LocalDisplayDevice device = mDevices.get(builtInDisplayId);
+         if (device != null) {
+@@ -644,9 +667,16 @@ final class LocalDisplayAdapter extends DisplayAdapter {
+         @Override
+         public void onHotplug(long timestampNanos, int builtInDisplayId, boolean connected) {
+             synchronized (getSyncRoot()) {
+-                if (connected) {
++		Slog.e(TAG,"Quarx: Initiated display switch: builtInDisplayId:" + builtInDisplayId);
++                if (builtInDisplayId == SurfaceControl.BUILT_IN_DISPLAY_ID_MAIN
++			 && mDevices.get(builtInDisplayId) != null) {
++		Slog.e(TAG,"Quarx: trySwitchPrimaryDisplayLocked:");
++                    trySwitchPrimaryDisplayLocked(builtInDisplayId);
++                } else if (connected) {
++		Slog.e(TAG,"Quarx: tryConnectDisplayLocked(builtInDisplayId)");
+                     tryConnectDisplayLocked(builtInDisplayId);
+                 } else {
++		Slog.e(TAG,"Quarx: tryDisconnectDisplayLocked(builtInDisplayId)");
+                     tryDisconnectDisplayLocked(builtInDisplayId);
+                 }
+             }

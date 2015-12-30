@@ -53,10 +53,21 @@ index 701b9f1..b5f1dad 100644
      /**
       * Used to generate globally unique display mode ids.
 diff --git a/services/core/java/com/android/server/display/DisplayManagerService.java b/services/core/java/com/android/server/display/DisplayManagerService.java
-index e8a857b..1fe122c 100644
+index e8a857b..10dd5be 100644
 --- a/services/core/java/com/android/server/display/DisplayManagerService.java
 +++ b/services/core/java/com/android/server/display/DisplayManagerService.java
-@@ -744,6 +744,11 @@ public final class DisplayManagerService extends SystemService {
+@@ -709,6 +709,10 @@ public final class DisplayManagerService extends SystemService {
+             }
+ 
+             int diff = device.mDebugLastLoggedDeviceInfo.diff(info);
++            Slog.e(TAG, "Quarx diff: " + diff + " DIFF_STATE " + DisplayDeviceInfo.DIFF_STATE);
++
++            Slog.i(TAG, "Display device changed: " + info);
++
+             if (diff == DisplayDeviceInfo.DIFF_STATE) {
+                 Slog.i(TAG, "Display device changed state: \"" + info.name
+                         + "\", " + Display.stateToString(info.state));
+@@ -744,6 +748,11 @@ public final class DisplayManagerService extends SystemService {
          scheduleTraversalLocked(false);
      }
  
@@ -68,7 +79,17 @@ index e8a857b..1fe122c 100644
      private void applyGlobalDisplayStateLocked(List<Runnable> workQueue) {
          final int count = mDisplayDevices.size();
          for (int i = 0; i < count; i++) {
-@@ -1122,6 +1127,10 @@ public final class DisplayManagerService extends SystemService {
+@@ -833,7 +842,9 @@ public final class DisplayManagerService extends SystemService {
+                 sendDisplayEventLocked(displayId, DisplayManagerGlobal.EVENT_DISPLAY_CHANGED);
+                 changed = true;
+             }
++		Slog.e(TAG, "Quarx: FOR updateLogicalDisplaysLocked " + changed);
+         }
++	Slog.e(TAG, "Quarx: updateLogicalDisplaysLocked " + changed);
+         return changed;
+     }
+ 
+@@ -1122,15 +1133,22 @@ public final class DisplayManagerService extends SystemService {
          @Override
          public void onDisplayDeviceEvent(DisplayDevice device, int event) {
              switch (event) {
@@ -77,40 +98,50 @@ index e8a857b..1fe122c 100644
 +                    break;
 +
                  case DisplayAdapter.DISPLAY_DEVICE_EVENT_ADDED:
++                    Slog.e(TAG, "Initiated DISPLAY_DEVICE_EVENT_ADDED");
                      handleDisplayDeviceAdded(device);
                      break;
+ 
+                 case DisplayAdapter.DISPLAY_DEVICE_EVENT_CHANGED:
++                    Slog.e(TAG, "Initiated DISPLAY_DEVICE_EVENT_CHANGED");
+                     handleDisplayDeviceChanged(device);
+                     break;
+ 
+                 case DisplayAdapter.DISPLAY_DEVICE_EVENT_REMOVED:
++                    Slog.e(TAG, "Initiated DISPLAY_DEVICE_EVENT_REMOVED");
+                     handleDisplayDeviceRemoved(device);
+                     break;
+             }
 diff --git a/services/core/java/com/android/server/display/LocalDisplayAdapter.java b/services/core/java/com/android/server/display/LocalDisplayAdapter.java
-index b2207f3..3e22d09 100644
+index b2207f3..ed4854e 100644
 --- a/services/core/java/com/android/server/display/LocalDisplayAdapter.java
 +++ b/services/core/java/com/android/server/display/LocalDisplayAdapter.java
-@@ -120,6 +120,39 @@ final class LocalDisplayAdapter extends DisplayAdapter {
+@@ -120,6 +120,37 @@ final class LocalDisplayAdapter extends DisplayAdapter {
          }
      }
  
-+    private void trySwitchPrimaryDisplayLocked(int builtInDisplayId) {
-+        IBinder displayToken = SurfaceControl.getBuiltInDisplay(builtInDisplayId);
-+        Slog.w(TAG, "Quarx framework: Display: " +
-+                builtInDisplayId);
++    private void trySwitchPrimaryDisplayLocked() {
++        IBinder displayToken = SurfaceControl.getBuiltInDisplay(0);
++        Slog.w(TAG, "Quarx framework: Switch Display: 0 ");
 +        if (displayToken != null) {
 +            SurfaceControl.PhysicalDisplayInfo[] configs =
 +                    SurfaceControl.getDisplayConfigs(displayToken);
 +            if (configs == null) {
 +                // There are no valid configs for this device, so we can't use it
-+                Slog.w(TAG, "No valid configs found for display device " +
-+                        builtInDisplayId);
++                Slog.w(TAG, "No valid configs found for display device 0");
 +                return;
 +            }
 +            int activeConfig = SurfaceControl.getActiveConfig(displayToken);
 +            if (activeConfig < 0) {
 +                // There is no active config, and for now we don't have the
 +                // policy to set one.
-+                Slog.w(TAG, "No active config found for display device " +
-+                        builtInDisplayId);
++                Slog.w(TAG, "No active config found for display device 0");
 +                return;
 +            }
-+            LocalDisplayDevice device = mDevices.get(builtInDisplayId);
++            LocalDisplayDevice device = mDevices.get(0);
 +            device.updatePhysicalDisplayInfoLocked(configs, activeConfig);
 +            // Display properties changed.
++            Slog.w(TAG, "Quarx framework: sendDisplayDeviceEventLocked(DISPLAY_DEVICE_EVENT_SWITCHED)");
 +            sendDisplayDeviceEventLocked(device, DISPLAY_DEVICE_EVENT_SWITCHED);
 +        } else {
 +            Slog.w(TAG, "Quarx framework: DisplayToken Null");
@@ -123,7 +154,15 @@ index b2207f3..3e22d09 100644
      private void tryDisconnectDisplayLocked(int builtInDisplayId) {
          LocalDisplayDevice device = mDevices.get(builtInDisplayId);
          if (device != null) {
-@@ -644,9 +677,16 @@ final class LocalDisplayAdapter extends DisplayAdapter {
+@@ -181,6 +212,7 @@ final class LocalDisplayAdapter extends DisplayAdapter {
+             mDisplayInfos = Arrays.copyOf(physicalDisplayInfos, physicalDisplayInfos.length);
+             mActivePhysIndex = activeDisplayInfo;
+             ArrayList<Display.ColorTransform> colorTransforms = new ArrayList<>();
++            Slog.e("LocalDisplayAdapter", "Quarx: Update physical display info, device id: " + this.mBuiltInDisplayId + ", " + mDisplayInfos.toString());
+ 
+             // Build an updated list of all existing color transforms.
+             boolean colorTransformsAdded = false;
+@@ -644,9 +676,16 @@ final class LocalDisplayAdapter extends DisplayAdapter {
          @Override
          public void onHotplug(long timestampNanos, int builtInDisplayId, boolean connected) {
              synchronized (getSyncRoot()) {
@@ -132,7 +171,7 @@ index b2207f3..3e22d09 100644
 +                if (builtInDisplayId == SurfaceControl.BUILT_IN_DISPLAY_ID_MAIN
 +			 && mDevices.get(builtInDisplayId) != null) {
 +		Slog.e(TAG,"Quarx: trySwitchPrimaryDisplayLocked:");
-+                    trySwitchPrimaryDisplayLocked(builtInDisplayId);
++                    trySwitchPrimaryDisplayLocked();
 +                } else if (connected) {
 +		Slog.e(TAG,"Quarx: tryConnectDisplayLocked(builtInDisplayId)");
                      tryConnectDisplayLocked(builtInDisplayId);
@@ -141,3 +180,55 @@ index b2207f3..3e22d09 100644
                      tryDisconnectDisplayLocked(builtInDisplayId);
                  }
              }
+diff --git a/services/core/java/com/android/server/display/LogicalDisplay.java b/services/core/java/com/android/server/display/LogicalDisplay.java
+index 6dae397..613b2f2 100644
+--- a/services/core/java/com/android/server/display/LogicalDisplay.java
++++ b/services/core/java/com/android/server/display/LogicalDisplay.java
+@@ -20,6 +20,7 @@ import android.graphics.Rect;
+ import android.view.Display;
+ import android.view.DisplayInfo;
+ import android.view.Surface;
++import android.util.Slog;
+ 
+ import java.io.PrintWriter;
+ import java.util.Arrays;
+@@ -54,6 +55,8 @@ import libcore.util.Objects;
+  * </p>
+  */
+ final class LogicalDisplay {
++    private static final String TAG = "LogicalDisplay";
++
+     private final DisplayInfo mBaseDisplayInfo = new DisplayInfo();
+ 
+     // The layer stack we use when the display has been blanked to prevent any
+@@ -190,12 +193,14 @@ final class LogicalDisplay {
+     public void updateLocked(List<DisplayDevice> devices) {
+         // Nothing to update if already invalid.
+         if (mPrimaryDisplayDevice == null) {
++       	    Slog.e(TAG,"Quarx :PrimaryDisplayDevice == null)");
+             return;
+         }
+ 
+         // Check whether logical display has become invalid.
+         if (!devices.contains(mPrimaryDisplayDevice)) {
+             mPrimaryDisplayDevice = null;
++       	    Slog.e(TAG,"Quarx: !devices.contains(mPrimaryDisplayDevice== null)");
+             return;
+         }
+ 
+@@ -206,6 +211,7 @@ final class LogicalDisplay {
+         // mirroring over HDMI.)
+         DisplayDeviceInfo deviceInfo = mPrimaryDisplayDevice.getDisplayDeviceInfoLocked();
+         if (!Objects.equal(mPrimaryDisplayDeviceInfo, deviceInfo)) {
++       	    Slog.e(TAG,"Quarx: We in if!!!");
+             mBaseDisplayInfo.layerStack = mLayerStack;
+             mBaseDisplayInfo.flags = 0;
+             if ((deviceInfo.flags & DisplayDeviceInfo.FLAG_SUPPORTS_PROTECTED_BUFFERS) != 0) {
+@@ -256,6 +262,7 @@ final class LogicalDisplay {
+ 
+             mPrimaryDisplayDeviceInfo = deviceInfo;
+             mInfo = null;
++       	    Slog.e(TAG,"Quarx: Update logical display, base display info: " + mBaseDisplayInfo);
+         }
+     }
+ 

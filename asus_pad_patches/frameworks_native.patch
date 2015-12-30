@@ -1,5 +1,17 @@
+diff --git a/services/surfaceflinger/DisplayDevice.cpp b/services/surfaceflinger/DisplayDevice.cpp
+index f597b73..e646d04 100644
+--- a/services/surfaceflinger/DisplayDevice.cpp
++++ b/services/surfaceflinger/DisplayDevice.cpp
+@@ -130,6 +130,7 @@ DisplayDevice::DisplayDevice(
+ 
+     // Name the display.  The name will be replaced shortly if the display
+     // was created with createDisplay().
++
+     switch (mType) {
+         case DISPLAY_PRIMARY:
+             mDisplayName = "Built-in Screen";
 diff --git a/services/surfaceflinger/SurfaceFlinger.cpp b/services/surfaceflinger/SurfaceFlinger.cpp
-index 4051b38..6d5770f 100644
+index 4051b38..ef85775 100644
 --- a/services/surfaceflinger/SurfaceFlinger.cpp
 +++ b/services/surfaceflinger/SurfaceFlinger.cpp
 @@ -188,6 +188,15 @@ SurfaceFlinger::SurfaceFlinger()
@@ -40,7 +52,7 @@ index 4051b38..6d5770f 100644
              if (density == 0) {
                  // the build doesn't provide a density -- this is wrong!
                  // use xdpi instead
-@@ -892,16 +909,29 @@ void SurfaceFlinger::onHotplugReceived(int type, bool connected) {
+@@ -892,16 +909,30 @@ void SurfaceFlinger::onHotplugReceived(int type, bool connected) {
  
      if (uint32_t(type) < DisplayDevice::NUM_BUILTIN_DISPLAY_TYPES) {
          Mutex::Autolock _l(mStateLock);
@@ -53,6 +65,7 @@ index 4051b38..6d5770f 100644
 -        }
 -        setTransactionFlags(eDisplayTransactionNeeded);
  
++        //In stock asus this checked via //if persist.sys.dds.enable !=1  || hw.hdmi.type !=2
 +	if (getPadType() != 2) {
 +            if (connected) {
 +                createBuiltinDisplayLocked((DisplayDevice::DisplayType)type);

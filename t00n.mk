@@ -65,10 +65,8 @@ PRODUCT_PACKAGES += \
 
 # Filesystem management tools
 PRODUCT_PACKAGES += \
-    make_ext4fs \
     e2fsck \
     setup_fs \
-    mkfs.f2fs
 
 PRODUCT_PACKAGES += \
     libxml2 \
@@ -124,12 +122,6 @@ PRODUCT_PACKAGES += \
     gps.msm8974 \
     gps.conf
 
-# Tcmiface
-#PRODUCT_PACKAGES += \
-#    tcmiface
-
-#PRODUCT_BOOT_JARS += \
-#    tcmiface
 
 PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/gps/flp.conf:system/etc/flp.conf \
@@ -213,10 +205,6 @@ PRODUCT_PACKAGES += \
     libbson \
     HdmiMonitor \
     libboringssl-compat
-
-# Set default USB interface
-PRODUCT_DEFAULT_PROPERTY_OVERRIDES += \
-    persist.sys.usb.config=mtp
 
 # Enable Bluetooth HFP service
 PRODUCT_PROPERTY_OVERRIDES +=

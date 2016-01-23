@@ -1,2 +1,1 @@
-allow platform_app unlabeled:dir { search getattr read write open remove_name add_name };
-allow platform_app unlabeled:file { open read write getattr lock setattr getattr rename ioctl unlink };
+allow platform_app system_file:file execmod;

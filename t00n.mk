@@ -298,10 +298,6 @@ PRODUCT_PACKAGES += \
     com.dsi.ant.antradio_library \
     libantradio
 
-# IO Scheduler
-PRODUCT_PROPERTY_OVERRIDES += \
-    sys.io.scheduler=bfq
-
 # Temporary files
 PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/temp/libstlport.so:system/lib/libstlport.so

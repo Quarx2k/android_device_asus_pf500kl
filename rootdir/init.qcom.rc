@@ -494,6 +494,7 @@ service mpdecision /system/bin/mpdecision --avg_comp
    class late_start
    user root
    group system
+   disabled
 
 service thermal-serivce /system/bin/sh /system/etc/init.asus.thermal_conf.sh
    class core

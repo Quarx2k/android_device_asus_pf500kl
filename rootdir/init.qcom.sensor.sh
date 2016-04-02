@@ -26,7 +26,7 @@
 # ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 
-Function to start sensors for DSPS enabled platforms
+#Function to start sensors for DSPS enabled platforms
 
 init_sensors_status()
 {
@@ -37,26 +37,10 @@ init_sensors_status()
     rm /data/data/gsensor_raw
     rm /data/data/ecompass_raw
 
-    echo 0 > /data/data/gsensor_status
-    echo 0 > /data/data/gyroscope_status
-    echo 0 > /data/data/ecompass_status
-    echo 0 > /data/data/ecompass_phone_i2c
-
-    gsensortest=$(sensors_test 1 a | grep Passed)
-    if busybox test "$gsensortest" != ""; then
-        echo 1 > /data/data/gsensor_status
-    fi
-
-    gyrotest=$(sensors_test 1 g | grep Passed)
-    if busybox test "$gyrotest" != ""; then
-        echo 1 > /data/data/gyroscope_status
-    fi
-
-    ecompasstest=$(sensors_test 1 c | grep Passed)
-    if busybox test "$ecompasstest" != ""; then
-        echo 1 > /data/data/ecompass_status
-        echo 1 > /data/data/ecompass_phone_i2c
-    fi
+    echo 1 > /data/data/gsensor_status
+    echo 1 > /data/data/gyroscope_status
+    echo 1 > /data/data/ecompass_status
+    echo 1 > /data/data/ecompass_phone_i2c
 
     chmod 777 /data/data/gyroscope_status
     chmod 777 /data/data/gsensor_status
@@ -106,5 +90,4 @@ start_sensors()
 start_sensors
 sleep 3
 init_sensors_status
-f
 # ASUS_BSP --- Jiunhau_Wang "[A91][Sensor][NA][Spec] Disable Qualcomm DSPS"

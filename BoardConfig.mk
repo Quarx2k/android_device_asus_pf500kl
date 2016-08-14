@@ -19,8 +19,9 @@
 
 # Vendor Init
 TARGET_OTA_ASSERT_DEVICE := t00n,t00d,ASUS_T00N,ASUS_T00D
-TARGET_INIT_VENDOR_LIB := libinit_msm
-TARGET_LIBINIT_DEFINES_FILE := device/asus/t00n/init/init_asus.cpp
+TARGET_INIT_VENDOR_LIB := libinit_t00n
+TARGET_RECOVERY_DEVICE_MODULES := libinit_t00n
+
 
 # Releasetools
 TARGET_RELEASETOOLS_EXTENSIONS := device/asus/t00n

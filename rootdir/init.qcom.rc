@@ -6,6 +6,7 @@ import /init.qcom.power.rc
 on early-init
     chown system system /sys/kernel/debug/kgsl/proc
     export LD_SHIM_LIBS /system/vendor/lib/libmmqjpeg_codec.so|libboringssl-compat.so
+    write /proc/asusdebug get_asdf_log
 
 on init
     # Support legacy paths

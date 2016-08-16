@@ -6,7 +6,6 @@ import /init.qcom.power.rc
 on early-init
     chown system system /sys/kernel/debug/kgsl/proc
     export LD_SHIM_LIBS /system/vendor/lib/libmmqjpeg_codec.so|libboringssl-compat.so
-    write /proc/asusdebug get_asdf_log
 
 on init
     # Support legacy paths
@@ -22,6 +21,7 @@ on init
     mkdir /data/asusdata 0755 root shell
     mkdir /data/asusfw 0660 root shell
     symlink /data/asusdata /factory
+    symlink /data/asusfw /asusfw
 
 on early-boot
     # set RLIMIT_MEMLOCK to 64MB

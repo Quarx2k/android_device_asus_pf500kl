@@ -6,7 +6,6 @@ bin/USB_Camera_Update/rts_usb
 lib/libmmcamera_interface.so
 lib/libmmjpeg_interface.so
 lib/libqomx_core.so
-lib/libsarcsoft.so
 lib/libsarcsoftface.so
 lib/libsarcsoft_gallery.so
 lib/libsarcsoft_image_engine.so
@@ -15,7 +14,8 @@ lib/libarcsoft_sensorndk.so
 lib/libcameraap.so
 lib/libxditk_AT.so
 lib/ditCL.bin
-lib/libAFE.so
+lib/libarcsoft_beautyshot.so
+lib/libcameraap_BSP.so
 lib/libcamera_defocus.so
 lib/libcamera_pano.so
 lib/libchromatix_imx135_liveshot.so
@@ -60,7 +60,6 @@ vendor/lib/libmmcamera_skuf_ov5648_p5v23c.so
 vendor/lib/libmmcamera_sp1628.so
 vendor/lib/libmmcamera_tintless_algo.so
 vendor/lib/libmmcamera_tintless_bg_pca_algo.so
-vendor/lib/libmmcamera_tuning.so
 vendor/lib/libmmcamera_wavelet_lib.so
 vendor/lib/libmmipl.so
 vendor/lib/libmmjpeg.so
@@ -180,7 +179,6 @@ vendor/lib/libactuator_ov8825_camera.so
 vendor/lib/libactuator_rohm_bu64243gwz.so
 vendor/lib/libactuator_rohm_bu64243gwz_camcorder.so
 vendor/lib/libactuator_rohm_bu64243gwz_camera.so
-vendor/lib/libarcsoft_panorama_burstcapture.so
 vendor/lib/libchromatix_imx132_common.so
 vendor/lib/libchromatix_imx132_default_video.so
 vendor/lib/libchromatix_imx132_liveshot.so
@@ -425,6 +423,7 @@ lib/libcmdthread.so
 vendor/lib/libsensor1.so
 vendor/lib/libsensor_reg.so
 vendor/lib/libAKM8963.so
+etc/sensor_def_qcomdev.conf
 
 # Thermal
 vendor/bin/thermal-engine
